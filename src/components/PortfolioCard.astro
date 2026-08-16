@@ -25,6 +25,7 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
       {item.name ? item.name[lang] : <span class="mono todo-inline">[{t.todo}]</span>}
     </h3>
     {item.year && <p class="pf-card__year mono">{item.year}</p>}
+    {item.description && <p class="pf-card__desc">{item.description[lang]}</p>}
     {
       item.descriptionTbd && (
         <p class="pf-card__desc mono todo-inline">
@@ -72,6 +73,12 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
   .pf-card__year {
     color: var(--dim);
     font-size: 0.66rem;
+  }
+
+  .pf-card__desc {
+    color: var(--dim);
+    font-size: 0.84rem;
+    line-height: 1.4;
   }
 
   .todo-inline {
