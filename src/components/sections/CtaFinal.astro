@@ -1,0 +1,41 @@
+---
+import { getImage } from 'astro:assets';
+import { ctaPrimary, path, type Lang } from '../../content/site';
+import vetrinaSera from '../../assets/images/06-vetrina-sera.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const bg = await getImage({ src: vetrinaSera, width: 1800, format: 'webp' });
+---
+
+<section class="cta-final" style={`background-image: linear-gradient(180deg, rgba(16,16,20,0.55), rgba(16,16,20,0.9)), url(${bg.src})`}>
+  <div class="container cta-final__inner reveal">
+    <p class="cta-final__motto mono">
+      <!-- DA FORNIRE: eventuale riga finale a supporto della CTA, SQ/IT/EN -->
+    </p>
+    <a class="btn btn--primary cta-final__btn" href={path(lang, 'contact')}>{ctaPrimary[lang]}</a>
+  </div>
+</section>
+
+<style>
+  .cta-final {
+    background-size: cover;
+    background-position: center;
+    padding-block: clamp(72px, 14vw, 160px);
+  }
+
+  .cta-final__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .cta-final__btn {
+    font-size: 0.9rem;
+    padding: 20px 36px;
+  }
+</style>

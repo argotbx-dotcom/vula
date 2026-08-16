@@ -1,0 +1,82 @@
+---
+// Card portfolio — regola di onestà vincolante (brief §6/7): etichetta
+// sempre visibile sulla card, mai nascosta nel dettaglio.
+import { ui, type Lang } from '../content/site';
+import type { PortfolioItem } from '../content/portfolio';
+import PlaceholderImage from './PlaceholderImage.astro';
+
+interface Props {
+  lang: Lang;
+  item: PortfolioItem;
+}
+const { lang, item } = Astro.props;
+const t = ui[lang];
+
+const labelText = item.category === 'group' ? t.labelGroupBrand : item.category === 'concept' ? t.labelConcept : t.labelClient;
+---
+
+<article class="pf-card card">
+  <div class="pf-card__media">
+    <PlaceholderImage ratio="4 / 3" />
+    <span class={`pf-card__label label ${item.category === 'concept' ? 'label--concept' : ''}`}>{labelText}</span>
+  </div>
+  <div class="pf-card__body">
+    <h3 class="pf-card__name">
+      {item.name ? item.name[lang] : <span class="mono todo-inline">[{t.todo}]</span>}
+    </h3>
+    {item.year && <p class="pf-card__year mono">{item.year}</p>}
+    {
+      item.descriptionTbd && (
+        <p class="pf-card__desc mono todo-inline">
+          <!-- DA FORNIRE: una riga di descrizione per questa scheda, SQ/IT/EN -->[{t.todo}]
+        </p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .pf-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .pf-card__media {
+    position: relative;
+  }
+
+  .pf-card__label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+  }
+
+  .label--concept {
+    background: var(--timbro);
+    color: var(--paper);
+  }
+
+  .pf-card__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pf-card__name {
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+  }
+
+  .pf-card__year {
+    color: var(--dim);
+    font-size: 0.66rem;
+  }
+
+  .todo-inline {
+    color: var(--timbro);
+    font-size: 0.68rem;
+    opacity: 0.9;
+  }
+</style>

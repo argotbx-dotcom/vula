@@ -1,0 +1,131 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PageIntro from '../sections/PageIntro.astro';
+import CtaFinal from '../sections/CtaFinal.astro';
+import { nav, motto, aboutThesis, ui, path, type Lang } from '../../content/site';
+import { groupBrands } from '../../content/portfolio';
+import studioNotte from '../../assets/images/03-studio-notte.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const n = nav[lang];
+const a = aboutThesis[lang];
+const t = ui[lang];
+
+const studioAlt: Record<Lang, string> = {
+  sq: 'Studio krijues natën, dritë e vetme e ftohtë blu',
+  it: 'Studio creativo di notte, unica luce fredda blu',
+  en: 'Creative studio at night, single cold blue light',
+};
+
+const brandsLabel: Record<Lang, string> = {
+  sq: 'Markat tona',
+  it: 'I nostri marchi',
+  en: 'Our brands',
+};
+---
+
+<Base lang={lang} page="about" title={n.about}>
+  <Header lang={lang} page="about" />
+  <main id="main">
+    <PageIntro lang={lang} kicker={motto[lang]} title={n.about} />
+
+    <section class="about-lead">
+      <div class="container about-lead__grid">
+        <div class="reveal">
+          <Image src={studioNotte} alt={studioAlt[lang]} width={900} height={600} loading="eager" />
+        </div>
+        <div>
+          <h2 class="reveal">{a.line}</h2>
+          <p class="about-lead__note mono todo-inline reveal">
+            <!-- DA FORNIRE: testo esteso "chi siamo" (storia, metodo, perché VULA costruisce anche marchi propri), SQ/IT/EN -->
+            [{t.todo} — testo esteso "kush jemi"]
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-brands">
+      <div class="container">
+        <h3 class="reveal">{brandsLabel[lang]}</h3>
+        <ul class="about-brands__list">
+          {
+            groupBrands.map((b, i) => (
+              <li class="reveal" style={`transition-delay:${i * 60}ms`}>
+                <a href={path(lang, 'portfolio')}>{b.name ? b.name[lang] : ''}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <CtaFinal lang={lang} />
+  </main>
+  <Footer lang={lang} page="about" />
+</Base>
+
+<style>
+  .about-lead__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: center;
+  }
+
+  .about-lead__grid img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+  }
+
+  .about-lead__note {
+    display: inline-block;
+    margin-top: 20px;
+    border: 1px dashed var(--timbro);
+    padding: 10px 14px;
+    color: var(--timbro);
+    font-size: 0.68rem;
+  }
+
+  .about-brands {
+    padding-top: 0;
+  }
+
+  .about-brands__list {
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .about-brands__list a {
+    display: inline-block;
+    padding: 12px 20px;
+    border: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: border-color 150ms var(--ease);
+  }
+
+  .about-brands__list a:hover {
+    border-color: var(--paper);
+  }
+
+  @media (max-width: 860px) {
+    .about-lead__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

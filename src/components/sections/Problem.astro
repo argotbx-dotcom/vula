@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import { problem, type Lang } from '../../content/site';
+import muroStrategia from '../../assets/images/04-muro-strategia.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const p = problem[lang];
+---
+
+<section class="problem">
+  <div class="container problem__grid">
+    <div class="problem__text">
+      <p class="kicker reveal">{p.kicker}</p>
+      <ul class="problem__list">
+        {
+          p.points.map((point, i) => (
+            <li class="reveal" style={`transition-delay:${i * 80}ms`}>
+              <span class="problem__num mono">{String(i + 1).padStart(2, '0')}</span>
+              <span>{point}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="problem__media reveal">
+      <Image
+        src={muroStrategia}
+        alt={lang === 'sq'
+          ? 'Mur strategjie me foto dhe fije lidhëse, dritë e fortë anësore'
+          : lang === 'it'
+            ? 'Muro di strategia con foto e fili di collegamento, luce dura laterale'
+            : 'Strategy wall with photos and connecting threads, hard side light'}
+        width={900}
+        height={506}
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: center;
+  }
+
+  .problem__list {
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .problem__list li {
+    display: flex;
+    gap: 20px;
+    align-items: baseline;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+    font-size: 1.05rem;
+  }
+
+  .problem__num {
+    color: var(--timbro);
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+
+  .problem__media img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+  }
+
+  @media (max-width: 860px) {
+    .problem__grid {
+      grid-template-columns: 1fr;
+    }
+    .problem__media {
+      order: -1;
+    }
+  }
+</style>

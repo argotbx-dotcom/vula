@@ -1,0 +1,78 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PageIntro from '../sections/PageIntro.astro';
+import PhasesList from '../sections/PhasesList.astro';
+import CtaFinal from '../sections/CtaFinal.astro';
+import { nav, motto, type Lang } from '../../content/site';
+import brandBoard from '../../assets/images/01-brand-board.png';
+import mockup from '../../assets/images/02-mockup.png';
+import planimetrie from '../../assets/images/05-planimetrie-campioni.png';
+import manuale from '../../assets/images/08-manuale-brand.png';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const n = nav[lang];
+
+const alts = {
+  brandBoard: { sq: 'Tabelë identiteti me mostra ngjyrash', it: 'Tavola identità con campioni colore', en: 'Identity board with color swatches' },
+  mockup: { sq: 'Ekrane mockup për praninë dixhitale', it: 'Schermi mockup per la presenza digitale', en: 'Mockup screens for digital presence' },
+  planimetrie: { sq: 'Planimetri dhe mostra materialesh', it: 'Planimetrie e campioni materiali', en: 'Floor plans and material samples' },
+  manuale: { sq: 'Manual i markës mbyllur', it: 'Manuale di marca chiuso', en: 'Closed brand manual' },
+};
+---
+
+<Base lang={lang} page="services" title={n.services}>
+  <Header lang={lang} page="services" />
+  <main id="main">
+    <PageIntro lang={lang} kicker={motto[lang]} title={n.services} />
+
+    <section class="services-detail">
+      <div class="container">
+        <PhasesList lang={lang} detailed />
+      </div>
+    </section>
+
+    <section class="services-gallery">
+      <div class="container services-gallery__grid">
+        <figure class="reveal">
+          <Image src={brandBoard} alt={alts.brandBoard[lang]} width={700} height={525} loading="lazy" />
+        </figure>
+        <figure class="reveal">
+          <Image src={mockup} alt={alts.mockup[lang]} width={700} height={525} loading="lazy" />
+        </figure>
+        <figure class="reveal">
+          <Image src={planimetrie} alt={alts.planimetrie[lang]} width={700} height={525} loading="lazy" />
+        </figure>
+        <figure class="reveal">
+          <Image src={manuale} alt={alts.manuale[lang]} width={700} height={525} loading="lazy" />
+        </figure>
+      </div>
+    </section>
+
+    <CtaFinal lang={lang} />
+  </main>
+  <Footer lang={lang} page="services" />
+</Base>
+
+<style>
+  .services-gallery {
+    padding-top: 0;
+  }
+
+  .services-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .services-gallery__grid img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+  }
+</style>

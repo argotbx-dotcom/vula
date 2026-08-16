@@ -1,0 +1,73 @@
+---
+import { path, ui, type Lang } from '../../content/site';
+import { groupBrands, conceptProjects, clients } from '../../content/portfolio';
+import PortfolioCard from '../PortfolioCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+
+const preview = [...groupBrands, ...conceptProjects.slice(0, 2)];
+
+const title: Record<Lang, string> = {
+  sq: 'Puna',
+  it: 'I lavori',
+  en: 'The work',
+};
+
+const clientsNote: Record<Lang, string> = {
+  sq: 'Seksioni i klientëve po plotësohet.',
+  it: 'La sezione clienti si sta riempiendo.',
+  en: 'The clients section is filling up.',
+};
+---
+
+<section class="pf-preview">
+  <div class="container">
+    <div class="pf-preview__header reveal">
+      <h2>{title[lang]}</h2>
+      <a class="btn btn--ghost" href={path(lang, 'portfolio')}>{t.portfolioAll}</a>
+    </div>
+
+    <div class="pf-preview__grid">
+      {
+        preview.map((item, i) => (
+          <div class="reveal" style={`transition-delay:${i * 60}ms`}>
+            <PortfolioCard lang={lang} item={item} />
+          </div>
+        ))
+      }
+    </div>
+
+    {
+      clients.length === 0 && (
+        <p class="pf-preview__clients-note mono reveal">{clientsNote[lang]}</p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .pf-preview__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .pf-preview__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .pf-preview__clients-note {
+    margin-top: 32px;
+    color: var(--dim);
+    font-size: 0.72rem;
+  }
+</style>

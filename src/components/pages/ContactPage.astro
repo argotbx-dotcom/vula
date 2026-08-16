@@ -1,0 +1,139 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import PageIntro from '../sections/PageIntro.astro';
+import { nav, motto, location, ui, type Lang } from '../../content/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const n = nav[lang];
+const t = ui[lang];
+
+const formNames: Record<Lang, string> = { sq: 'kontakt-sq', it: 'contatto-it', en: 'contact-en' };
+const botLabel: Record<Lang, string> = {
+  sq: 'Mos e plotëso këtë fushë',
+  it: 'Non compilare questo campo',
+  en: "Don't fill this field out",
+};
+---
+
+<Base lang={lang} page="contact" title={n.contact}>
+  <Header lang={lang} page="contact" />
+  <main id="main">
+    <PageIntro lang={lang} kicker={motto[lang]} title={n.contact} />
+
+    <section class="contact">
+      <div class="container contact__grid">
+        <div class="contact__info reveal">
+          <p class="contact__location">{location[lang]}</p>
+          <!-- DA FORNIRE: indirizzo completo, telefono, email di VULA (SQ/IT/EN identici tranne la città) -->
+          <p class="contact__todo mono">[{t.todo}: indirizzo, telefono, email]</p>
+        </div>
+
+        <form
+          class="contact__form reveal"
+          name={formNames[lang]}
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+        >
+          <input type="hidden" name="form-name" value={formNames[lang]} />
+          <p class="visually-hidden">
+            <label>
+              {botLabel[lang]}
+              <input name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+
+          <label class="contact__field">
+            <span class="mono">{t.formName}</span>
+            <input type="text" name="name" required />
+          </label>
+
+          <label class="contact__field">
+            <span class="mono">{t.formEmail}</span>
+            <input type="email" name="email" required />
+          </label>
+
+          <label class="contact__field">
+            <span class="mono">{t.formMessage}</span>
+            <textarea name="message" rows="6" required></textarea>
+          </label>
+
+          <button type="submit" class="btn btn--primary">{t.formSubmit}</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <Footer lang={lang} page="contact" />
+</Base>
+
+<style>
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .contact__location {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  .contact__todo {
+    margin-top: 14px;
+    display: inline-block;
+    border: 1px dashed var(--timbro);
+    padding: 10px 14px;
+    color: var(--timbro);
+    font-size: 0.68rem;
+  }
+
+  .contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .contact__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contact__field span {
+    font-size: 0.68rem;
+    color: var(--dim);
+  }
+
+  .contact__field input,
+  .contact__field textarea {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    padding: 14px 16px;
+    border-radius: 2px;
+    resize: vertical;
+  }
+
+  .contact__field input:focus-visible,
+  .contact__field textarea:focus-visible {
+    outline: 2px solid var(--timbro);
+    outline-offset: 2px;
+  }
+
+  .contact__form button {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 760px) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

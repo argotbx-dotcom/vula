@@ -1,0 +1,213 @@
+---
+import { nav, path, ctaPrimary, type Lang, type PageKey } from '../content/site';
+import LangSwitch from './LangSwitch.astro';
+import VulaLockupOrizzontale from './brand/VulaLockupOrizzontale.astro';
+
+interface Props {
+  lang: Lang;
+  page: PageKey;
+}
+const { lang, page } = Astro.props;
+const n = nav[lang];
+
+const links: { key: PageKey; label: string }[] = [
+  { key: 'services', label: n.services },
+  { key: 'portfolio', label: n.portfolio },
+  { key: 'about', label: n.about },
+  { key: 'contact', label: n.contact },
+];
+---
+
+<header class="site-header">
+  <div class="container site-header__row">
+    <a href={path(lang, 'home')} class="site-header__brand" aria-label={n.home}>
+      <span class="site-header__logo">
+        <VulaLockupOrizzontale />
+      </span>
+    </a>
+
+    <nav class="site-header__nav" aria-label={n.home}>
+      {
+        links.map((l) => (
+          <a href={path(lang, l.key)} aria-current={page === l.key ? 'page' : undefined}>
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="site-header__actions">
+      <LangSwitch lang={lang} page={page} variant="header" />
+      <a class="btn btn--primary site-header__cta" href={path(lang, 'contact')}>{ctaPrimary[lang]}</a>
+      <details class="site-header__mobile">
+        <summary aria-label={n.home}>
+          <span class="site-header__burger" aria-hidden="true"></span>
+        </summary>
+        <div class="site-header__mobile-panel">
+          <nav aria-label={n.home}>
+            {
+              links.map((l) => (
+                <a href={path(lang, l.key)} aria-current={page === l.key ? 'page' : undefined}>
+                  {l.label}
+                </a>
+              ))
+            }
+          </nav>
+          <a class="btn btn--primary" href={path(lang, 'contact')}>{ctaPrimary[lang]}</a>
+          <LangSwitch lang={lang} page={page} variant="header" />
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(16, 16, 20, 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-header__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 16px;
+  }
+
+  .site-header__brand {
+    display: block;
+    color: var(--paper);
+    line-height: 0;
+  }
+
+  .site-header__logo {
+    display: block;
+    height: 26px;
+    width: auto;
+    aspect-ratio: 700 / 200;
+  }
+
+  .site-header__nav {
+    display: none;
+    gap: 26px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .site-header__nav a {
+    color: var(--dim);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 150ms var(--ease);
+  }
+
+  .site-header__nav a:hover,
+  .site-header__nav a[aria-current='page'] {
+    color: var(--paper);
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .site-header__cta {
+    display: none;
+  }
+
+  .site-header__mobile {
+    position: relative;
+  }
+
+  .site-header__mobile summary {
+    list-style: none;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+
+  .site-header__mobile summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .site-header__burger,
+  .site-header__burger::before,
+  .site-header__burger::after {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    background: var(--paper);
+    position: relative;
+  }
+
+  .site-header__burger::before,
+  .site-header__burger::after {
+    content: '';
+    position: absolute;
+  }
+
+  .site-header__burger::before {
+    top: -5px;
+  }
+
+  .site-header__burger::after {
+    top: 5px;
+  }
+
+  .site-header__mobile-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 220px;
+  }
+
+  .site-header__mobile-panel nav {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .site-header__mobile-panel nav a {
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  .site-header__mobile-panel nav a[aria-current='page'] {
+    color: var(--paper);
+  }
+
+  @media (min-width: 980px) {
+    .site-header__nav {
+      display: flex;
+    }
+    .site-header__cta {
+      display: inline-flex;
+    }
+    .site-header__mobile {
+      display: none;
+    }
+  }
+</style>
