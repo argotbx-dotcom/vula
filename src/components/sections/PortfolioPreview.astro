@@ -2,6 +2,9 @@
 import { path, ui, type Lang } from '../../content/site';
 import { groupBrands, conceptProjects, clients } from '../../content/portfolio';
 import PortfolioCard from '../PortfolioCard.astro';
+import eliteWinesImg from '../../assets/partners/elite-wines-bottles.webp';
+import zenonImg from '../../assets/partners/zenon-granola.png';
+import pastaImg from '../../assets/partners/la-pasta-de-casa.png';
 
 interface Props {
   lang: Lang;
@@ -10,6 +13,18 @@ const { lang } = Astro.props;
 const t = ui[lang];
 
 const preview = [...groupBrands, ...conceptProjects.slice(0, 2)];
+
+const mediaAlt: Record<Lang, Record<string, string>> = {
+  sq: { 'elite-wines': 'Shishe vere premium Elite Wines', zenon: 'Snack natyral Zen’on me granola', 'concept-1': 'Pjata pasta të freskëta, La Pasta de Casa' },
+  it: { 'elite-wines': 'Bottiglie di vino premium Elite Wines', zenon: 'Snack naturale Zen’on con granola', 'concept-1': 'Piatti di pasta fresca, La Pasta de Casa' },
+  en: { 'elite-wines': 'Premium Elite Wines wine bottles', zenon: 'Natural Zen’on snack with granola', 'concept-1': 'Fresh pasta dishes, La Pasta de Casa' },
+};
+
+const portfolioImages: Record<string, ImageMetadata> = {
+  'elite-wines': eliteWinesImg,
+  zenon: zenonImg,
+  'concept-1': pastaImg,
+};
 
 const title: Record<Lang, string> = {
   sq: 'Puna',
@@ -35,7 +50,7 @@ const clientsNote: Record<Lang, string> = {
       {
         preview.map((item, i) => (
           <div class="reveal" style={`transition-delay:${i * 60}ms`}>
-            <PortfolioCard lang={lang} item={item} />
+            <PortfolioCard lang={lang} item={item} image={portfolioImages[item.id]} imageAlt={mediaAlt[lang][item.id]} />
           </div>
         ))
       }

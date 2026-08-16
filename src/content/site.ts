@@ -43,6 +43,15 @@ export const motto: Record<Lang, string> = {
   en: 'From idea to opening',
 };
 
+// Definizione di VULA data letteralmente dal brief (§1 "Che cosa è VULA"),
+// tradotta fedelmente. Non è copy di marca scritto da zero: risponde alla
+// richiesta esplicita del brief che l'hero dica "cosa fa VULA".
+export const positioning: Record<Lang, string> = {
+  sq: 'Agjenci në Tiranë që çon një aktivitet nga ideja te hapja: verifikim i lokalit, koncept dhe identitet, prani dixhitale, koordinim i punimeve deri në dorëzimin e lokalit.',
+  it: "Agenzia a Tirana che porta un'attività dall'idea all'apertura: verifica della location, concept e identità, presenza digitale, coordinamento dei lavori fino alla consegna del locale.",
+  en: 'A Tirana-based agency that takes a business from idea to opening: location verification, concept and identity, digital presence, works coordination through to handover.',
+};
+
 export const ctaPrimary: Record<Lang, string> = {
   sq: 'Flasim për projektin tënd',
   it: 'Parliamo del tuo progetto',

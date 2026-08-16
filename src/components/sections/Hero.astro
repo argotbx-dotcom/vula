@@ -1,6 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
-import { motto, ctaPrimary, ctaSecondary, path, type Lang } from '../../content/site';
+import { motto, positioning, ctaPrimary, ctaSecondary, path, type Lang } from '../../content/site';
 import heroPoster from '../../assets/images/hero-poster.png';
 
 interface Props {
@@ -30,9 +30,7 @@ const poster = await getImage({ src: heroPoster, width: 1600, format: 'webp' });
 
   <div class="container hero__content">
     <h1 class="reveal">{motto[lang]}</h1>
-    <!-- DA FORNIRE (opzionale): una riga sotto il motto che dica in concreto
-         cosa fa VULA — non "agenzia creativa", il percorso idea→apertura —
-         SQ/IT/EN, una frase. Il motto da solo regge già come titolo hero. -->
+    <p class="hero__sub reveal">{positioning[lang]}</p>
     <div class="hero__actions reveal">
       <a class="btn btn--primary" href={path(lang, 'contact')}>{ctaPrimary[lang]}</a>
       <a class="btn btn--ghost" href={path(lang, 'services')}>{ctaSecondary[lang]}</a>
@@ -98,6 +96,13 @@ const poster = await getImage({ src: heroPoster, width: 1600, format: 'webp' });
 
   .hero__content h1 {
     max-width: 14ch;
+  }
+
+  .hero__sub {
+    margin-top: 18px;
+    max-width: 46ch;
+    color: var(--dim);
+    font-size: 1.05rem;
   }
 
   .hero__actions {

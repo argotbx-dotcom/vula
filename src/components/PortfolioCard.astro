@@ -3,6 +3,7 @@
 // card viste in analisi-siti-riferimento.md: immagine intera, nome ed
 // etichetta sovrapposti). Regola di onestà vincolante (brief §6/7):
 // l'etichetta resta sempre visibile sulla card, mai nascosta nel dettaglio.
+import { Image } from 'astro:assets';
 import { ui, type Lang } from '../content/site';
 import type { PortfolioItem } from '../content/portfolio';
 import PlaceholderImage from './PlaceholderImage.astro';
@@ -10,8 +11,10 @@ import PlaceholderImage from './PlaceholderImage.astro';
 interface Props {
   lang: Lang;
   item: PortfolioItem;
+  image?: ImageMetadata;
+  imageAlt?: string;
 }
-const { lang, item } = Astro.props;
+const { lang, item, image, imageAlt } = Astro.props;
 const t = ui[lang];
 
 const labelText = item.category === 'group' ? t.labelGroupBrand : item.category === 'concept' ? t.labelConcept : t.labelClient;
@@ -20,7 +23,15 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
 <article class="pf-card">
   <div class="pf-card__frame">
     <div class="pf-card__media">
-      <PlaceholderImage ratio="3 / 4" class="pf-card__ph" />
+      {
+        Astro.slots.has('media') ? (
+          <slot name="media" />
+        ) : image ? (
+          <Image src={image} alt={imageAlt ?? ''} width={720} height={960} />
+        ) : (
+          <PlaceholderImage ratio="3 / 4" class="pf-card__ph" />
+        )
+      }
     </div>
     <span class={`pf-card__label label ${item.category === 'concept' ? 'label--concept' : ''}`}>{labelText}</span>
 
@@ -58,6 +69,7 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
 
   .pf-card__media,
   .pf-card__media :global(.img-placeholder),
+  .pf-card__media :global(.pf-card__slot),
   .pf-card__media :global(img) {
     position: absolute;
     inset: 0;
@@ -75,6 +87,7 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
   }
 
   .pf-card:hover .pf-card__media :global(.img-placeholder),
+  .pf-card:hover .pf-card__media :global(.pf-card__slot),
   .pf-card:hover .pf-card__media :global(img) {
     transform: scale(1.045);
   }
@@ -135,6 +148,7 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
 
   @media (prefers-reduced-motion: reduce) {
     .pf-card:hover .pf-card__media :global(.img-placeholder),
+    .pf-card:hover .pf-card__media :global(.pf-card__slot),
     .pf-card:hover .pf-card__media :global(img) {
       transform: none;
     }
