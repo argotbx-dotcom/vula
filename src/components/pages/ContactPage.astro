@@ -30,7 +30,6 @@ const botLabel: Record<Lang, string> = {
         <div class="contact__info reveal">
           <p class="contact__location">{location[lang]}</p>
           <!-- DA FORNIRE: indirizzo completo, telefono, email di VULA (SQ/IT/EN identici tranne la città) -->
-          <p class="contact__todo mono">[{t.todo}: indirizzo, telefono, email]</p>
         </div>
 
         <form
@@ -83,14 +82,6 @@ const botLabel: Record<Lang, string> = {
     font-weight: 500;
   }
 
-  .contact__todo {
-    margin-top: 14px;
-    display: inline-block;
-    border: 1px dashed var(--timbro);
-    padding: 10px 14px;
-    color: var(--timbro);
-    font-size: 0.68rem;
-  }
 
   .contact__form {
     display: flex;

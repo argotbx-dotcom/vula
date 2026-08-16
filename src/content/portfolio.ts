@@ -63,27 +63,32 @@ export const groupBrands: PortfolioItem[] = [
   },
 ];
 
-// B — Concept (studiati, mai aperti). ~7 progetti.
-// Nomi confermati dal committente per 5 di questi; descrizione, anno e
-// immagine restano [DA FORNIRE] — il brief vieta di scrivere la riga
-// descrittiva al posto del committente.
-const conceptNames: (Record<Lang, string> | null)[] = [
-  { sq: 'La Pasta de Casa', it: 'La Pasta de Casa', en: 'La Pasta de Casa' },
-  { sq: "Rubik's Cube Burger", it: "Rubik's Cube Burger", en: "Rubik's Cube Burger" },
-  { sq: 'Polariko', it: 'Polariko', en: 'Polariko' },
-  { sq: 'Gyoza Lab', it: 'Gyoza Lab', en: 'Gyoza Lab' },
-  { sq: 'Laza', it: 'Laza', en: 'Laza' },
-  null,
-  null,
+// B — Concept (studiati, mai aperti). Nomi confermati dal committente.
+// Il brief ne stima ~7 in totale; qui si pubblicano solo le schede con un
+// nome reale confermato — niente schede vuote in attesa di dati.
+const conceptEntries: { name: Record<Lang, string>; description: Record<Lang, string> | null }[] = [
+  { name: { sq: 'La Pasta de Casa', it: 'La Pasta de Casa', en: 'La Pasta de Casa' }, description: null },
+  { name: { sq: "Rubik's Cube Burger", it: "Rubik's Cube Burger", en: "Rubik's Cube Burger" }, description: null },
+  { name: { sq: 'Polariko', it: 'Polariko', en: 'Polariko' }, description: null },
+  { name: { sq: 'Gyoza Lab', it: 'Gyoza Lab', en: 'Gyoza Lab' }, description: null },
+  { name: { sq: 'Laza', it: 'Laza', en: 'Laza' }, description: null },
+  {
+    name: { sq: 'Ndërto.al', it: 'Ndërto.al', en: 'Ndërto.al' },
+    description: {
+      sq: 'Platformë e-commerce për materiale ndërtimi dhe njoftime profesionistësh — gjej mjeshtrin e duhur për punë si lyerja e shtëpisë apo vendosja e pllakave.',
+      it: 'Piattaforma e-commerce per materiali edili e annunci di professionisti — trova il maestro giusto per lavori come tinteggiare casa o posare piastrelle.',
+      en: 'E-commerce platform for building materials and professional listings — find the right tradesperson for jobs like painting a house or laying tiles.',
+    },
+  },
 ];
 
-export const conceptProjects: PortfolioItem[] = conceptNames.map((name, i) => ({
+export const conceptProjects: PortfolioItem[] = conceptEntries.map((entry, i) => ({
   id: `concept-${i + 1}`,
   category: 'concept' as const,
-  name,
+  name: entry.name,
   year: null,
-  description: null,
-  descriptionTbd: true,
+  description: entry.description,
+  descriptionTbd: entry.description === null,
   imageTbd: true,
 }));
 

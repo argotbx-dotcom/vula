@@ -2,6 +2,7 @@
 import { path, ui, type Lang } from '../../content/site';
 import { groupBrands, conceptProjects, clients } from '../../content/portfolio';
 import PortfolioCard from '../PortfolioCard.astro';
+import GyozaLabTile from '../brand-partners/GyozaLabTile.astro';
 import eliteWinesImg from '../../assets/partners/elite-wines-bottles.webp';
 import zenonImg from '../../assets/partners/zenon-granola.png';
 import pastaImg from '../../assets/partners/la-pasta-de-casa.png';
@@ -12,7 +13,11 @@ interface Props {
 const { lang } = Astro.props;
 const t = ui[lang];
 
-const preview = [...groupBrands, ...conceptProjects.slice(0, 2)];
+// Vetrina in home: solo schede con visual reale, per il massimo impatto —
+// il portfolio completo (con tutte le schede, comprese quelle in attesa di
+// immagine) resta su /puna.
+const byId = (id: string) => [...groupBrands, ...conceptProjects].find((p) => p.id === id)!;
+const preview = ['elite-wines', 'zenon', 'concept-1', 'concept-4'].map(byId);
 
 const mediaAlt: Record<Lang, Record<string, string>> = {
   sq: { 'elite-wines': 'Shishe vere premium Elite Wines', zenon: 'Snack natyral Zen’on me granola', 'concept-1': 'Pjata pasta të freskëta, La Pasta de Casa' },
@@ -50,7 +55,13 @@ const clientsNote: Record<Lang, string> = {
       {
         preview.map((item, i) => (
           <div class="reveal" style={`transition-delay:${i * 60}ms`}>
-            <PortfolioCard lang={lang} item={item} image={portfolioImages[item.id]} imageAlt={mediaAlt[lang][item.id]} />
+            {item.id === 'concept-4' ? (
+              <PortfolioCard lang={lang} item={item} large>
+                <GyozaLabTile slot="media" />
+              </PortfolioCard>
+            ) : (
+              <PortfolioCard lang={lang} item={item} image={portfolioImages[item.id]} imageAlt={mediaAlt[lang][item.id]} large />
+            )}
           </div>
         ))
       }
@@ -76,8 +87,8 @@ const clientsNote: Record<Lang, string> = {
 
   .pf-preview__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
   }
 
   .pf-preview__clients-note {

@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { aboutThesis, path, ui, type Lang } from '../../content/site';
+import { aboutThesis, path, type Lang } from '../../content/site';
 import studioNotte from '../../assets/images/03-studio-notte.png';
 
 interface Props {
@@ -8,7 +8,6 @@ interface Props {
 }
 const { lang } = Astro.props;
 const a = aboutThesis[lang];
-const t = ui[lang];
 
 const stats: { to: number; labelKey: Record<Lang, string> }[] = [
   { to: 3, labelKey: { sq: 'markat tona', it: 'nostri marchi', en: 'our own brands' } },
@@ -40,11 +39,7 @@ const aboutMore: Record<Lang, string> = {
     <div class="about__text">
       <p class="kicker reveal">{a.kicker}</p>
       <h2 class="reveal">{a.line}</h2>
-
-      <p class="about__note mono todo-inline reveal">
-        <!-- DA FORNIRE: paragrafo esteso "chi siamo" per la pagina /kush-jemi, SQ/IT/EN -->
-        [{t.todo} — testo esteso]
-      </p>
+      <!-- DA FORNIRE: paragrafo esteso "chi siamo" per la pagina /kush-jemi, SQ/IT/EN -->
 
       <div class="about__stats reveal">
         {
@@ -79,15 +74,6 @@ const aboutMore: Record<Lang, string> = {
   .about__text h2 {
     max-width: 14ch;
     margin-top: 8px;
-  }
-
-  .about__note {
-    margin-top: 20px;
-    display: inline-block;
-    border: 1px dashed var(--timbro);
-    padding: 10px 14px;
-    color: var(--timbro);
-    font-size: 0.68rem;
   }
 
   .about__stats {

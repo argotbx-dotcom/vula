@@ -13,23 +13,25 @@ interface Props {
   item: PortfolioItem;
   image?: ImageMetadata;
   imageAlt?: string;
+  large?: boolean;
 }
-const { lang, item, image, imageAlt } = Astro.props;
+const { lang, item, image, imageAlt, large = false } = Astro.props;
 const t = ui[lang];
 
 const labelText = item.category === 'group' ? t.labelGroupBrand : item.category === 'concept' ? t.labelConcept : t.labelClient;
+const ratio = large ? '4 / 3' : '3 / 4';
 ---
 
-<article class="pf-card">
+<article class={`pf-card ${large ? 'pf-card--lg' : ''}`}>
   <div class="pf-card__frame">
     <div class="pf-card__media">
       {
         Astro.slots.has('media') ? (
           <slot name="media" />
         ) : image ? (
-          <Image src={image} alt={imageAlt ?? ''} width={720} height={960} />
+          <Image src={image} alt={imageAlt ?? ''} width={large ? 960 : 720} height={large ? 720 : 960} />
         ) : (
-          <PlaceholderImage ratio="3 / 4" class="pf-card__ph" />
+          <PlaceholderImage ratio={ratio} class="pf-card__ph" />
         )
       }
     </div>
@@ -38,18 +40,10 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
     <div class="pf-card__overlay" aria-hidden="true"></div>
 
     <div class="pf-card__text">
-      <h3 class="pf-card__name">
-        {item.name ? item.name[lang] : <span class="mono todo-inline">[{t.todo}]</span>}
-      </h3>
+      <h3 class="pf-card__name">{item.name?.[lang]}</h3>
       {item.year && <p class="pf-card__year mono">{item.year}</p>}
       {item.description && <p class="pf-card__desc">{item.description[lang]}</p>}
-      {
-        item.descriptionTbd && (
-          <p class="pf-card__desc mono todo-inline">
-            <!-- DA FORNIRE: una riga di descrizione per questa scheda, SQ/IT/EN -->[{t.todo}]
-          </p>
-        )
-      }
+      <!-- item.description assente: descrizione DA FORNIRE, nessun testo mostrato -->
     </div>
   </div>
 </article>
@@ -140,10 +134,24 @@ const labelText = item.category === 'group' ? t.labelGroupBrand : item.category 
     line-height: 1.4;
   }
 
-  .todo-inline {
-    color: var(--timbro);
-    font-size: 0.68rem;
-    opacity: 0.9;
+  /* Variante grande — teaser in home, ispirata alle card a tutto formato
+     viste in analisi-siti-riferimento.md: nome molto più dominante. */
+  .pf-card--lg .pf-card__text {
+    padding: 32px;
+  }
+
+  .pf-card--lg .pf-card__name {
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  }
+
+  .pf-card--lg .pf-card__desc {
+    font-size: 0.92rem;
+    max-width: 46ch;
+  }
+
+  .pf-card--lg .pf-card__label {
+    top: 20px;
+    left: 20px;
   }
 
   @media (prefers-reduced-motion: reduce) {
