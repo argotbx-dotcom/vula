@@ -1,0 +1,12 @@
+---
+import ConceptPage from '../../../components/pages/ConceptPage.astro';
+import { concepts } from '../../../content/vault';
+
+export function getStaticPaths() {
+  return concepts.map((concept) => ({ params: { slug: concept.slug }, props: { concept } }));
+}
+
+const { concept } = Astro.props;
+---
+
+<ConceptPage lang="en" concept={concept} />

@@ -1,0 +1,149 @@
+---
+// ATTO II — il metodo (cap. 2 e 3).
+// Sei pannelli: su desktop scorrono in orizzontale con pin, su mobile
+// restano pannelli verticali — nessuno scroll-jacking sul telefono.
+import { methodTitle, phases, sectionIds, type Lang } from '../../content/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const m = methodTitle[lang];
+const list = phases[lang];
+---
+
+<section class="mt" id={sectionIds.method} data-method>
+  <div class="mt__viewport">
+    <div class="mt__track" data-method-track>
+      <div class="mt__intro">
+        <p class="kicker">{m.kicker}</p>
+        <h2 class="display display--md mt__title">{m.title}</h2>
+        <p class="mt__count mono">01 — 06</p>
+      </div>
+
+      {
+        list.map((ph) => (
+          <article class="mt__panel">
+            <span class="mt__num mono">{ph.num}</span>
+            <h3 class="mt__name display display--md">{ph.name}</h3>
+            <p class="mt__line">{ph.line}</p>
+            <div class="mt__out">
+              <span class="mt__out-label mono">Output</span>
+              <p class="mt__out-text">{ph.output}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .mt {
+    padding-block: clamp(80px, 10vw, 140px);
+    overflow: hidden;
+  }
+
+  .mt__viewport {
+    width: 100%;
+  }
+
+  .mt__track {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-inline: var(--gutter);
+    will-change: transform;
+  }
+
+  .mt__intro {
+    padding-block: 1rem 2rem;
+  }
+
+  .mt__title {
+    max-width: 14ch;
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .mt__count {
+    margin-top: 1.25rem;
+    font-size: 0.66rem;
+    color: var(--dim);
+  }
+
+  .mt__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: clamp(1.6rem, 4vw, 2.5rem);
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+
+  .mt__num {
+    font-size: 0.72rem;
+    color: var(--accent);
+  }
+
+  .mt__name {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  .mt__line {
+    color: var(--dim);
+    max-width: 40ch;
+  }
+
+  .mt__out {
+    margin-top: auto;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .mt__out-label {
+    display: block;
+    font-size: 0.58rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .mt__out-text {
+    font-size: 0.94rem;
+    max-width: 40ch;
+  }
+
+  @media (min-width: 900px) {
+    .mt {
+      padding-block: 0;
+    }
+
+    .mt__viewport {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+    }
+
+    .mt__track {
+      flex-direction: row;
+      align-items: stretch;
+      gap: clamp(20px, 2vw, 34px);
+      padding-block: 6vh;
+    }
+
+    .mt__intro {
+      flex: 0 0 clamp(320px, 26vw, 420px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 clamp(20px, 3vw, 48px) 0 0;
+    }
+
+    .mt__panel {
+      flex: 0 0 clamp(340px, 27vw, 440px);
+      min-height: 62vh;
+    }
+  }
+</style>

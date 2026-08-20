@@ -1,0 +1,117 @@
+---
+// I numeri dell'Albania (cap. 3). Contatori che si caricano allo scroll.
+// Ogni cifra porta la sua fonte: un'agenzia che vende metodo non può
+// permettersi un numero gonfiato (cap. 0.1).
+import { numbersTitle, stats, sectionIds, type Lang } from '../../content/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const n = numbersTitle[lang];
+---
+
+<section class="nb" id={sectionIds.numbers}>
+  <div class="blueprint" aria-hidden="true"></div>
+
+  <div class="container nb__inner">
+    <header class="nb__head">
+      <p class="kicker" data-reveal>{n.kicker}</p>
+      <h2 class="display display--lg nb__title" data-reveal data-reveal-delay="0.05">{n.title}</h2>
+    </header>
+
+    <dl class="nb__grid">
+      {
+        stats.map((s, i) => (
+          <div class={`nb__item ${s.accent ? 'nb__item--accent' : ''}`} data-reveal data-reveal-delay={i * 0.07}>
+            <dt class="nb__value">
+              <span
+                data-count-to={s.value}
+                data-count-decimals={s.decimals ?? 0}
+                data-count-suffix={s.suffix ?? ''}
+              >
+                {s.display}
+                {s.suffix ?? ''}
+              </span>
+            </dt>
+            <dd class="nb__label">{s.label[lang]}</dd>
+            {s.source && <p class="nb__source mono">{s.source}</p>}
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .nb {
+    position: relative;
+    padding-block: clamp(90px, 12vw, 170px);
+    background: var(--ink-2);
+    border-block: 1px solid var(--line);
+  }
+
+  .nb__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nb__head {
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .nb__title {
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .nb__grid {
+    display: grid;
+    gap: clamp(28px, 3vw, 44px);
+    margin: 0;
+  }
+
+  .nb__item {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .nb__value {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5vw, 4.25rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .nb__item--accent .nb__value {
+    color: var(--accent);
+  }
+
+  .nb__label {
+    margin: 0.9rem 0 0;
+    font-size: 0.94rem;
+    color: var(--dim);
+    max-width: 26ch;
+  }
+
+  .nb__source {
+    margin-top: 0.9rem;
+    font-size: 0.52rem;
+    color: var(--dim);
+    opacity: 0.7;
+  }
+
+  @media (min-width: 700px) {
+    .nb__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .nb__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

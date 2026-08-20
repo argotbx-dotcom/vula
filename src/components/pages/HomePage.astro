@@ -1,56 +1,41 @@
 ---
+// One-page narrativa in tre atti (cap. 2 e 3 del piano):
+// I. il caos — hero + manifesto + il problema
+// II. il metodo — le sei fasi
+// III. la prova — il vault, i numeri, il modello, la CTA
 import Base from '../../layouts/Base.astro';
 import Header from '../Header.astro';
 import Footer from '../Footer.astro';
 import Hero from '../sections/Hero.astro';
+import Manifesto from '../sections/Manifesto.astro';
 import Problem from '../sections/Problem.astro';
-import PhasesList from '../sections/PhasesList.astro';
-import PortfolioPreview from '../sections/PortfolioPreview.astro';
-import About from '../sections/About.astro';
+import Method from '../sections/Method.astro';
+import Vault from '../sections/Vault.astro';
+import Numbers from '../sections/Numbers.astro';
+import Model from '../sections/Model.astro';
 import CtaFinal from '../sections/CtaFinal.astro';
-import { motto, ctaSecondary, path, type Lang } from '../../content/site';
+import { hero, manifesto, siteName, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 
-const phasesTitle: Record<Lang, string> = {
-  sq: 'Fazat',
-  it: 'Le fasi',
-  en: 'The phases',
-};
+const title = `${siteName} — ${hero[lang].line1} ${hero[lang].line2}`;
+const description = manifesto[lang].join(' ');
 ---
 
-<Base lang={lang} page="home" title={motto[lang]} descriptionTbd={true}>
+<Base lang={lang} page="home" title={title} description={description}>
   <Header lang={lang} page="home" />
   <main id="main">
     <Hero lang={lang} />
+    <Manifesto lang={lang} />
     <Problem lang={lang} />
-    <section class="home-phases">
-      <div class="container home-phases__head reveal">
-        <h2>{phasesTitle[lang]}</h2>
-      </div>
-      <div class="container">
-        <PhasesList lang={lang} />
-      </div>
-      <div class="container home-phases__foot reveal">
-        <a class="btn btn--ghost" href={path(lang, 'services')}>{ctaSecondary[lang]}</a>
-      </div>
-    </section>
-    <PortfolioPreview lang={lang} />
-    <About lang={lang} />
+    <Method lang={lang} />
+    <Vault lang={lang} />
+    <Numbers lang={lang} />
+    <Model lang={lang} />
     <CtaFinal lang={lang} />
   </main>
   <Footer lang={lang} page="home" />
 </Base>
-
-<style>
-  .home-phases__head {
-    margin-bottom: 32px;
-  }
-
-  .home-phases__foot {
-    margin-top: 32px;
-  }
-</style>

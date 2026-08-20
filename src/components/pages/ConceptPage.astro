@@ -1,0 +1,302 @@
+---
+// Pagina di un concept del vault.
+// Cap. 3: hero del concept, poi il "mondo" (logo, packaging, locale, insegna)
+// con parallax e reveal. La pagina "indossa" il colore del marchio.
+// Chiude con "Ky koncept është i disponueshëm në licencë" + CTA.
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import CtaFinal from '../sections/CtaFinal.astro';
+import {
+  LANGS,
+  conceptPath,
+  vault,
+  licenceLine,
+  ui,
+  siteName,
+  type Lang,
+} from '../../content/site';
+import { concepts, type Concept } from '../../content/vault';
+
+interface Props {
+  lang: Lang;
+  concept: Concept;
+}
+const { lang, concept } = Astro.props;
+const t = ui[lang];
+
+const vaultImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/vault/**/*.png', { eager: true });
+const posterImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/posters/*.jpg', { eager: true });
+
+const pics = concept.images
+  .map((f) => vaultImages[`../../assets/vault/${concept.slug}/${f}`]?.default)
+  .filter(Boolean) as ImageMetadata[];
+
+const [coverImg, ...gallery] = pics;
+
+const videoName = concept.video?.split('/').pop()?.replace('.mp4', '');
+const posterMeta = videoName ? posterImages[`../../assets/posters/${videoName}.jpg`]?.default : undefined;
+const posterUrl = posterMeta ? (await getImage({ src: posterMeta, width: 1600, format: 'webp' })).src : undefined;
+
+const alternates = Object.fromEntries(LANGS.map((l) => [l, conceptPath(l, concept.slug)])) as Record<Lang, string>;
+
+const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
+---
+
+<Base
+  lang={lang}
+  title={`${concept.name} — ${vault[lang].label} · ${siteName}`}
+  description={concept.tagline[lang]}
+  canonical={conceptPath(lang, concept.slug)}
+  alternates={alternates}
+  tint={concept.tint}
+  onTint={concept.onTint}
+>
+  <Header lang={lang} alternates={alternates} />
+
+  <main id="main">
+    <!-- hero del concept -->
+    <section class="ch">
+      <div class="ch__media">
+        {
+          videoName && posterUrl ? (
+            <video class="ch__visual" data-lazy poster={posterUrl} muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
+              <source src={`/videos/${videoName}.webm`} type="video/webm" />
+              <source src={`/videos/${videoName}.mp4`} type="video/mp4" />
+            </video>
+          ) : (
+            coverImg && <Image class="ch__visual" src={coverImg} alt="" width={1800} height={1200} loading="eager" />
+          )
+        }
+        <span class="ch__veil" aria-hidden="true"></span>
+      </div>
+
+      <div class="container ch__inner">
+        <a class="ch__back mono" href={`/${lang}/#vault`}>← {t.backToConcepts}</a>
+
+        <span class="ch__badge mono">{vault[lang].label}</span>
+        <h1 class="display display--lg ch__name">{concept.name}</h1>
+        <p class="ch__tag lede">{concept.tagline[lang]}</p>
+        <p class="ch__sector mono">{concept.sector[lang]}</p>
+      </div>
+    </section>
+
+    <!-- il mondo del concept -->
+    {
+      gallery.length > 0 && (
+        <section class="cw">
+          <div class="container cw__grid">
+            {gallery.map((img, i) => (
+              <figure class={`cw__fig ${i % 3 === 0 ? 'cw__fig--wide' : ''}`} data-reveal data-reveal-delay={(i % 3) * 0.07}>
+                <Image src={img} alt={`${concept.name} — ${concept.sector[lang]}`} width={1200} height={900} loading="lazy" />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- licenza -->
+    <section class="cl">
+      <div class="container cl__inner">
+        <p class="display display--md cl__line" data-reveal>{licenceLine[lang]}</p>
+      </div>
+    </section>
+
+    <!-- altri concept -->
+    <section class="co">
+      <div class="container">
+        <p class="kicker" data-reveal>{t.allConcepts}</p>
+        <ul class="co__list">
+          {
+            others.map((c, i) => (
+              <li data-reveal data-reveal-delay={i * 0.05}>
+                <a class="co__link" href={conceptPath(lang, c.slug)} style={`--tint:${c.tint}`}>
+                  <span class="co__dot" aria-hidden="true" />
+                  <span class="co__name">{c.name}</span>
+                  <span class="co__sector mono">{c.sector[lang]}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <CtaFinal lang={lang} />
+  </main>
+
+  <Footer lang={lang} alternates={alternates} />
+</Base>
+
+<style>
+  /* hero concept */
+  .ch {
+    position: relative;
+    min-height: 92svh;
+    display: flex;
+    align-items: flex-end;
+    padding-block: calc(var(--header-h) + 40px) clamp(60px, 8vw, 110px);
+    overflow: hidden;
+  }
+
+  .ch__media {
+    position: absolute;
+    inset: 0;
+    background: var(--ink-3);
+  }
+
+  .ch__media :global(.ch__visual) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ch__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10, 10, 11, 0.7) 0%, rgba(10, 10, 11, 0.25) 40%, rgba(10, 10, 11, 0.95) 100%);
+  }
+
+  .ch__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .ch__back {
+    display: block;
+    width: fit-content;
+    margin-bottom: 2.25rem;
+    font-size: 0.62rem;
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  .ch__back:hover {
+    color: var(--paper);
+  }
+
+  .ch__badge {
+    display: block;
+    width: fit-content;
+    padding: 0.45rem 0.8rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.56rem;
+    color: var(--on-tint);
+    background: var(--tint);
+    border-radius: 999px;
+  }
+
+  .ch__name {
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .ch__tag {
+    margin-top: 1.1rem;
+    color: var(--paper);
+  }
+
+  .ch__sector {
+    margin-top: 1.5rem;
+    font-size: 0.6rem;
+    color: var(--tint);
+  }
+
+  /* il mondo */
+  .cw {
+    padding-block: clamp(60px, 8vw, 120px);
+  }
+
+  .cw__grid {
+    display: grid;
+    gap: clamp(20px, 2.5vw, 40px);
+  }
+
+  .cw__fig {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+  }
+
+  .cw__fig :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* licenza */
+  .cl {
+    padding-block: clamp(60px, 8vw, 110px);
+    border-block: 1px solid var(--line);
+    background: var(--ink-2);
+  }
+
+  .cl__line {
+    max-width: 20ch;
+    text-transform: none;
+    letter-spacing: -0.015em;
+    color: var(--tint);
+  }
+
+  /* altri concept */
+  .co {
+    padding-block: clamp(70px, 9vw, 130px);
+  }
+
+  .co__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .co__link {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-block: 1.4rem;
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--paper);
+    transition: padding-left 0.3s var(--ease);
+  }
+
+  .co__link:hover {
+    padding-left: 0.9rem;
+  }
+
+  .co__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: var(--tint);
+    flex: none;
+  }
+
+  .co__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.15rem, 2.4vw, 1.9rem);
+    text-transform: uppercase;
+  }
+
+  .co__sector {
+    margin-left: auto;
+    font-size: 0.56rem;
+    color: var(--dim);
+    text-align: right;
+  }
+
+  @media (min-width: 760px) {
+    .cw__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .cw__fig--wide {
+      grid-column: 1 / -1;
+      aspect-ratio: 21 / 9;
+    }
+  }
+</style>

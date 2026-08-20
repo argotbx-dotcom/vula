@@ -1,31 +1,62 @@
 # VULA — regole per tutte le sessioni
 
-- Lavora sempre sul branch di produzione collegato a Netlify. Non creare branch nuovi, non aprire Pull Request, non proporre merge.
-- Dopo ogni modifica: `astro check` + `astro build`. Se puliti, committa e pusha direttamente senza chiedere conferma. Se il build fallisce, fermati.
-- Sito trilingue SQ (default) / IT / EN: ogni modifica ai testi va applicata a tutte e tre, stessa struttura.
-- Non inventare contenuti al posto dei `[DA FORNIRE]`: lasciali come commenti HTML visibili nel codice e segnalali nel riepilogo.
-- Non cercare foto reali online e non generare immagini che finga siano clienti, locali o persone reali. Le 8 immagini + `hero.mp4` in `public/images/` sono state generate una tantum con Higgsfield (autorizzazione esplicita del committente, budget 50 crediti) come materiale atmosferico/di marca astratto — non rigenerarle senza che venga richiesto di nuovo, e non aggiungerne altre allo stesso modo senza autorizzazione esplicita.
-- Nessun `{{...}}` o segnaposto tecnico deve arrivare in produzione.
+Il sito è la koncept agency: non la descrive, la dimostra. Chi arriva deve
+pensare «se hanno fatto questo per sé, immagina cosa fanno per me».
+
+Fonte di verità: `docs/piano-sito.md` e `docs/concept-strategico.md`.
+Questi documenti **sostituiscono** il brief precedente (quello con le quattro
+fasi, l'assenza di librerie di animazione e i blocchi `[DA FORNIRE]` a schermo).
+
+## Vincoli di lavoro
+
+- Branch di produzione collegato a Netlify. Niente branch nuovi, niente PR.
+- Dopo ogni modifica: `astro check` + `astro build`. Se puliti, committa e
+  pusha senza chiedere. Se il build fallisce, fermati.
+- Trilingue SQ (default) / IT / EN: ogni modifica ai testi va su tutte e tre.
+- **Niente segnaposto a schermo.** Se un contenuto manca, la sezione non si
+  pubblica o non mostra nulla: mai `[DA FORNIRE]` visibile all'utente.
+
+## Le tre regole di onestà (non negoziabili)
+
+1. I concept si presentano come concept. Ogni scheda del vault porta
+   l'etichetta `Koncept ©`: sono marchi nostri, disponibili in licenza, non
+   clienti. Senza etichetta la scheda non si pubblica.
+2. Zero testimonianze inventate, zero team inventato, zero volti generati
+   spacciati per persone reali.
+3. I numeri citati sono quelli veri, con la fonte accanto (vedi
+   `src/content/site.ts`, `stats`). Mai un numero gonfiato.
+
+## Movimento
+
+Stack: GSAP 3 + ScrollTrigger + Lenis (`src/lib/motion.ts`). Regole:
+
+- una sola firma di easing in tutto il sito (`power4.out` / `--ease`)
+- un solo "wow" per schermata
+- si animano solo `transform` e `opacity`
+- `prefers-reduced-motion` disattiva tutto e lascia il contenuto visibile
+- il contenuto resta leggibile con JavaScript disattivato
+- niente scroll-jacking su mobile: la sezione metodo diventa verticale
+
+Budget: LCP < 2,5 s su 4G, hero ≤ 6 MB, ogni card ≤ 3 MB, Lighthouse mobile
+≥ 85 / ≥ 95. Se un'animazione costa più di 5 punti Lighthouse, si semplifica
+l'animazione, non il budget.
+
+## Media
+
+I video in `public/videos/` sono cinemagraph generati con Higgsfield a partire
+dalle immagini di marca esistenti, più HERO-01. Sono stati prodotti una tantum
+con autorizzazione esplicita e budget concordato: **non rigenerarli e non
+aggiungerne altri senza autorizzazione esplicita.**
+
+Dopo aver aggiunto un video: `node scripts/media.mjs` estrae i poster e
+produce mp4 + webm dentro il budget.
 
 ## Development
-
-When starting the dev server, use background mode:
 
 ```
 astro dev --background
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+Gestione: `astro dev stop`, `astro dev status`, `astro dev logs`.
 
-## Documentation
-
-Full documentation: https://docs.astro.build
-
-Consult these guides before working on related tasks:
-
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+Documentazione Astro: https://docs.astro.build

@@ -1,0 +1,95 @@
+---
+// Come lavoriamo (cap. 3): tre blocchi sobri.
+// "Qui niente fuochi d'artificio: è la sezione della fiducia."
+import { modelTitle, modelBlocks, sectionIds, type Lang } from '../../content/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const m = modelTitle[lang];
+const blocks = modelBlocks[lang];
+---
+
+<section class="md" id={sectionIds.model}>
+  <div class="container">
+    <header class="md__head">
+      <div>
+        <p class="kicker" data-reveal>{m.kicker}</p>
+        <h2 class="display display--md md__title" data-reveal data-reveal-delay="0.05">{m.title}</h2>
+      </div>
+      <p class="lede" data-reveal data-reveal-delay="0.1">{m.line}</p>
+    </header>
+
+    <ol class="md__grid">
+      {
+        blocks.map((b, i) => (
+          <li class="md__item" data-reveal data-reveal-delay={i * 0.08}>
+            <span class="md__num mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="md__name">{b.title}</h3>
+            <p class="md__line">{b.line}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .md {
+    padding-block: clamp(90px, 12vw, 170px);
+  }
+
+  .md__head {
+    display: grid;
+    gap: 1.75rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .md__title {
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .md__grid {
+    display: grid;
+    gap: clamp(28px, 3vw, 48px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: none;
+  }
+
+  .md__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .md__num {
+    font-size: 0.62rem;
+    color: var(--accent);
+  }
+
+  .md__name {
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    letter-spacing: 0;
+  }
+
+  .md__line {
+    color: var(--dim);
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 760px) {
+    .md__head {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+    }
+    .md__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

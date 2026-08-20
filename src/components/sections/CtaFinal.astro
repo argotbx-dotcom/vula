@@ -1,41 +1,62 @@
 ---
-import { getImage } from 'astro:assets';
-import { ctaPrimary, path, type Lang } from '../../content/site';
-import vetrinaSera from '../../assets/images/06-vetrina-sera.png';
+// CTA finale a schermo intero (cap. 3).
+import { ctaFinal, path, sectionIds, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const bg = await getImage({ src: vetrinaSera, width: 1800, format: 'webp' });
+const c = ctaFinal[lang];
 ---
 
-<section class="cta-final" style={`background-image: linear-gradient(180deg, rgba(16,16,20,0.55), rgba(16,16,20,0.9)), url(${bg.src})`}>
-  <div class="container cta-final__inner reveal">
-    <p class="cta-final__motto mono">
-      <!-- DA FORNIRE: eventuale riga finale a supporto della CTA, SQ/IT/EN -->
-    </p>
-    <a class="btn btn--primary cta-final__btn" href={path(lang, 'contact')}>{ctaPrimary[lang]}</a>
+<section class="cta" id={sectionIds.cta}>
+  <div class="blueprint" aria-hidden="true"></div>
+
+  <div class="container cta__inner">
+    <h2 class="display display--lg cta__title" data-reveal-line>
+      <span>{c.line1}</span>
+      <span class="cta__accent">{c.line2}</span>
+    </h2>
+
+    <a class="btn btn--primary cta__btn" href={path(lang, 'contact')} data-magnetic="12" data-reveal data-reveal-delay="0.2">
+      {c.button}
+      <span class="btn__arrow" aria-hidden="true">→</span>
+    </a>
   </div>
 </section>
 
 <style>
-  .cta-final {
-    background-size: cover;
-    background-position: center;
-    padding-block: clamp(72px, 14vw, 160px);
+  .cta {
+    position: relative;
+    min-height: 84svh;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(90px, 12vw, 160px);
   }
 
-  .cta-final__inner {
+  .cta__inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
+    align-items: flex-start;
+    gap: clamp(2rem, 4vw, 3.25rem);
   }
 
-  .cta-final__btn {
-    font-size: 0.9rem;
-    padding: 20px 36px;
+  .cta__title {
+    display: flex;
+    flex-direction: column;
+    max-width: 16ch;
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .cta__accent {
+    color: var(--accent);
+  }
+
+  .cta__btn {
+    padding: 1.35rem 2.4rem;
+    font-size: 0.78rem;
   }
 </style>

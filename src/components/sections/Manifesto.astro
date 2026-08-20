@@ -1,0 +1,58 @@
+---
+// Manifesto — testo gigante che si accende parola per parola con lo scroll.
+// Nessuna immagine: solo tipografia e le linee blueprint (cap. 3).
+import { manifesto, sectionIds, type Lang } from '../../content/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const lines = manifesto[lang];
+---
+
+<section class="mf" id={sectionIds.manifesto}>
+  <div class="blueprint" aria-hidden="true"></div>
+
+  <div class="container">
+    <p class="mf__text display display--lg" data-manifesto>
+      {
+        lines.map((line) => (
+          <span class="mf__line">
+            {line.split(' ').map((w) => (
+              <span class="mf__word" data-word>
+                {w}
+              </span>
+            ))}
+          </span>
+        ))
+      }
+    </p>
+  </div>
+</section>
+
+<style>
+  .mf {
+    position: relative;
+  }
+
+  .mf__text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.08em;
+    max-width: 22ch;
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .mf__line {
+    display: block;
+  }
+
+  .mf__word {
+    display: inline-block;
+    margin-right: 0.26em;
+    will-change: opacity;
+  }
+</style>

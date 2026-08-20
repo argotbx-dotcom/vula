@@ -1,22 +1,39 @@
-/* VULA — token di design (brief §3). Il blu è inchiostro da timbro: si usa
-   solo dove qualcosa comincia o si certifica, mai come fondo esteso. */
+/* ==========================================================================
+   VULA — token di design
+   Fonte: "IL SITO — Piano strategico", cap. 2.1 (direzione visiva) e 4.2
+   (regole del movimento).
+   Fondo quasi-nero + avorio. Il colore è riservato ai concept: la pagina
+   "indossa" il marchio quando entri nel suo mondo.
+   ========================================================================== */
 
 :root {
-  --ink: #101014;
-  --surface: #1a1a1f;
-  --surface2: #232329;
-  --paper: #efeae0;
-  --dim: #8c8c96;
-  --timbro: #2340c8;
-  --line: rgba(239, 234, 224, 0.12);
+  --ink: #0a0a0b;
+  --ink-2: #131315;
+  --ink-3: #1c1c1f;
+  --paper: #f4f1ea;
+  --dim: #8a8a90;
+  --line: rgba(244, 241, 234, 0.14);
+  --line-soft: rgba(244, 241, 234, 0.07);
 
-  --font-display: 'Archivo', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  /* Accento neutro dell'agenzia. I concept portano il proprio. */
+  --accent: #c8963e;
 
-  --container: 1200px;
-  --gutter: clamp(20px, 5vw, 64px);
+  /* Il tint viene sovrascritto dalle pagine concept. */
+  --tint: var(--accent);
+  --on-tint: #0a0a0b;
 
+  --font-display: 'Clash Display', 'Archivo', system-ui, sans-serif;
+  --font-body: 'General Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --container: 1440px;
+  --gutter: clamp(20px, 5vw, 72px);
+
+  /* Cap. 4.2: una sola firma di easing in tutto il sito. */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 0.8s;
+
+  --header-h: 76px;
 }
 
 *,
@@ -28,231 +45,215 @@
 html {
   background: var(--ink);
   color-scheme: dark;
-  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* Lenis pilota lo scroll; senza JS resta lo scroll nativo. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
   margin: 0;
   background: var(--ink);
   color: var(--paper);
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-weight: 400;
-  line-height: 1.55;
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.075rem);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 img,
-video {
-  max-width: 100%;
+video,
+svg {
   display: block;
+  max-width: 100%;
 }
 
 a {
   color: inherit;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  text-transform: uppercase;
-  margin: 0;
-  line-height: 1.08;
-}
-
-h1 {
-  font-size: clamp(2.2rem, 6vw, 4.4rem);
-  letter-spacing: 0.02em;
-}
-
-h2 {
-  font-size: clamp(1.6rem, 3.6vw, 2.4rem);
-  letter-spacing: 0.01em;
-}
-
-h3 {
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  letter-spacing: 0.01em;
-}
-
 p {
   margin: 0;
 }
 
-.kicker,
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.005em;
+}
+
+/* --------------------------------------------------------------- scala tipo */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+}
+
+.display--xl {
+  font-size: clamp(2.75rem, 8.6vw, 9.5rem);
+}
+
+.display--lg {
+  font-size: clamp(2.25rem, 6vw, 5.75rem);
+}
+
+.display--md {
+  font-size: clamp(1.75rem, 3.6vw, 3.25rem);
+}
+
 .mono,
-.label,
-.price,
-.phase-num {
+.kicker,
+.label {
   font-family: var(--font-mono);
-  letter-spacing: 0.12em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .kicker {
-  font-size: 0.72rem;
-  color: var(--timbro);
-  font-weight: 500;
-  margin-bottom: 12px;
+  font-size: 0.68rem;
+  color: var(--tint);
+  margin-bottom: 1.25rem;
 }
 
-.label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.62rem;
-  font-weight: 500;
-  color: var(--ink);
-  background: var(--paper);
-  padding: 5px 10px;
-  border-radius: 2px;
-}
-
-.label--todo {
-  color: var(--paper);
-  background: transparent;
-  border: 1px dashed var(--timbro);
+.lede {
+  font-size: clamp(1.05rem, 0.98rem + 0.5vw, 1.35rem);
+  line-height: 1.55;
+  color: var(--dim);
+  max-width: 52ch;
 }
 
 .container {
+  width: 100%;
   max-width: var(--container);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
 section {
-  padding-block: clamp(56px, 10vw, 128px);
+  position: relative;
+  padding-block: clamp(88px, 12vw, 190px);
 }
 
-/* Pulsanti */
+/* -------------------------------------------------------------- blueprint  */
+/* Cap. 2.1: linee da planimetria che tengono insieme i tre atti. */
+
+.blueprint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, var(--line-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px);
+  background-size: clamp(60px, 8vw, 120px) clamp(60px, 8vw, 120px);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------- pulsanti */
+
 .btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--paper);
+  --btn-bd: var(--line);
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.75rem;
+  padding: 1.125rem 1.9rem;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 15px 26px;
-  border-radius: 2px;
-  border: 1px solid transparent;
-  transition: background-color 180ms var(--ease), border-color 180ms var(--ease), color 180ms var(--ease), transform 180ms var(--ease);
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-bd);
+  border-radius: 999px;
   cursor: pointer;
-}
-
-.btn:focus-visible,
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--timbro);
-  outline-offset: 3px;
+  transition: background-color 0.22s var(--ease), border-color 0.22s var(--ease), color 0.22s var(--ease);
+  will-change: transform;
 }
 
 .btn--primary {
-  background: var(--timbro);
-  color: var(--paper);
-  border-color: var(--timbro);
+  --btn-bg: var(--tint);
+  --btn-fg: var(--on-tint);
+  --btn-bd: var(--tint);
 }
 
 .btn--primary:hover {
-  transform: translateY(-1px);
-  background: #2c4de0;
-}
-
-.btn--ghost {
-  background: transparent;
-  color: var(--paper);
-  border-color: var(--line);
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+  --btn-bd: var(--paper);
 }
 
 .btn--ghost:hover {
-  border-color: var(--paper);
+  --btn-bd: var(--paper);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .btn:hover {
-    transform: none;
-  }
+.btn__arrow {
+  display: inline-block;
+  transition: transform 0.22s var(--ease);
 }
 
-/* Card */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  transition: border-color 180ms var(--ease), transform 180ms var(--ease);
+.btn:hover .btn__arrow {
+  transform: translateX(3px);
 }
 
-.card:hover {
-  border-color: rgba(239, 234, 224, 0.28);
+/* ------------------------------------------------------------------ focus  */
+
+:where(a, button, input, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-/* Segnaposto grafico per immagini mancanti (brief §7): fondo surface2 +
-   simbolo VULA in --line. Mai una foto stock. */
-.img-placeholder {
-  background: var(--surface2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: var(--ph-ratio, 4 / 3);
-  color: var(--line);
-}
-
-
-/* Skip link */
 .skip-link {
-  position: absolute;
-  left: 12px;
-  top: -60px;
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 200;
+  padding: 0.85rem 1.25rem;
   background: var(--paper);
   color: var(--ink);
-  padding: 10px 16px;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  z-index: 100;
-  transition: top 150ms var(--ease);
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: top 0.2s var(--ease);
 }
 
 .skip-link:focus {
-  top: 12px;
-}
-
-/* Animazione 1 — comparse in scroll (brief §8/9): dissolvenza + traslazione
-   verticale max 14px, 300–400ms, una sola volta. */
-.reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 360ms var(--ease), transform 360ms var(--ease);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-/* No-JS: tutto il contenuto resta visibile e leggibile. */
-.no-js .reveal {
-  opacity: 1;
-  transform: none;
+  top: 16px;
 }
 
 .visually-hidden {
@@ -262,7 +263,160 @@ textarea:focus-visible {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* --------------------------------------------------------------- reveal    */
+/* Il contenuto è visibile di default. Solo con JS attivo lo nascondiamo per
+   poi rivelarlo: cap. 4.2 — "Il contenuto deve restare leggibile con
+   JavaScript disattivato." */
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.js [data-reveal-line] > * {
+  opacity: 0;
+  transform: translateY(0.7em);
+}
+
+/* --------------------------------------------------------------- cursore   */
+/* Cap. 4.2: cursore custom con stati. Solo su puntatore fine. */
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  display: none;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.cursor__dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--paper);
+  border-radius: 50%;
+  transition: width 0.25s var(--ease), height 0.25s var(--ease), margin 0.25s var(--ease);
+}
+
+.cursor__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  white-space: nowrap;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.cursor.is-link .cursor__dot {
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+}
+
+.cursor.is-view .cursor__dot {
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  background: var(--paper);
+}
+
+.cursor.is-view .cursor__label {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  color: var(--ink);
+  mix-blend-mode: normal;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .js .cursor {
+    display: block;
+  }
+  .js.has-cursor body {
+    cursor: none;
+  }
+  .js.has-cursor a,
+  .js.has-cursor button,
+  .js.has-cursor summary {
+    cursor: none;
+  }
+}
+
+/* ------------------------------------------------------------- preloader   */
+/* Cap. 3: contatore 0→100 + il marchio che si "timbra". Cap. 9: mai
+   bloccante — la pagina sotto è già renderizzata, l'overlay si toglie da
+   solo entro 1,2 s e non viene mai mostrato due volte nella stessa sessione. */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  will-change: transform;
+}
+
+.preloader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.preloader__mark {
+  width: 64px;
+  height: 64px;
+  color: var(--paper);
+  opacity: 0;
+  transform: scale(0.86);
+}
+
+.preloader__count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+}
+
+/* --------------------------------------------------------- reduced motion  */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js [data-reveal],
+  .js [data-reveal-line] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .preloader {
+    display: none;
+  }
+  .js .cursor {
+    display: none;
+  }
+  .js.has-cursor body {
+    cursor: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

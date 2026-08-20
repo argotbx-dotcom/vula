@@ -1,7 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import { problem, type Lang } from '../../content/site';
-import muroStrategia from '../../assets/images/04-muro-strategia.png';
+// Il problema — otto etichette in disordine che si allineano di scatto
+// su una riga sola sotto il claim (cap. 3).
+import { problem, sectionIds, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
@@ -10,80 +10,72 @@ const { lang } = Astro.props;
 const p = problem[lang];
 ---
 
-<section class="problem">
-  <div class="container problem__grid">
-    <div class="problem__text">
-      <p class="kicker reveal">{p.kicker}</p>
-      <ul class="problem__list">
+<section class="pb" id={sectionIds.problem}>
+  <div class="container">
+    <p class="kicker" data-reveal>{p.kicker}</p>
+
+    <h2 class="display display--lg pb__claim" data-reveal data-reveal-delay="0.05">{p.claim}</h2>
+
+    <div class="pb__field" data-chaos>
+      <ul class="pb__chips">
         {
-          p.points.map((point, i) => (
-            <li class="reveal" style={`transition-delay:${i * 80}ms`}>
-              <span class="problem__num mono">{String(i + 1).padStart(2, '0')}</span>
-              <span>{point}</span>
+          p.labels.map((l) => (
+            <li class="pb__chip mono" data-chip>
+              {l}
             </li>
           ))
         }
       </ul>
     </div>
-    <div class="problem__media reveal">
-      <Image
-        src={muroStrategia}
-        alt={lang === 'sq'
-          ? 'Mur strategjie me foto dhe fije lidhëse, dritë e fortë anësore'
-          : lang === 'it'
-            ? 'Muro di strategia con foto e fili di collegamento, luce dura laterale'
-            : 'Strategy wall with photos and connecting threads, hard side light'}
-        width={900}
-        height={506}
-        loading="lazy"
-      />
-    </div>
+
+    <p class="display display--lg pb__resolve" data-reveal>{p.resolve}</p>
   </div>
 </section>
 
 <style>
-  .problem__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(32px, 6vw, 80px);
-    align-items: center;
+  .pb {
+    padding-block: clamp(80px, 10vw, 150px);
   }
 
-  .problem__list {
+  .pb__claim {
+    max-width: 16ch;
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .pb__field {
+    margin-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .pb__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
     list-style: none;
-    margin: 24px 0 0;
+    margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
   }
 
-  .problem__list li {
-    display: flex;
-    gap: 20px;
-    align-items: baseline;
-    padding: 20px 0;
-    border-top: 1px solid var(--line);
-    font-size: 1.05rem;
-  }
-
-  .problem__num {
-    color: var(--timbro);
-    font-size: 0.78rem;
-    flex-shrink: 0;
-  }
-
-  .problem__media img {
-    width: 100%;
-    height: auto;
+  .pb__chip {
+    padding: 0.7rem 1.15rem;
+    font-size: 0.66rem;
+    color: var(--dim);
     border: 1px solid var(--line);
+    border-radius: 999px;
+    white-space: nowrap;
+    will-change: transform;
   }
 
-  @media (max-width: 860px) {
-    .problem__grid {
-      grid-template-columns: 1fr;
-    }
-    .problem__media {
-      order: -1;
+  .pb__resolve {
+    color: var(--accent);
+    text-align: center;
+    text-transform: none;
+  }
+
+  @media (min-width: 900px) {
+    .pb__chips {
+      flex-wrap: nowrap;
     }
   }
 </style>

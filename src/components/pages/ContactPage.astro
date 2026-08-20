@@ -2,129 +2,156 @@
 import Base from '../../layouts/Base.astro';
 import Header from '../Header.astro';
 import Footer from '../Footer.astro';
-import PageIntro from '../sections/PageIntro.astro';
-import { nav, motto, location, ui, type Lang } from '../../content/site';
+import { contactPage, ctaFinal, location, ui, siteName, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const n = nav[lang];
+const c = contactPage[lang];
 const t = ui[lang];
 
-const formNames: Record<Lang, string> = { sq: 'kontakt-sq', it: 'contatto-it', en: 'contact-en' };
-const botLabel: Record<Lang, string> = {
+const formName = { sq: 'kontakt-sq', it: 'contatto-it', en: 'contact-en' }[lang];
+const botLabel = {
   sq: 'Mos e plotëso këtë fushë',
   it: 'Non compilare questo campo',
   en: "Don't fill this field out",
-};
+}[lang];
 ---
 
-<Base lang={lang} page="contact" title={n.contact}>
+<Base lang={lang} page="contact" title={`${c.title} · ${siteName}`} description={c.line}>
   <Header lang={lang} page="contact" />
-  <main id="main">
-    <PageIntro lang={lang} kicker={motto[lang]} title={n.contact} />
 
-    <section class="contact">
-      <div class="container contact__grid">
-        <div class="contact__info reveal">
-          <p class="contact__location">{location[lang]}</p>
-          <!-- DA FORNIRE: indirizzo completo, telefono, email di VULA (SQ/IT/EN identici tranne la città) -->
+  <main id="main">
+    <section class="ct">
+      <div class="blueprint" aria-hidden="true"></div>
+
+      <div class="container ct__grid">
+        <div class="ct__intro">
+          <p class="kicker" data-reveal>{c.kicker}</p>
+          <h1 class="display display--lg ct__title" data-reveal data-reveal-delay="0.05">{c.title}</h1>
+          <p class="lede ct__lede" data-reveal data-reveal-delay="0.1">{c.line}</p>
+          <p class="ct__place mono" data-reveal data-reveal-delay="0.15">{location[lang]}</p>
         </div>
 
         <form
-          class="contact__form reveal"
-          name={formNames[lang]}
+          class="ct__form"
+          name={formName}
           method="POST"
           data-netlify="true"
           netlify-honeypot="bot-field"
+          data-reveal
+          data-reveal-delay="0.12"
         >
-          <input type="hidden" name="form-name" value={formNames[lang]} />
+          <input type="hidden" name="form-name" value={formName} />
           <p class="visually-hidden">
             <label>
-              {botLabel[lang]}
+              {botLabel}
               <input name="bot-field" tabindex="-1" autocomplete="off" />
             </label>
           </p>
 
-          <label class="contact__field">
+          <label class="ct__field">
             <span class="mono">{t.formName}</span>
-            <input type="text" name="name" required />
+            <input type="text" name="name" autocomplete="name" required />
           </label>
 
-          <label class="contact__field">
+          <label class="ct__field">
             <span class="mono">{t.formEmail}</span>
-            <input type="email" name="email" required />
+            <input type="email" name="email" autocomplete="email" required />
           </label>
 
-          <label class="contact__field">
+          <label class="ct__field">
             <span class="mono">{t.formMessage}</span>
-            <textarea name="message" rows="6" required></textarea>
+            <textarea name="message" rows="5" required></textarea>
           </label>
 
-          <button type="submit" class="btn btn--primary">{t.formSubmit}</button>
+          <button type="submit" class="btn btn--primary" data-magnetic="8">
+            {ctaFinal[lang].button}
+            <span class="btn__arrow" aria-hidden="true">→</span>
+          </button>
         </form>
       </div>
     </section>
   </main>
+
   <Footer lang={lang} page="contact" />
 </Base>
 
 <style>
-  .contact__grid {
+  .ct {
+    position: relative;
+    padding-block: calc(var(--header-h) + clamp(60px, 9vw, 120px)) clamp(80px, 10vw, 150px);
+    min-height: 92svh;
+  }
+
+  .ct__grid {
+    position: relative;
+    z-index: 1;
     display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: clamp(32px, 6vw, 80px);
+    gap: clamp(2.5rem, 5vw, 5rem);
   }
 
-  .contact__location {
-    font-size: 1.4rem;
-    font-weight: 500;
+  .ct__title {
+    text-transform: none;
+    letter-spacing: -0.015em;
   }
 
-
-  .contact__form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  .ct__lede {
+    margin-top: 1.4rem;
   }
 
-  .contact__field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .contact__field span {
-    font-size: 0.68rem;
+  .ct__place {
+    margin-top: 2rem;
+    font-size: 0.64rem;
     color: var(--dim);
   }
 
-  .contact__field input,
-  .contact__field textarea {
-    background: var(--surface);
-    border: 1px solid var(--line);
+  .ct__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+
+  .ct__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .ct__field span {
+    font-size: 0.58rem;
+    color: var(--dim);
+  }
+
+  .ct__field input,
+  .ct__field textarea {
+    width: 100%;
+    padding: 1rem 1.1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
     color: var(--paper);
-    font-family: var(--font-display);
-    font-size: 0.95rem;
-    padding: 14px 16px;
-    border-radius: 2px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
     resize: vertical;
+    transition: border-color 0.2s var(--ease);
   }
 
-  .contact__field input:focus-visible,
-  .contact__field textarea:focus-visible {
-    outline: 2px solid var(--timbro);
-    outline-offset: 2px;
+  .ct__field input:focus,
+  .ct__field textarea:focus {
+    border-color: var(--tint);
   }
 
-  .contact__form button {
+  .ct__form button {
     align-self: flex-start;
+    margin-top: 0.5rem;
   }
 
-  @media (max-width: 760px) {
-    .contact__grid {
-      grid-template-columns: 1fr;
+  @media (min-width: 860px) {
+    .ct__grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
     }
   }
 </style>

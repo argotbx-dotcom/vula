@@ -1,0 +1,151 @@
+---
+// Scheda di un concept del vault.
+// REGOLA VINCOLANTE (cap. 0.1 e 7): l'etichetta "Koncept ©" è sempre visibile
+// sulla scheda, mai nascosta nel dettaglio. Senza etichetta la scheda non si
+// pubblica.
+import { Image, getImage } from 'astro:assets';
+import { conceptPath, vault, ui, type Lang } from '../content/site';
+import type { Concept } from '../content/vault';
+
+interface Props {
+  lang: Lang;
+  concept: Concept;
+  /** dimensione nella griglia editoriale sfalsata */
+  size?: 'lg' | 'md';
+}
+const { lang, concept, size = 'md' } = Astro.props;
+const t = ui[lang];
+
+const vaultImages = import.meta.glob<{ default: ImageMetadata }>('../assets/vault/**/*.png', { eager: true });
+const posterImages = import.meta.glob<{ default: ImageMetadata }>('../assets/posters/*.jpg', { eager: true });
+
+const cover = vaultImages[`../assets/vault/${concept.slug}/${concept.images[0]}`]?.default;
+const videoName = concept.video?.split('/').pop()?.replace('.mp4', '');
+const posterMeta = videoName ? posterImages[`../assets/posters/${videoName}.jpg`]?.default : undefined;
+const posterUrl = posterMeta ? (await getImage({ src: posterMeta, width: 900, format: 'webp' })).src : undefined;
+
+const alt = `${concept.name} — ${concept.tagline[lang]}`;
+---
+
+<a
+  class={`cc cc--${size}`}
+  href={conceptPath(lang, concept.slug)}
+  style={`--tint:${concept.tint};--on-tint:${concept.onTint}`}
+  data-cursor-label={t.seeConcept}
+>
+  <div class="cc__frame">
+    {
+      videoName && posterUrl ? (
+        <video class="cc__media" data-lazy poster={posterUrl} muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
+          <source src={`/videos/${videoName}.webm`} type="video/webm" />
+          <source src={`/videos/${videoName}.mp4`} type="video/mp4" />
+        </video>
+      ) : (
+        cover && <Image class="cc__media" src={cover} alt="" width={900} height={675} loading="lazy" />
+      )
+    }
+    <span class="cc__veil" aria-hidden="true"></span>
+    <span class="cc__label mono">{vault[lang].label}</span>
+  </div>
+
+  <div class="cc__body">
+    <div class="cc__head">
+      <h3 class="cc__name">{concept.name}</h3>
+      <span class="cc__sector mono">{concept.sector[lang]}</span>
+    </div>
+    <p class="cc__tag">{concept.tagline[lang]}</p>
+  </div>
+
+  <span class="visually-hidden">{alt}</span>
+</a>
+
+<style>
+  .cc {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cc__frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    background: var(--ink-3);
+    aspect-ratio: 4 / 3;
+  }
+
+  .cc--lg .cc__frame {
+    aspect-ratio: 16 / 10;
+  }
+
+  .cc__media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease);
+  }
+
+  .cc:hover .cc__media {
+    transform: scale(1.04);
+  }
+
+  .cc__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 10, 11, 0.55), transparent 45%);
+    opacity: 0.9;
+  }
+
+  /* etichetta obbligatoria, sempre visibile */
+  .cc__label {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 0.42rem 0.75rem;
+    font-size: 0.56rem;
+    color: var(--on-tint);
+    background: var(--tint);
+    border-radius: 999px;
+  }
+
+  .cc__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .cc__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cc__name {
+    font-size: clamp(1.15rem, 1.8vw, 1.6rem);
+    letter-spacing: 0;
+  }
+
+  .cc__sector {
+    font-size: 0.56rem;
+    color: var(--dim);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .cc__tag {
+    font-size: 0.93rem;
+    color: var(--dim);
+    max-width: 44ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cc:hover .cc__media {
+      transform: none;
+    }
+  }
+</style>
