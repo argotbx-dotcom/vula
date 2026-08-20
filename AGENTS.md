@@ -7,9 +7,29 @@ Fonte di verità: `docs/piano-sito.md` e `docs/concept-strategico.md`.
 Questi documenti **sostituiscono** il brief precedente (quello con le quattro
 fasi, l'assenza di librerie di animazione e i blocchi `[DA FORNIRE]` a schermo).
 
+## Pubblicazione
+
+Il sito vive su **Cloudflare Pages**, progetto `vula-studio`:
+<https://vula-studio.pages.dev>
+
+```
+SITE_URL="https://vula-studio.pages.dev" npx astro build
+npx wrangler pages deploy dist --project-name vula-studio --branch main
+```
+
+`SITE_URL` va passato perché canonical, hreflang, og:image e sitemap devono
+essere assoluti e puntare all'host giusto. In una build fatta da Cloudflare
+stessa la variabile `CF_PAGES_URL` arriva da sola e non serve passare nulla.
+Quando arriva il dominio definitivo si cambia solo `SITE_URL`.
+
+Netlify resta collegato al repository ma **il suo account ha i crediti
+esauriti** e rifiuta i deploy: il vecchio indirizzo serve ancora una copia
+datata. Va spento o fatto reindirizzare, altrimenti restano due copie
+indicizzabili dello stesso sito.
+
 ## Vincoli di lavoro
 
-- Branch di produzione collegato a Netlify. Niente branch nuovi, niente PR.
+- Branch di produzione `main`. Niente branch nuovi, niente PR.
 - Dopo ogni modifica: `astro check` + `astro build`. Se puliti, committa e
   pusha senza chiedere. Se il build fallisce, fermati.
 - Trilingue SQ (default) / IT / EN: ogni modifica ai testi va su tutte e tre.
