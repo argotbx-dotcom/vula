@@ -1,0 +1,78 @@
+---
+// La rete accreditata (concept strategico §5.3).
+// Risponde all'obiezione silenziosa: come fa una struttura piccola a coprire
+// tutto? Regia interna, esecuzione esterna verificata, un solo contratto.
+import { network, type Lang } from '../../content/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const n = network[lang];
+---
+
+<section class="nw" id="rrjeti">
+  <div class="blueprint" aria-hidden="true"></div>
+
+  <div class="container nw__inner">
+    <header class="nw__head">
+      <div>
+        <p class="kicker" data-reveal>{n.kicker}</p>
+        <h2 class="display display--md nw__title" data-reveal data-reveal-delay="0.05">{n.title}</h2>
+      </div>
+      <p class="lede" data-reveal data-reveal-delay="0.1">{n.line}</p>
+    </header>
+
+    <ul class="nw__areas" data-reveal data-reveal-delay="0.15">
+      {n.areas.map((a) => <li class="nw__area mono">{a}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .nw {
+    position: relative;
+    padding-block: clamp(80px, 10vw, 150px);
+  }
+
+  .nw__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nw__head {
+    display: grid;
+    gap: 1.6rem;
+    margin-bottom: clamp(2.2rem, 4vw, 3.5rem);
+  }
+
+  .nw__title {
+    max-width: 18ch;
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .nw__areas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nw__area {
+    padding: 0.7rem 1.15rem;
+    font-size: 0.66rem;
+    color: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+
+  @media (min-width: 860px) {
+    .nw__head {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: end;
+    }
+  }
+</style>

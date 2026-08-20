@@ -11,7 +11,9 @@ import CtaFinal from '../sections/CtaFinal.astro';
 import {
   LANGS,
   conceptPath,
-  vault,
+  kindLabels,
+  scopeLabel,
+  visitLabel,
   licenceLine,
   ui,
   siteName,
@@ -26,7 +28,10 @@ interface Props {
 const { lang, concept } = Astro.props;
 const t = ui[lang];
 
-const vaultImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/vault/**/*.png', { eager: true });
+const vaultImages: Record<string, { default: ImageMetadata }> = {
+  ...import.meta.glob<{ default: ImageMetadata }>('../../assets/vault/**/*.png', { eager: true }),
+  ...import.meta.glob<{ default: ImageMetadata }>('../../assets/vault/**/*.webp', { eager: true }),
+};
 const posterImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/posters/*.jpg', { eager: true });
 
 const pics = concept.images
@@ -46,7 +51,7 @@ const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
 
 <Base
   lang={lang}
-  title={`${concept.name} — ${vault[lang].label} · ${siteName}`}
+  title={`${concept.name} — ${kindLabels[lang][concept.kind]} · ${siteName}`}
   description={concept.tagline[lang]}
   canonical={conceptPath(lang, concept.slug)}
   alternates={alternates}
@@ -75,10 +80,28 @@ const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
       <div class="container ch__inner">
         <a class="ch__back mono" href={`/${lang}/#vault`}>← {t.backToConcepts}</a>
 
-        <span class="ch__badge mono">{vault[lang].label}</span>
+        <span class="ch__badge mono">{kindLabels[lang][concept.kind]}</span>
         <h1 class="display display--lg ch__name">{concept.name}</h1>
         <p class="ch__tag lede">{concept.tagline[lang]}</p>
         <p class="ch__sector mono">{concept.sector[lang]}</p>
+
+        {
+          concept.scope && (
+            <div class="ch__scope">
+              <span class="ch__scope-label mono">{scopeLabel[lang]}</span>
+              <p class="ch__scope-text">{concept.scope[lang]}</p>
+            </div>
+          )
+        }
+
+        {
+          concept.url && (
+            <a class="btn btn--ghost ch__visit" href={concept.url} target="_blank" rel="noopener noreferrer">
+              {visitLabel[lang]}
+              <span class="btn__arrow" aria-hidden="true">↗</span>
+            </a>
+          )
+        }
       </div>
     </section>
 
@@ -97,17 +120,21 @@ const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
       )
     }
 
-    <!-- licenza -->
-    <section class="cl">
-      <div class="container cl__inner">
-        <p class="display display--md cl__line" data-reveal>{licenceLine[lang]}</p>
-      </div>
-    </section>
+    <!-- licenza: solo per i concept, mai per un progetto di un cliente -->
+    {
+      concept.kind === 'concept' && (
+        <section class="cl">
+          <div class="container cl__inner">
+            <p class="display display--md cl__line" data-reveal>{licenceLine[lang]}</p>
+          </div>
+        </section>
+      )
+    }
 
-    <!-- altri concept -->
+    <!-- altri progetti -->
     <section class="co">
       <div class="container">
-        <p class="kicker" data-reveal>{t.allConcepts}</p>
+        <p class="kicker" data-reveal>{t.otherProjects}</p>
         <ul class="co__list">
           {
             others.map((c, i) => (
@@ -203,6 +230,29 @@ const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
     margin-top: 1.5rem;
     font-size: 0.6rem;
     color: var(--tint);
+  }
+
+  .ch__scope {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    max-width: 46ch;
+  }
+
+  .ch__scope-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.56rem;
+    color: var(--tint);
+  }
+
+  .ch__scope-text {
+    font-size: 1rem;
+    color: var(--paper);
+  }
+
+  .ch__visit {
+    margin-top: 1.75rem;
   }
 
   /* il mondo */

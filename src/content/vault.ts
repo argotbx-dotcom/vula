@@ -1,26 +1,34 @@
-// Koncept Vault — i concept sviluppati dall'agenzia.
+// Koncept Vault — il lavoro di VULA, diviso per quello che è davvero.
 //
-// REGOLA DI ONESTÀ (piano, cap. 0.1): questi sono marchi NOSTRI, sviluppati da
-// noi e disponibili in licenza. Ogni scheda porta l'etichetta "Koncept ©".
-// Non sono clienti e non devono mai poter essere letti come tali.
+// REGOLA DI ONESTÀ VINCOLANTE (piano cap. 0.1, brief §6):
+// un visitatore non deve mai poter confondere un concept mai aperto con
+// un'attività che esiste. Per questo ogni scheda dichiara la propria natura
+// con un'etichetta sempre visibile, e le due categorie non si mescolano:
 //
-// Le descrizioni sono descrizioni fattuali del concept stesso, ricavate dai
-// materiali di marca prodotti per ognuno. Nessun numero, nessun cliente,
-// nessuna testimonianza.
+//   client  — progetti sviluppati per clienti: attività di altri, reali.
+//             Sotto ognuno diciamo esattamente cosa abbiamo fatto noi.
+//   concept — sviluppati da noi, mai aperti, disponibili in licenza.
+//
+// Nessun cliente inventato, nessuna testimonianza, nessun numero non verificato.
 
 import type { Lang } from './site';
+
+export type ConceptKind = 'client' | 'concept';
 
 export interface Concept {
   slug: string;
   name: string;
+  kind: ConceptKind;
   /** Colore di marca: la pagina del concept "vira" su questo colore. */
   tint: string;
   /** Testo leggibile sopra `tint`. */
   onTint: string;
-  /** Se true il tint è chiaro e va trattato come fondo chiaro. */
-  lightTint?: boolean;
   sector: Record<Lang, string>;
   tagline: Record<Lang, string>;
+  /** Solo per `client`: cosa abbiamo fatto noi, dichiarato senza ambiguità. */
+  scope?: Record<Lang, string>;
+  /** Sito pubblico, quando esiste. Il link cliccabile è la prova più forte. */
+  url?: string;
   /** Cinemagraph in /public/videos, se prodotto. */
   video?: string;
   /** Prima immagine = copertina della scheda e hero della pagina. */
@@ -28,24 +36,82 @@ export interface Concept {
 }
 
 export const concepts: Concept[] = [
+  /* ------------------------------------------------------------- clienti */
+  {
+    slug: 'elite-wines',
+    name: 'Elite Wines',
+    kind: 'client',
+    tint: '#2C6049',
+    onTint: '#F4F1EA',
+    sector: {
+      sq: 'Shpërndarje verërash premium',
+      it: 'Distribuzione vini premium',
+      en: 'Premium wine distribution',
+    },
+    tagline: {
+      sq: 'Importues dhe distributor verërash premium në Tiranë.',
+      it: 'Importatore e distributore di vini premium a Tirana.',
+      en: 'Premium wine importer and distributor in Tirana.',
+    },
+    scope: {
+      sq: 'Koncept, identitet, logo, faqe interneti, zhvillim projekti.',
+      it: 'Concept, identità, logo, sito, sviluppo progetto.',
+      en: 'Concept, identity, logo, website, project development.',
+    },
+    url: 'https://elitewinesal.netlify.app/sq/',
+    images: ['01-hero.webp', '02-club.webp', '03-shop.webp', '04-set.webp'],
+  },
+
+  {
+    slug: 'management-albania',
+    name: 'Management Albania',
+    kind: 'client',
+    tint: '#8A7B4F',
+    onTint: '#0A0A0B',
+    sector: {
+      sq: 'Përfaqësim i pavarur blerësish',
+      it: 'Rappresentanza acquirenti',
+      en: 'Independent buyer representation',
+    },
+    tagline: {
+      sq: 'Nuk shesim prona. I verifikojmë.',
+      it: 'Non vendiamo immobili. Li verifichiamo.',
+      en: "We don't sell property. We vet it.",
+    },
+    scope: {
+      sq: 'Pozicionim, identitet dhe faqe trigjuhëshe.',
+      it: 'Posizionamento, identità e sito trilingue.',
+      en: 'Positioning, identity and a trilingual website.',
+    },
+    url: 'https://managmentalbania.netlify.app/de/',
+    images: ['01-hero.webp', '02-notary.webp'],
+  },
   {
     slug: 'zenon',
     name: "ZEN'ON",
+    kind: 'client',
     tint: '#A9C8DA',
     onTint: '#0A0A0B',
-    lightTint: true,
     sector: { sq: 'Ushqim i shëndetshëm', it: 'Healthy food', en: 'Healthy food' },
     tagline: {
       sq: 'Bars, energy balls dhe granola artizanale.',
       it: 'Barrette, energy ball e granola artigianale.',
       en: 'Bars, energy balls and artisanal granola.',
     },
+    scope: {
+      sq: 'Identitet, paketim, foto produkti dhe faqe me porosi online.',
+      it: 'Identità, packaging, foto prodotto e sito con ordini online.',
+      en: 'Identity, packaging, product photography and a site with online ordering.',
+    },
     video: '/videos/vault-zenon.mp4',
     images: ['01-hero.png', '03-pouches.png', '02-keto-box.png', '04-logo.png'],
   },
+
+  /* ------------------------------------------------------------- concept */
   {
     slug: 'pasta-de-casa',
     name: 'La Pasta de Casa',
+    kind: 'concept',
     tint: '#C0271F',
     onTint: '#F4F1EA',
     sector: { sq: 'Pastë për të marrë me vete', it: 'Pasta da asporto', en: 'Pasta takeaway' },
@@ -60,6 +126,7 @@ export const concepts: Concept[] = [
   {
     slug: 'rubik-cube-burger',
     name: 'Rubik Cube Burger',
+    kind: 'concept',
     tint: '#1E6FD9',
     onTint: '#F4F1EA',
     sector: { sq: 'Burger', it: 'Burger', en: 'Burger' },
@@ -74,6 +141,7 @@ export const concepts: Concept[] = [
   {
     slug: 'gyoza-lab',
     name: 'Gyoza Lab',
+    kind: 'concept',
     tint: '#5B48C6',
     onTint: '#F4F1EA',
     sector: { sq: 'Kuzhinë japoneze', it: 'Cucina giapponese', en: 'Japanese kitchen' },
@@ -88,9 +156,9 @@ export const concepts: Concept[] = [
   {
     slug: 'laza',
     name: 'LAZA',
+    kind: 'concept',
     tint: '#C9A227',
     onTint: '#0A0A0B',
-    lightTint: true,
     sector: { sq: 'Lazanjeri', it: 'Lasagneria', en: 'Lasagneria' },
     tagline: {
       sq: 'Lasanje të pjekura, për të marrë me vete.',
@@ -103,6 +171,7 @@ export const concepts: Concept[] = [
   {
     slug: 'marchigiano',
     name: 'Il Marchigiano',
+    kind: 'concept',
     tint: '#8A1F2B',
     onTint: '#F4F1EA',
     sector: { sq: 'Rosticeri dhe panine', it: 'Rosticceria e panini', en: 'Rosticceria and sandwiches' },
@@ -117,6 +186,7 @@ export const concepts: Concept[] = [
   {
     slug: 'polariko',
     name: 'Polariko',
+    kind: 'concept',
     tint: '#1D4E79',
     onTint: '#F4F1EA',
     sector: { sq: 'Ushqim i ngrirë', it: 'Surgelati', en: 'Frozen food' },
@@ -130,6 +200,7 @@ export const concepts: Concept[] = [
   {
     slug: 'nderto',
     name: 'Ndërto.al',
+    kind: 'concept',
     tint: '#E0301E',
     onTint: '#F4F1EA',
     sector: { sq: 'Platformë dixhitale', it: 'Piattaforma digitale', en: 'Digital platform' },
@@ -143,14 +214,19 @@ export const concepts: Concept[] = [
   {
     slug: 'lala-kids',
     name: 'LALA Kids',
+    kind: 'client',
     tint: '#F2B705',
     onTint: '#0A0A0B',
-    lightTint: true,
     sector: { sq: 'Markë për fëmijë', it: 'Marchio per bambini', en: "Children's brand" },
     tagline: {
-      sq: 'Përtej ushqimit: e njëjta metodë, sektor tjetër.',
-      it: 'Oltre il food: stesso metodo, altro settore.',
-      en: 'Beyond food: same method, another sector.',
+      sq: 'Markë dhe personazhe për përmbajtje fëmijësh.',
+      it: 'Marchio e personaggi per contenuti per bambini.',
+      en: "Brand and characters for children's content.",
+    },
+    scope: {
+      sq: 'Identitet, personazhe dhe key visual.',
+      it: 'Identità, personaggi e key visual.',
+      en: 'Identity, characters and key visuals.',
     },
     images: ['01-hero.png', '02-banner.png'],
   },
@@ -158,5 +234,7 @@ export const concepts: Concept[] = [
 
 export const conceptBySlug = (slug: string) => concepts.find((c) => c.slug === slug);
 
-/** I sei del lancio aprono il vault; gli altri seguono. */
-export const featuredConcepts = concepts.slice(0, 6);
+export const byKind = (kind: ConceptKind) => concepts.filter((c) => c.kind === kind);
+
+export const clients = byKind('client');
+export const conceptProjects = byKind('concept');

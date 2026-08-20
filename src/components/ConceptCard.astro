@@ -1,10 +1,10 @@
 ---
 // Scheda di un concept del vault.
-// REGOLA VINCOLANTE (cap. 0.1 e 7): l'etichetta "Koncept ©" è sempre visibile
+// REGOLA VINCOLANTE (cap. 0.1 e 7): l'etichetta di categoria è sempre visibile
 // sulla scheda, mai nascosta nel dettaglio. Senza etichetta la scheda non si
-// pubblica.
+// pubblica: un concept mai aperto non deve poter sembrare un'attività reale.
 import { Image, getImage } from 'astro:assets';
-import { conceptPath, vault, ui, type Lang } from '../content/site';
+import { conceptPath, kindLabels, scopeLabel, ui, type Lang } from '../content/site';
 import type { Concept } from '../content/vault';
 
 interface Props {
@@ -16,7 +16,10 @@ interface Props {
 const { lang, concept, size = 'md' } = Astro.props;
 const t = ui[lang];
 
-const vaultImages = import.meta.glob<{ default: ImageMetadata }>('../assets/vault/**/*.png', { eager: true });
+const vaultImages: Record<string, { default: ImageMetadata }> = {
+  ...import.meta.glob<{ default: ImageMetadata }>('../assets/vault/**/*.png', { eager: true }),
+  ...import.meta.glob<{ default: ImageMetadata }>('../assets/vault/**/*.webp', { eager: true }),
+};
 const posterImages = import.meta.glob<{ default: ImageMetadata }>('../assets/posters/*.jpg', { eager: true });
 
 const cover = vaultImages[`../assets/vault/${concept.slug}/${concept.images[0]}`]?.default;
@@ -45,7 +48,7 @@ const alt = `${concept.name} — ${concept.tagline[lang]}`;
       )
     }
     <span class="cc__veil" aria-hidden="true"></span>
-    <span class="cc__label mono">{vault[lang].label}</span>
+    <span class="cc__label mono">{kindLabels[lang][concept.kind]}</span>
   </div>
 
   <div class="cc__body">
@@ -54,6 +57,15 @@ const alt = `${concept.name} — ${concept.tagline[lang]}`;
       <span class="cc__sector mono">{concept.sector[lang]}</span>
     </div>
     <p class="cc__tag">{concept.tagline[lang]}</p>
+
+    {
+      concept.scope && (
+        <p class="cc__scope">
+          <span class="cc__scope-label mono">{scopeLabel[lang]}</span>
+          {concept.scope[lang]}
+        </p>
+      )
+    }
   </div>
 
   <span class="visually-hidden">{alt}</span>

@@ -2,7 +2,7 @@
 // I numeri dell'Albania (cap. 3). Contatori che si caricano allo scroll.
 // Ogni cifra porta la sua fonte: un'agenzia che vende metodo non può
 // permettersi un numero gonfiato (cap. 0.1).
-import { numbersTitle, stats, sectionIds, type Lang } from '../../content/site';
+import { numbersTitle, numbersThesis, stats, sectionIds, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
@@ -40,6 +40,8 @@ const n = numbersTitle[lang];
         ))
       }
     </dl>
+
+    <p class="nb__thesis" data-reveal>{numbersThesis[lang]}</p>
   </div>
 </section>
 
@@ -94,6 +96,18 @@ const n = numbersTitle[lang];
     font-size: 0.94rem;
     color: var(--dim);
     max-width: 26ch;
+  }
+
+  .nb__thesis {
+    margin-top: clamp(2.5rem, 4vw, 4rem);
+    padding-top: clamp(1.6rem, 3vw, 2.4rem);
+    border-top: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    line-height: 1.28;
+    letter-spacing: -0.012em;
+    max-width: 34ch;
   }
 
   .nb__source {

@@ -1,8 +1,9 @@
 ---
-// ATTO III — la prova. Koncept Vault (cap. 2 e 3).
-// Griglia editoriale sfalsata: i concept già creati, vivi.
-import { vault, sectionIds, type Lang } from '../../content/site';
-import { concepts } from '../../content/vault';
+// ATTO III — la prova (cap. 2 e 3).
+// Due gruppi tenuti rigorosamente separati: i progetti sviluppati per clienti
+// e i concept nostri, mai aperti. Ogni scheda porta la propria etichetta.
+import { vault, vaultGroups, sectionIds, type Lang } from '../../content/site';
+import { clients, conceptProjects } from '../../content/vault';
 import ConceptCard from '../ConceptCard.astro';
 
 interface Props {
@@ -10,10 +11,7 @@ interface Props {
 }
 const { lang } = Astro.props;
 const v = vault[lang];
-
-// Ritmo editoriale: le prime due schede grandi, poi il resto a tre colonne.
-const lead = concepts.slice(0, 2);
-const rest = concepts.slice(2);
+const g = vaultGroups[lang];
 ---
 
 <section class="vt" id={sectionIds.vault}>
@@ -26,24 +24,40 @@ const rest = concepts.slice(2);
       <p class="vt__note" data-reveal data-reveal-delay="0.1">{v.note}</p>
     </header>
 
-    <div class="vt__lead">
-      {
-        lead.map((c, i) => (
-          <div data-reveal data-reveal-delay={i * 0.08}>
-            <ConceptCard lang={lang} concept={c} size="lg" />
-          </div>
-        ))
-      }
+    <!-- progetti per clienti -->
+    <div class="vt__group">
+      <div class="vt__group-head" data-reveal>
+        <h3 class="vt__group-title">{g.client.title}</h3>
+        <p class="vt__group-note">{g.client.note}</p>
+      </div>
+
+      <div class="vt__grid vt__grid--lead">
+        {
+          clients.map((c, i) => (
+            <div data-reveal data-reveal-delay={(i % 2) * 0.08}>
+              <ConceptCard lang={lang} concept={c} size="lg" />
+            </div>
+          ))
+        }
+      </div>
     </div>
 
-    <div class="vt__grid">
-      {
-        rest.map((c, i) => (
-          <div data-reveal data-reveal-delay={(i % 3) * 0.08}>
-            <ConceptCard lang={lang} concept={c} />
-          </div>
-        ))
-      }
+    <!-- concept nostri -->
+    <div class="vt__group">
+      <div class="vt__group-head" data-reveal>
+        <h3 class="vt__group-title">{g.concept.title}</h3>
+        <p class="vt__group-note">{g.concept.note}</p>
+      </div>
+
+      <div class="vt__grid">
+        {
+          conceptProjects.map((c, i) => (
+            <div data-reveal data-reveal-delay={(i % 3) * 0.07}>
+              <ConceptCard lang={lang} concept={c} />
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
@@ -68,17 +82,35 @@ const rest = concepts.slice(2);
   .vt__note {
     color: var(--dim);
     font-size: 0.95rem;
-    max-width: 42ch;
+    max-width: 44ch;
   }
 
-  .vt__lead,
+  .vt__group + .vt__group {
+    margin-top: clamp(4rem, 8vw, 7.5rem);
+  }
+
+  .vt__group-head {
+    display: grid;
+    gap: 0.7rem;
+    padding-bottom: 1.4rem;
+    margin-bottom: clamp(1.8rem, 3vw, 2.8rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .vt__group-title {
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    letter-spacing: 0.01em;
+  }
+
+  .vt__group-note {
+    color: var(--dim);
+    font-size: 0.92rem;
+    max-width: 58ch;
+  }
+
   .vt__grid {
     display: grid;
     gap: clamp(28px, 3.5vw, 56px);
-  }
-
-  .vt__lead {
-    margin-bottom: clamp(28px, 3.5vw, 56px);
   }
 
   @media (min-width: 760px) {
@@ -86,8 +118,10 @@ const rest = concepts.slice(2);
       grid-template-columns: 1.5fr 1fr;
       align-items: end;
     }
-    .vt__lead {
-      grid-template-columns: 1fr 1fr;
+    .vt__group-head {
+      grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+      gap: 1.5rem 3rem;
+      align-items: baseline;
     }
     .vt__grid {
       grid-template-columns: repeat(2, 1fr);
@@ -97,6 +131,10 @@ const rest = concepts.slice(2);
   @media (min-width: 1100px) {
     .vt__grid {
       grid-template-columns: repeat(3, 1fr);
+    }
+    /* specificità doppia: deve battere .vt__grid nello stesso media query */
+    .vt__grid.vt__grid--lead {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>

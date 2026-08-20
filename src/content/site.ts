@@ -56,17 +56,17 @@ export const sectionIds = {
 export const nav: Record<Lang, { label: string; href: string }[]> = {
   sq: [
     { label: 'Metoda', href: `#${sectionIds.method}` },
-    { label: 'Konceptet', href: `#${sectionIds.vault}` },
+    { label: 'Puna', href: `#${sectionIds.vault}` },
     { label: 'Si punojmë', href: `#${sectionIds.model}` },
   ],
   it: [
     { label: 'Metodo', href: `#${sectionIds.method}` },
-    { label: 'Concept', href: `#${sectionIds.vault}` },
+    { label: 'Lavori', href: `#${sectionIds.vault}` },
     { label: 'Come lavoriamo', href: `#${sectionIds.model}` },
   ],
   en: [
     { label: 'Method', href: `#${sectionIds.method}` },
-    { label: 'Concepts', href: `#${sectionIds.vault}` },
+    { label: 'Work', href: `#${sectionIds.vault}` },
     { label: 'How we work', href: `#${sectionIds.model}` },
   ],
 };
@@ -282,25 +282,75 @@ export const phases: Record<Lang, Phase[]> = {
 /* ------------------------------------------------------------------ vault */
 // Cap. 6 del piano — SQ ed EN letterali.
 
-export const vault: Record<Lang, { kicker: string; title: string; label: string; note: string }> = {
+export const vault: Record<Lang, { kicker: string; title: string; note: string }> = {
   sq: {
-    kicker: 'Koncept Vault',
-    title: "Koncepte gati për t'u hapur.",
-    label: 'Koncept ©',
-    note: 'Marka tona, të zhvilluara nga ne dhe të disponueshme në licencë. Nuk janë klientë.',
+    kicker: 'Puna jonë',
+    title: 'Çfarë kemi ndërtuar deri sot.',
+    note: 'Dy gjëra të ndryshme, të ndara qartë: projektet që kemi zhvilluar për klientë, dhe konceptet tona që presin dikë që i hap.',
   },
   it: {
-    kicker: 'Koncept Vault',
-    title: 'Concept pronti da aprire.',
-    label: 'Concept ©',
-    note: 'Marchi nostri, sviluppati da noi e disponibili in licenza. Non sono clienti.',
+    kicker: 'Il nostro lavoro',
+    title: 'Cosa abbiamo costruito finora.',
+    note: 'Due cose diverse, tenute separate: i progetti sviluppati per clienti e i nostri concept, che aspettano qualcuno che li apra.',
   },
   en: {
-    kicker: 'Koncept Vault',
-    title: 'Concepts ready to open.',
-    label: 'Concept ©',
-    note: 'Our own brands, developed in house and available for licensing. They are not clients.',
+    kicker: 'Our work',
+    title: 'What we have built so far.',
+    note: 'Two different things, kept apart: projects we developed for clients, and our own concepts, waiting for someone to open them.',
   },
+};
+
+/** Etichetta sempre visibile su ogni scheda: dichiara cosa è, non cosa sembra. */
+export const kindLabels: Record<Lang, { client: string; concept: string }> = {
+  sq: { client: 'Klient', concept: 'Koncept ©' },
+  it: { client: 'Cliente', concept: 'Concept ©' },
+  en: { client: 'Client', concept: 'Concept ©' },
+};
+
+export const vaultGroups: Record<Lang, Record<'client' | 'concept', { title: string; note: string }>> = {
+  sq: {
+    client: {
+      title: 'Projekte për klientë',
+      note: 'Aktivitete reale, të zhvilluara nga ne për klientët tanë. Poshtë secilës shkruajmë saktësisht se çfarë kemi bërë.',
+    },
+    concept: {
+      title: 'Konceptet tona',
+      note: 'Të studiuara dhe të projektuara nga ne, ende të pahapura. Të disponueshme në licencë.',
+    },
+  },
+  it: {
+    client: {
+      title: 'Progetti per clienti',
+      note: 'Attività reali, sviluppate da noi per i nostri clienti. Sotto ciascuna diciamo esattamente cosa abbiamo fatto.',
+    },
+    concept: {
+      title: 'I nostri concept',
+      note: 'Studiati e progettati da noi, non ancora aperti. Disponibili in licenza.',
+    },
+  },
+  en: {
+    client: {
+      title: 'Client projects',
+      note: 'Real businesses, developed by us for our clients. Under each one we state exactly what we did.',
+    },
+    concept: {
+      title: 'Our concepts',
+      note: 'Studied and designed by us, not yet opened. Available for licensing.',
+    },
+  },
+};
+
+/** Riga che accompagna lo scope di lavoro su una scheda cliente. */
+export const scopeLabel: Record<Lang, string> = {
+  sq: 'Çfarë kemi bërë',
+  it: 'Cosa abbiamo fatto',
+  en: 'What we did',
+};
+
+export const visitLabel: Record<Lang, string> = {
+  sq: 'Vizito faqen',
+  it: 'Vai al sito',
+  en: 'Visit the site',
 };
 
 export const licenceLine: Record<Lang, string> = {
@@ -368,13 +418,76 @@ export const stats: StatItem[] = [
     display: '0',
     accent: true,
     label: {
-      sq: 'agjenci që e bëjnë të gjithë rrugën',
-      it: "agenzie che fanno tutto il percorso",
-      en: 'agencies that walk the whole path',
+      sq: 'agjenci në Tiranë që e bëjnë të gjithë rrugën, nga ideja te hapja',
+      it: 'agenzie a Tirana che fanno tutto il percorso, dall\'idea all\'apertura',
+      en: 'agencies in Tirana that walk the whole path, from idea to opening',
     },
-    source: '',
+    source: 'VULA · 2026',
   },
 ];
+
+export const numbersThesis: Record<Lang, string> = {
+  sq: 'Kapitali është këtu. Turizmi po rritet. Konsumi në Tiranë po rritet. Ajo që mungon janë strukturat që e kthejnë kapitalin në biznese të ndërtuara mirë.',
+  it: 'Il capitale c\'è. Il turismo cresce. I consumi a Tirana crescono. Quello che manca sono le strutture che trasformano quel capitale in attività costruite bene.',
+  en: 'The capital is here. Tourism is growing. Spending in Tirana is growing. What is missing are the structures that turn that capital into well-built businesses.',
+};
+
+/* ------------------------------------------------------- porte d'ingresso */
+// Non tutti comprano il percorso intero: si entra da tre porte diverse.
+
+export const doors: Record<Lang, { kicker: string; title: string; items: { title: string; line: string }[] }> = {
+  sq: {
+    kicker: 'Si nisim',
+    title: 'Tri dyer hyrëse.',
+    items: [
+      { title: 'Sill idenë tënde', line: 'E analizojmë, e projektojmë dhe e çojmë deri te hapja.' },
+      { title: 'Merr një koncept tonin', line: 'Është gati: markë, menu, projekt hapësire. Hapet me licencë.' },
+      { title: 'Të mungon vetëm një pjesë', line: 'Kërkim, plan biznesi, markë, food cost, drejtim kantieri: shiten edhe veç.' },
+    ],
+  },
+  it: {
+    kicker: 'Come si parte',
+    title: "Tre porte d'ingresso.",
+    items: [
+      { title: 'Porta la tua idea', line: 'La analizziamo, la progettiamo e la portiamo fino all\'apertura.' },
+      { title: 'Prendi un nostro concept', line: 'È già pronto: marca, menu, progetto dello spazio. Si apre in licenza.' },
+      { title: 'Ti manca solo un pezzo', line: 'Ricerca, business plan, marca, food cost, direzione lavori: si comprano anche singolarmente.' },
+    ],
+  },
+  en: {
+    kicker: 'How it starts',
+    title: 'Three ways in.',
+    items: [
+      { title: 'Bring your own idea', line: 'We analyse it, design it and take it through to opening.' },
+      { title: 'Take one of our concepts', line: 'It is ready: brand, menu, space design. It opens under licence.' },
+      { title: 'You only need one piece', line: 'Research, business plan, brand, food cost, site direction: each is sold on its own.' },
+    ],
+  },
+};
+
+/* ------------------------------------------------------------------ rete  */
+// Cap. 5.3 del concept strategico: in casa la regia, fuori l'esecuzione.
+
+export const network: Record<Lang, { kicker: string; title: string; line: string; areas: string[] }> = {
+  sq: {
+    kicker: 'Rrjeti',
+    title: 'Nuk japim vetëm shërbime. Japim akses.',
+    line: 'Ne drejtojmë. Një rrjet i verifikuar profesionistësh dhe kompanish ekzekuton. Ti nënshkruan një kontratë të vetme.',
+    areas: ['Arkitekturë', 'Ligj', 'Kontabilitet', 'Ndërtim', 'Impiante', 'Burime njerëzore', 'Food & beverage', 'Foto dhe video', 'Dixhital', 'Marketing', 'Furnitorë'],
+  },
+  it: {
+    kicker: 'La rete',
+    title: 'Non diamo solo servizi. Diamo accesso.',
+    line: 'Noi dirigiamo. Una rete verificata di professionisti e imprese esegue. Tu firmi un solo contratto.',
+    areas: ['Architettura', 'Legale', 'Contabilità', 'Costruzione', 'Impianti', 'Risorse umane', 'Food & beverage', 'Foto e video', 'Digitale', 'Marketing', 'Fornitori'],
+  },
+  en: {
+    kicker: 'The network',
+    title: 'We do not just give services. We give access.',
+    line: 'We direct. A vetted network of professionals and firms executes. You sign a single contract.',
+    areas: ['Architecture', 'Legal', 'Accounting', 'Construction', 'Building services', 'People', 'Food & beverage', 'Photo & video', 'Digital', 'Marketing', 'Suppliers'],
+  },
+};
 
 /* --------------------------------------------------------- come lavoriamo */
 // Cap. 5.3 e 6.1 del concept strategico.
@@ -451,6 +564,12 @@ export const ctaFinal: Record<Lang, { line1: string; line2: string; button: stri
   en: { line1: 'Got a space? Got capital?', line2: 'Talk to the director.', button: 'Talk to the director' },
 };
 
+export const ctaNote: Record<Lang, string> = {
+  sq: '30 minuta. Pa angazhim. Na trego kapitalin, lokalin ose idenë.',
+  it: '30 minuti. Senza impegno. Raccontaci il capitale, il locale o l\'idea.',
+  en: '30 minutes. No commitment. Tell us about the capital, the space or the idea.',
+};
+
 export const ctaSecondary: Record<Lang, string> = {
   sq: 'Shiko metodën',
   it: 'Guarda il metodo',
@@ -473,6 +592,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     close: 'Mbyll',
     scroll: 'Rrëshqit',
     allConcepts: 'Të gjitha konceptet',
+    otherProjects: 'Projekte të tjera',
     backToConcepts: 'Kthehu te konceptet',
     seeConcept: 'Shiko',
     formName: 'Emri',
@@ -489,6 +609,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     close: 'Chiudi',
     scroll: 'Scorri',
     allConcepts: 'Tutti i concept',
+    otherProjects: 'Altri progetti',
     backToConcepts: 'Torna ai concept',
     seeConcept: 'Guarda',
     formName: 'Nome',
@@ -505,6 +626,7 @@ export const ui: Record<Lang, Record<string, string>> = {
     close: 'Close',
     scroll: 'Scroll',
     allConcepts: 'All concepts',
+    otherProjects: 'Other projects',
     backToConcepts: 'Back to concepts',
     seeConcept: 'View',
     formName: 'Name',

@@ -1,6 +1,6 @@
 ---
 // CTA finale a schermo intero (cap. 3).
-import { ctaFinal, path, sectionIds, type Lang } from '../../content/site';
+import { ctaFinal, ctaNote, path, sectionIds, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
@@ -18,10 +18,13 @@ const c = ctaFinal[lang];
       <span class="cta__accent">{c.line2}</span>
     </h2>
 
-    <a class="btn btn--primary cta__btn" href={path(lang, 'contact')} data-magnetic="12" data-reveal data-reveal-delay="0.2">
-      {c.button}
-      <span class="btn__arrow" aria-hidden="true">→</span>
-    </a>
+    <div class="cta__act" data-reveal data-reveal-delay="0.2">
+      <a class="btn btn--primary cta__btn" href={path(lang, 'contact')} data-magnetic="12">
+        {c.button}
+        <span class="btn__arrow" aria-hidden="true">→</span>
+      </a>
+      <p class="cta__note mono">{ctaNote[lang]}</p>
+    </div>
   </div>
 </section>
 
@@ -53,6 +56,22 @@ const c = ctaFinal[lang];
 
   .cta__accent {
     color: var(--accent);
+  }
+
+  .cta__act {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.15rem;
+  }
+
+  .cta__note {
+    font-size: 0.62rem;
+    line-height: 1.7;
+    color: var(--dim);
+    max-width: 38ch;
+    text-transform: none;
+    letter-spacing: 0.06em;
   }
 
   .cta__btn {

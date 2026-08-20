@@ -18,9 +18,11 @@ fasi, l'assenza di librerie di animazione e i blocchi `[DA FORNIRE]` a schermo).
 
 ## Le tre regole di onestà (non negoziabili)
 
-1. I concept si presentano come concept. Ogni scheda del vault porta
-   l'etichetta `Koncept ©`: sono marchi nostri, disponibili in licenza, non
-   clienti. Senza etichetta la scheda non si pubblica.
+1. Ogni scheda del vault dichiara cosa è, con etichetta sempre visibile.
+   Due categorie, mai mescolate: `Klient` = progetti sviluppati per clienti,
+   attività reali di altri (Elite Wines, Zen'on, Management Albania, LALA Kids),
+   con sotto la riga di cosa abbiamo fatto noi; `Koncept ©` = concept nostri,
+   mai aperti, disponibili in licenza. Senza etichetta la scheda non si pubblica.
 2. Zero testimonianze inventate, zero team inventato, zero volti generati
    spacciati per persone reali.
 3. I numeri citati sono quelli veri, con la fonte accanto (vedi
