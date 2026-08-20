@@ -15,6 +15,10 @@ import {
   scopeLabel,
   visitLabel,
   licenceLine,
+  vaultNotice,
+  dossierCta,
+  wipLabel,
+  path,
   ui,
   siteName,
   type Lang,
@@ -81,6 +85,8 @@ const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
         <a class="ch__back mono" href={`/${lang}/#vault`}>← {t.backToConcepts}</a>
 
         <span class="ch__badge mono">{kindLabels[lang][concept.kind]}</span>
+        {/* Progetto ancora in corso: si dichiara sopra al nome, non a fondo pagina. */}
+        {concept.wip && <span class="ch__wip mono">{wipLabel[lang]}</span>}
         <h1 class="display display--lg ch__name">{concept.name}</h1>
         <p class="ch__tag lede">{concept.tagline[lang]}</p>
         <p class="ch__sector mono">{concept.sector[lang]}</p>
@@ -126,6 +132,25 @@ const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
         <section class="cl">
           <div class="container cl__inner">
             <p class="display display--md cl__line" data-reveal>{licenceLine[lang]}</p>
+
+            {/* Livello 1: qui c'è la preview. La dossier completa passa da una
+                richiesta valutata — detto senza promettere tutele legali. */}
+            <p class="cl__guard mono" data-reveal data-reveal-delay="0.06">
+              {vaultNotice[lang]}
+            </p>
+
+            <a
+              class="btn btn--primary cl__cta"
+              href={path(lang, 'contact')}
+              data-reveal
+              data-reveal-delay="0.1"
+              data-magnetic="10"
+            >
+              {dossierCta[lang]}
+              <span class="btn__arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
           </div>
         </section>
       )
@@ -283,6 +308,35 @@ const others = concepts.filter((c) => c.slug !== concept.slug).slice(0, 4);
     padding-block: clamp(60px, 8vw, 110px);
     border-block: 1px solid var(--line);
     background: var(--ink-2);
+  }
+
+  .ch__wip {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.56rem;
+    color: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+
+  .cl__inner {
+    display: grid;
+    justify-items: start;
+    gap: 1.5rem;
+  }
+
+  .cl__guard {
+    font-size: 0.62rem;
+    line-height: 1.7;
+    color: var(--dim);
+    text-transform: none;
+    letter-spacing: 0.06em;
+    max-width: 60ch;
+  }
+
+  .cl__cta {
+    margin-top: 0.4rem;
   }
 
   .cl__line {

@@ -86,11 +86,22 @@ function smoothScroll() {
   gsap.ticker.lagSmoothing(0);
 
   // Le ancore interne passano da Lenis, così lo scroll resta una cosa sola.
-  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+  // Vale sia per `#sezione` sia per `/sq/#sezione`: la seconda forma serve ai
+  // link che devono funzionare anche dalle pagine interne, e sulla home deve
+  // comportarsi identica alla prima.
+  document.querySelectorAll<HTMLAnchorElement>('a[href*="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
-      const id = a.getAttribute('href');
-      if (!id || id === '#') return;
-      const target = document.querySelector(id);
+      let url: URL;
+      try {
+        url = new URL(a.href, window.location.href);
+      } catch {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname !== window.location.pathname) return;
+      if (!url.hash || url.hash === '#') return;
+
+      const target = document.querySelector(url.hash);
       if (!target) return;
       e.preventDefault();
       lenis.scrollTo(target as HTMLElement, { offset: -20 });

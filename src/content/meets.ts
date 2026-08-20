@@ -336,7 +336,7 @@ export const meets: Record<
     kicker: 'Sheshi i takimeve',
     title: 'VULA MEETS',
     subtitle: 'Idetë takojnë kapitalin.',
-    lede: 'Tri dyer, një adresë. Zgjidh atë që të përket dhe na trego çfarë ke në dorë.',
+    lede: 'Një adresë për tri situata të ndryshme. Zgjidh atë që të përket dhe na trego çfarë ke në dorë.',
     privacy: 'Idetë që na dërgon i sheh vetëm ekipi i VULA-s. Asgjë nuk publikohet.',
     disclaimer:
       'VULA Meets nuk ofron këshillim financiar dhe nuk është palë në marrëveshjet mes personave. VULA nuk menaxhon fonde.',
@@ -346,7 +346,7 @@ export const meets: Record<
     kicker: 'La piazza degli incontri',
     title: 'VULA MEETS',
     subtitle: 'Le idee incontrano il capitale.',
-    lede: 'Tre porte, un solo indirizzo. Scegli quella che ti riguarda e dicci cosa hai in mano.',
+    lede: 'Un solo indirizzo per tre situazioni diverse. Scegli quella che ti riguarda e dicci cosa hai in mano.',
     privacy: 'Le idee che ci mandi le vede solo il team di VULA. Niente viene pubblicato.',
     disclaimer:
       'VULA Meets non fornisce consulenza finanziaria e non è parte negli accordi tra le persone. VULA non gestisce fondi.',
@@ -356,7 +356,7 @@ export const meets: Record<
     kicker: 'The meeting place',
     title: 'VULA MEETS',
     subtitle: 'Ideas meet capital.',
-    lede: 'Three doors, one address. Pick the one that fits and tell us what you bring.',
+    lede: 'One address for three different situations. Pick the one that fits and tell us what you bring.',
     privacy: 'Ideas you send are seen only by the VULA team. Nothing is published.',
     disclaimer:
       'VULA Meets does not provide financial advice and is not a party to agreements between individuals. VULA does not manage funds.',

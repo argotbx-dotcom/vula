@@ -1,7 +1,8 @@
 ---
-// Tre porte d'ingresso.
-// Non è una sequenza: sono tre alternative, quindi niente numerazione 01/02/03
-// — la numerazione direbbe una cosa falsa sul contenuto.
+// Le quattro porte d'ingresso, ognuna col proprio nome commerciale.
+// Non è una sequenza: sono alternative, quindi niente numerazione 01/02/03
+// — la numerazione direbbe una cosa falsa sul contenuto. I nomi servono a non
+// far confondere fra loro le quattro funzioni.
 import { doors, services, type Lang } from '../../content/site';
 
 interface Props {
@@ -24,7 +25,17 @@ const sv = services[lang];
         d.items.map((item, i) => (
           <li class="dr__item" data-reveal data-reveal-delay={i * 0.08}>
             <span class="dr__mark" aria-hidden="true"></span>
-            <h3 class="dr__name">{item.title}</h3>
+            <span class="dr__brand mono">{item.name}</span>
+            <h3 class="dr__name">
+              {item.href ? (
+                <a class="dr__link" href={item.href}>
+                  {item.title}
+                  <span class="dr__arrow" aria-hidden="true">↓</span>
+                </a>
+              ) : (
+                item.title
+              )}
+            </h3>
             <p class="dr__line">{item.line}</p>
           </li>
         ))
@@ -100,9 +111,33 @@ const sv = services[lang];
     border-radius: 999px;
   }
 
+  /* il nome commerciale: piccolo, sopra al titolo, sempre visibile */
+  .dr__brand {
+    font-size: 0.58rem;
+    color: var(--accent);
+  }
+
   .dr__name {
     font-size: clamp(1.05rem, 1.7vw, 1.32rem);
     letter-spacing: 0.01em;
+  }
+
+  .dr__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .dr__arrow {
+    font-size: 0.8em;
+    color: var(--accent);
+    transition: transform 0.22s var(--ease);
+  }
+
+  .dr__item:hover .dr__arrow {
+    transform: translateY(3px);
   }
 
   .dr__line {
@@ -159,10 +194,19 @@ const sv = services[lang];
     color: var(--dim);
   }
 
-  @media (min-width: 860px) {
+  @media (min-width: 620px) {
     .dr__grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
+  }
+
+  @media (min-width: 1200px) {
+    .dr__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (min-width: 860px) {
     .dr__sv-head {
       grid-template-columns: 1fr 1fr;
       align-items: end;

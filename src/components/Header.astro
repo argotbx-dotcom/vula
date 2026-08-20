@@ -10,7 +10,15 @@ interface Props {
 }
 const { lang, alternates, page = 'home' } = Astro.props;
 const t = ui[lang];
-const links = nav[lang];
+
+// Le voci di menu puntano a sezioni della one-page. Fuori dalla home un
+// `#ancora` non porterebbe da nessuna parte: si risolve sulla home, e Lenis
+// riconosce comunque il caso "stessa pagina" e ci scorre morbido.
+const home = path(lang, 'home');
+const links = nav[lang].map((l) => ({
+  ...l,
+  href: l.href.startsWith('#') && page !== 'home' ? `${home}${l.href}` : l.href,
+}));
 const alts = alternates ?? (Object.fromEntries(LANGS.map((l) => [l, path(l, page)])) as Record<Lang, string>);
 ---
 

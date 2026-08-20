@@ -380,6 +380,30 @@ export const visitLabel: Record<Lang, string> = {
   en: 'Visit the site',
 };
 
+/**
+ * Il vault è una vetrina commerciale, non un archivio pubblico: la preview è
+ * aperta a tutti, la dossier completa passa da una richiesta valutata. Detto
+ * senza promettere protezioni legali che non possiamo garantire.
+ */
+/** Etichetta per un progetto cliente ancora in corso: si dichiara. */
+export const wipLabel: Record<Lang, string> = {
+  sq: 'Në zhvillim',
+  it: 'In lavorazione',
+  en: 'In progress',
+};
+
+export const vaultNotice: Record<Lang, string> = {
+  sq: 'Detajet strategjike të koncepteve tona nuk publikohen. Dosjet e plota ndahen vetëm pas vlerësimit të kërkesës.',
+  it: 'I dettagli strategici dei nostri concept non vengono pubblicati. I dossier completi si condividono solo dopo la valutazione della richiesta.',
+  en: 'The strategic details of our concepts are not published. Full dossiers are shared only after we assess the request.',
+};
+
+export const dossierCta: Record<Lang, string> = {
+  sq: 'Kërko dosjen e plotë',
+  it: 'Richiedi il dossier completo',
+  en: 'Request the full dossier',
+};
+
 export const licenceLine: Record<Lang, string> = {
   sq: 'Ky koncept është i disponueshëm në licencë.',
   it: 'Questo concept è disponibile in licenza.',
@@ -462,32 +486,53 @@ export const numbersThesis: Record<Lang, string> = {
 /* ------------------------------------------------------- porte d'ingresso */
 // Non tutti comprano il percorso intero: si entra da tre porte diverse.
 
-export const doors: Record<Lang, { kicker: string; title: string; items: { title: string; line: string }[] }> = {
+export const doors: Record<
+  Lang,
+  { kicker: string; title: string; items: { name: string; title: string; line: string; href?: string }[] }
+> = {
   sq: {
     kicker: 'Si nisim',
-    title: 'Tri dyer hyrëse.',
+    title: 'Katër dyer hyrëse.',
     items: [
-      { title: 'Sill idenë tënde', line: 'E analizojmë, e projektojmë dhe e çojmë deri te hapja.' },
-      { title: 'Merr një koncept tonin', line: 'Është gati: markë, menu, projekt hapësire. Hapet me licencë.' },
-      { title: 'Të mungon vetëm një pjesë', line: 'Kërkim, plan biznesi, markë, food cost, drejtim kantieri: shiten edhe veç.' },
+      { name: 'VULA Studio', title: 'Sill idenë tënde', line: 'E analizojmë, e projektojmë dhe e çojmë deri te hapja.' },
+      { name: 'VULA Originals', title: 'Merr një koncept tonin', line: 'Është gati: markë, menu, projekt hapësire. Hapet me licencë.' },
+      { name: 'VULA Services', title: 'Të mungon vetëm një pjesë', line: 'Kërkim, plan biznesi, markë, food cost, drejtim kantieri: shiten edhe veç.' },
+      {
+        name: 'VULA Meets',
+        title: 'Ke ide, kapital ose kërkon ortak',
+        line: 'Idetë takojnë kapitalin: na trego çfarë ke dhe të kontaktojmë ne.',
+        href: `#${sectionIds.meets}`,
+      },
     ],
   },
   it: {
     kicker: 'Come si parte',
-    title: "Tre porte d'ingresso.",
+    title: "Quattro porte d'ingresso.",
     items: [
-      { title: 'Porta la tua idea', line: 'La analizziamo, la progettiamo e la portiamo fino all\'apertura.' },
-      { title: 'Prendi un nostro concept', line: 'È già pronto: marca, menu, progetto dello spazio. Si apre in licenza.' },
-      { title: 'Ti manca solo un pezzo', line: 'Ricerca, business plan, marca, food cost, direzione lavori: si comprano anche singolarmente.' },
+      { name: 'VULA Studio', title: 'Porta la tua idea', line: 'La analizziamo, la progettiamo e la portiamo fino all\'apertura.' },
+      { name: 'VULA Originals', title: 'Prendi un nostro concept', line: 'È già pronto: marca, menu, progetto dello spazio. Si apre in licenza.' },
+      { name: 'VULA Services', title: 'Ti manca solo un pezzo', line: 'Ricerca, business plan, marca, food cost, direzione lavori: si comprano anche singolarmente.' },
+      {
+        name: 'VULA Meets',
+        title: 'Hai un\'idea, capitale o cerchi un socio',
+        line: 'Le idee incontrano il capitale: dicci cosa hai e ti contattiamo noi.',
+        href: `#${sectionIds.meets}`,
+      },
     ],
   },
   en: {
     kicker: 'How it starts',
-    title: 'Three ways in.',
+    title: 'Four ways in.',
     items: [
-      { title: 'Bring your own idea', line: 'We analyse it, design it and take it through to opening.' },
-      { title: 'Take one of our concepts', line: 'It is ready: brand, menu, space design. It opens under licence.' },
-      { title: 'You only need one piece', line: 'Research, business plan, brand, food cost, site direction: each is sold on its own.' },
+      { name: 'VULA Studio', title: 'Bring your own idea', line: 'We analyse it, design it and take it through to opening.' },
+      { name: 'VULA Originals', title: 'Take one of our concepts', line: 'It is ready: brand, menu, space design. It opens under licence.' },
+      { name: 'VULA Services', title: 'You only need one piece', line: 'Research, business plan, brand, food cost, site direction: each is sold on its own.' },
+      {
+        name: 'VULA Meets',
+        title: 'You have an idea, capital or need a partner',
+        line: 'Ideas meet capital: tell us what you have and we get in touch.',
+        href: `#${sectionIds.meets}`,
+      },
     ],
   },
 };
@@ -529,6 +574,8 @@ export const whyVula: Record<Lang, { kicker: string; nots: string[]; claim: stri
       'Nuk jemi agjenci marketingu.',
       'Nuk jemi kontabilistë.',
       'Nuk jemi kompani ndërtimi.',
+      'Nuk jemi studio ligjore.',
+      'Nuk jemi web agjenci.',
     ],
     claim: 'Jemi regjia.',
     line: 'Punojmë me specialistë të përzgjedhur për çdo fazë të projektit. Ti nuk ke nevojë të gjesh dhjetë profesionistë: ne i koordinojmë.',
@@ -540,6 +587,8 @@ export const whyVula: Record<Lang, { kicker: string; nots: string[]; claim: stri
       "Non siamo un'agenzia di marketing.",
       'Non siamo commercialisti.',
       'Non siamo un\'impresa edile.',
+      'Non siamo uno studio legale.',
+      'Non siamo una web agency.',
     ],
     claim: 'Siamo la regia.',
     line: 'Lavoriamo con specialisti selezionati per ogni fase del progetto. Tu non devi trovare dieci professionisti: li coordiniamo noi.',
@@ -741,6 +790,14 @@ export const ctaFinal: Record<Lang, { line1: string; line2: string; button: stri
   sq: { line1: 'Ke një lokal? Ke kapital?', line2: 'Fol me regjinë.', button: 'Fol me regjinë' },
   it: { line1: 'Hai un locale? Hai capitale?', line2: 'Parla con la regia.', button: 'Parla con la regia' },
   en: { line1: 'Got a space? Got capital?', line2: 'Talk to the director.', button: 'Talk to the director' },
+};
+
+/** Seconda strada della CTA finale: chi non ha un progetto ma un'idea, del
+    capitale o cerca un socio non deve finire nello stesso imbuto. */
+export const ctaMeets: Record<Lang, { button: string; line: string }> = {
+  sq: { button: 'VULA Meets', line: 'Ke ide, kapital ose kërkon ortak?' },
+  it: { button: 'VULA Meets', line: 'Hai un\'idea, capitale o cerchi un socio?' },
+  en: { button: 'VULA Meets', line: 'Got an idea, capital, or looking for a partner?' },
 };
 
 export const ctaNote: Record<Lang, string> = {

@@ -4,7 +4,7 @@
 // sulla scheda, mai nascosta nel dettaglio. Senza etichetta la scheda non si
 // pubblica: un concept mai aperto non deve poter sembrare un'attività reale.
 import { Image, getImage } from 'astro:assets';
-import { conceptPath, kindLabels, scopeLabel, ui, type Lang } from '../content/site';
+import { conceptPath, kindLabels, scopeLabel, wipLabel, ui, type Lang } from '../content/site';
 import type { Concept } from '../content/vault';
 
 interface Props {
@@ -49,6 +49,7 @@ const alt = `${concept.name} — ${concept.tagline[lang]}`;
     }
     <span class="cc__veil" aria-hidden="true"></span>
     <span class="cc__label mono">{kindLabels[lang][concept.kind]}</span>
+    {concept.wip && <span class="cc__wip mono">{wipLabel[lang]}</span>}
   </div>
 
   <div class="cc__body">
@@ -120,6 +121,21 @@ const alt = `${concept.name} — ${concept.tagline[lang]}`;
     color: var(--on-tint);
     background: var(--tint);
     border-radius: 999px;
+  }
+
+  /* progetto ancora in corso: dichiarato accanto all'etichetta, non nascosto */
+  .cc__wip {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 0.42rem 0.75rem;
+    font-size: 0.56rem;
+    color: var(--paper);
+    background: rgba(10, 10, 11, 0.72);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   .cc__body {

@@ -1,12 +1,26 @@
 ---
 // CTA finale a schermo intero (cap. 3).
-import { ctaFinal, ctaNote, path, sectionIds, whatsappNumber, whatsappIntro, whatsappCta, type Lang } from '../../content/site';
+import {
+  ctaFinal,
+  ctaMeets,
+  ctaNote,
+  path,
+  sectionIds,
+  whatsappNumber,
+  whatsappIntro,
+  whatsappCta,
+  type Lang,
+} from '../../content/site';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const c = ctaFinal[lang];
+const meetsCta = ctaMeets[lang];
+// Assoluto sulla home: questa CTA compare anche sulle pagine concept, dove la
+// sezione Meets non esiste.
+const meetsHref = `${path(lang, 'home')}#${sectionIds.meets}`;
 const wa = whatsappNumber
   ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappIntro[lang])}`
   : null;
@@ -27,16 +41,23 @@ const wa = whatsappNumber
           {c.button}
           <span class="btn__arrow" aria-hidden="true">→</span>
         </a>
-        {
-          wa && (
-            <a class="btn btn--ghost cta__btn" href={wa} target="_blank" rel="noopener noreferrer" data-magnetic="8">
-              {whatsappCta[lang]}
-              <span class="btn__arrow" aria-hidden="true">↗</span>
-            </a>
-          )
-        }
+        <a class="btn btn--ghost cta__btn" href={meetsHref} data-magnetic="8">
+          {meetsCta.button}
+          <span class="btn__arrow" aria-hidden="true">↓</span>
+        </a>
       </div>
+
+      <p class="cta__second">{meetsCta.line}</p>
       <p class="cta__note mono">{ctaNote[lang]}</p>
+
+      {
+        wa && (
+          <a class="cta__wa mono" href={wa} target="_blank" rel="noopener noreferrer">
+            {whatsappCta[lang]}
+            <span aria-hidden="true">↗</span>
+          </a>
+        )
+      }
     </div>
   </div>
 </section>
@@ -82,6 +103,23 @@ const wa = whatsappNumber
     flex-direction: column;
     align-items: flex-start;
     gap: 1.15rem;
+  }
+
+  /* La seconda strada va spiegata in una riga: chi ha capitale o cerca un
+     socio non deve finire nello stesso imbuto di chi ha un progetto. */
+  .cta__second {
+    font-size: 0.95rem;
+    color: var(--dim);
+    max-width: 42ch;
+  }
+
+  .cta__wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.62rem;
+    color: var(--tint);
+    text-decoration: none;
   }
 
   .cta__note {

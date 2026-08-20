@@ -27,6 +27,8 @@ export interface Concept {
   tagline: Record<Lang, string>;
   /** Solo per `client`: cosa abbiamo fatto noi, dichiarato senza ambiguità. */
   scope?: Record<Lang, string>;
+  /** Progetto ancora in corso: si dichiara, non si lascia intendere finito. */
+  wip?: boolean;
   /** Sito pubblico, quando esiste. Il link cliccabile è la prova più forte. */
   url?: string;
   /** Cinemagraph in /public/videos, se prodotto. */
@@ -54,9 +56,9 @@ export const concepts: Concept[] = [
       en: 'Premium wine importer and distributor in Tirana.',
     },
     scope: {
-      sq: 'Koncept, identitet, logo, faqe interneti, zhvillim projekti.',
-      it: 'Concept, identità, logo, sito, sviluppo progetto.',
-      en: 'Concept, identity, logo, website, project development.',
+      sq: 'Strategji, pozicionim, identitet dhe ekosistem dixhital B2B/B2C: shop, klub, dhurata, storytelling i prodhuesve, kartë dixhitale dhe porosi online.',
+      it: 'Strategia, posizionamento, identità ed ecosistema digitale B2B/B2C: shop, club, regali, storytelling dei produttori, carta digitale e ordini online.',
+      en: 'Strategy, positioning, identity and a B2B/B2C digital ecosystem: shop, club, gifting, producer storytelling, digital list and online ordering.',
     },
     url: 'https://elitewinesal.netlify.app/sq/',
     images: ['01-hero.webp', '02-club.webp', '03-shop.webp', '04-set.webp'],
@@ -79,9 +81,9 @@ export const concepts: Concept[] = [
       en: "We don't sell property. We vet it.",
     },
     scope: {
-      sq: 'Pozicionim, identitet dhe faqe trigjuhëshe.',
-      it: 'Posizionamento, identità e sito trilingue.',
-      en: 'Positioning, identity and a trilingual website.',
+      sq: 'Pozicionim, model shërbimi, strukturë komerciale, identitet dhe ekosistem dixhital trigjuhësh.',
+      it: 'Posizionamento, modello di servizio, struttura commerciale, identità ed ecosistema digitale trilingue.',
+      en: 'Positioning, service model, commercial structure, identity and a trilingual digital ecosystem.',
     },
     url: 'https://managmentalbania.netlify.app/de/',
     images: ['01-hero.webp', '02-notary.webp'],
@@ -99,10 +101,11 @@ export const concepts: Concept[] = [
       en: 'Bars, energy balls and artisanal granola.',
     },
     scope: {
-      sq: 'Identitet, paketim, foto produkti dhe faqe me porosi online.',
-      it: 'Identità, packaging, foto prodotto e sito con ordini online.',
-      en: 'Identity, packaging, product photography and a site with online ordering.',
+      sq: 'Identitet, paketim, drejtim produkti, koncept B2B/B2C dhe platformë dixhitale me porosi online.',
+      it: 'Identità, packaging, direzione prodotto, concept B2B/B2C e piattaforma digitale con ordini online.',
+      en: 'Identity, packaging, product direction, B2B/B2C concept and a digital platform with online ordering.',
     },
+    wip: true,
     video: '/videos/vault-zenon.mp4',
     images: ['01-hero.png', '03-pouches.png', '02-keto-box.png', '04-logo.png'],
   },

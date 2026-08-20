@@ -2,7 +2,7 @@
 // ATTO III — la prova (cap. 2 e 3).
 // Due gruppi tenuti rigorosamente separati: i progetti sviluppati per clienti
 // e i concept nostri, mai aperti. Ogni scheda porta la propria etichetta.
-import { vault, vaultGroups, sectionIds, type Lang } from '../../content/site';
+import { vault, vaultGroups, vaultNotice, sectionIds, type Lang } from '../../content/site';
 import { clients, conceptProjects } from '../../content/vault';
 import ConceptCard from '../ConceptCard.astro';
 
@@ -47,6 +47,8 @@ const g = vaultGroups[lang];
       <div class="vt__group-head" data-reveal>
         <h3 class="vt__group-title">{g.concept.title}</h3>
         <p class="vt__group-note">{g.concept.note}</p>
+        <!-- vetrina, non archivio: la preview è pubblica, la dossier no -->
+        <p class="vt__guard mono">{vaultNotice[lang]}</p>
       </div>
 
       <div class="vt__grid">
@@ -106,6 +108,20 @@ const g = vaultGroups[lang];
     color: var(--dim);
     font-size: 0.92rem;
     max-width: 58ch;
+  }
+
+  /* Quello che non si pubblica va detto dove si guardano i concept, non
+     sepolto in una pagina legale. */
+  .vt__guard {
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.6rem;
+    line-height: 1.7;
+    color: var(--dim);
+    text-transform: none;
+    letter-spacing: 0.06em;
+    max-width: 62ch;
   }
 
   .vt__grid {
