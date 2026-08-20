@@ -9,23 +9,34 @@ fasi, l'assenza di librerie di animazione e i blocchi `[DA FORNIRE]` a schermo).
 
 ## Pubblicazione
 
-Il sito vive su **Cloudflare Pages**, progetto `vula-studio`:
-<https://vula-studio.pages.dev>
+Il sito vive su **Cloudflare Pages**, progetto `vula-studio`, **collegato a
+GitHub**: <https://vula-studio.pages.dev>
+
+**Non serve nessun comando di deploy.** Ogni push su `main` fa partire da solo
+build e pubblicazione. Basta committare e pushare.
+
+Configurazione del progetto (già impostata, si tocca solo se cambia il dominio):
+
+| variabile | valore | perché |
+|---|---|---|
+| `NODE_VERSION` | `22` | il progetto richiede Node ≥22.12, il default di Pages è più vecchio |
+| `SITE_URL` | `https://vula-studio.pages.dev` | canonical, hreflang, og:image e sitemap devono essere assoluti e stabili |
+
+`SITE_URL` è indispensabile: senza, Astro ripiega su `CF_PAGES_URL`, che è
+l'indirizzo del singolo deploy (`1d93a2cd.vula-studio.pages.dev`) e cambia a
+ogni build — il canonical si sposterebbe di continuo. Quando arriva il dominio
+definitivo si cambia solo questa variabile, nelle impostazioni del progetto.
+
+Per pubblicare a mano, senza passare da git:
 
 ```
 SITE_URL="https://vula-studio.pages.dev" npx astro build
 npx wrangler pages deploy dist --project-name vula-studio --branch main
 ```
 
-`SITE_URL` va passato perché canonical, hreflang, og:image e sitemap devono
-essere assoluti e puntare all'host giusto. In una build fatta da Cloudflare
-stessa la variabile `CF_PAGES_URL` arriva da sola e non serve passare nulla.
-Quando arriva il dominio definitivo si cambia solo `SITE_URL`.
-
 Netlify resta collegato al repository ma **il suo account ha i crediti
 esauriti** e rifiuta i deploy: il vecchio indirizzo serve ancora una copia
-datata. Va spento o fatto reindirizzare, altrimenti restano due copie
-indicizzabili dello stesso sito.
+datata. Va spento, altrimenti restano due copie indicizzabili dello stesso sito.
 
 ## Vincoli di lavoro
 
