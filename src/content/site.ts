@@ -740,7 +740,7 @@ export const ctaSecondary: Record<Lang, string> = {
 //
 // Formato: prefisso internazionale senza + e senza spazi. Es. 3556XXXXXXX.
 // Finché è vuoto, il pulsante WhatsApp non viene mostrato da nessuna parte.
-export const whatsappNumber = '';
+export const whatsappNumber = '355697787889';
 
 export const whatsappIntro: Record<Lang, string> = {
   sq: 'Përshëndetje! Ju shkruaj nga faqja e VULA Studio.',
