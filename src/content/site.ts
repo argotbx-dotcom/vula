@@ -733,6 +733,27 @@ export const ctaSecondary: Record<Lang, string> = {
 
 /* ---------------------------------------------------------------- UI varia */
 
+/* -------------------------------------------------------------- contatto */
+// Il brief compilato diventa un messaggio WhatsApp già scritto: in Albania si
+// converte lì, non nei form (concept strategico, cap. 9). Nessun backend,
+// nessun servizio esterno, nessun dato che passa da terzi.
+//
+// Formato: prefisso internazionale senza + e senza spazi. Es. 3556XXXXXXX.
+// Finché è vuoto, il pulsante WhatsApp non viene mostrato da nessuna parte.
+export const whatsappNumber = '';
+
+export const whatsappIntro: Record<Lang, string> = {
+  sq: 'Përshëndetje! Ju shkruaj nga faqja e VULA Studio.',
+  it: 'Salve! Vi scrivo dal sito di VULA Studio.',
+  en: 'Hello! I am writing from the VULA Studio site.',
+};
+
+export const whatsappCta: Record<Lang, string> = {
+  sq: 'Shkruaj në WhatsApp',
+  it: 'Scrivi su WhatsApp',
+  en: 'Message on WhatsApp',
+};
+
 export const location: Record<Lang, string> = {
   sq: 'Tiranë, Shqipëri',
   it: 'Tirana, Albania',

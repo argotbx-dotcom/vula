@@ -5,7 +5,7 @@
 import Base from '../../layouts/Base.astro';
 import Header from '../Header.astro';
 import Footer from '../Footer.astro';
-import { brief, location, siteName, type Lang } from '../../content/site';
+import { brief, location, siteName, whatsappNumber, whatsappIntro, whatsappCta, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
@@ -13,12 +13,9 @@ interface Props {
 const { lang } = Astro.props;
 const b = brief[lang];
 
-const formName = { sq: 'brief-sq', it: 'brief-it', en: 'brief-en' }[lang];
-const botLabel = {
-  sq: 'Mos e plotëso këtë fushë',
-  it: 'Non compilare questo campo',
-  en: "Don't fill this field out",
-}[lang];
+// Il brief non viaggia su un server: viene composto in un messaggio WhatsApp
+// già scritto. Senza numero configurato il pulsante non esiste.
+const hasWa = whatsappNumber.length > 0;
 ---
 
 <Base lang={lang} page="contact" title={`${b.title} · ${siteName}`} description={b.line}>
@@ -34,46 +31,49 @@ const botLabel = {
           <h1 class="display display--lg bf__title" data-reveal data-reveal-delay="0.05">{b.title}</h1>
           <p class="lede bf__lede" data-reveal data-reveal-delay="0.1">{b.line}</p>
           <p class="bf__place mono" data-reveal data-reveal-delay="0.15">{location[lang]}</p>
+
+          {
+            hasWa && (
+              <a
+                class="btn btn--ghost bf__wa"
+                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappIntro[lang])}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-reveal
+                data-reveal-delay="0.2"
+                data-magnetic="6"
+              >
+                {whatsappCta[lang]}
+                <span class="btn__arrow" aria-hidden="true">↗</span>
+              </a>
+            )
+          }
         </header>
 
-        <form
-          class="bf__form"
-          name={formName}
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          data-reveal
-          data-reveal-delay="0.12"
-        >
-          <input type="hidden" name="form-name" value={formName} />
-          <p class="visually-hidden">
-            <label>
-              {botLabel}
-              <input name="bot-field" tabindex="-1" autocomplete="off" />
-            </label>
-          </p>
+        {hasWa && (
+        <form class="bf__form" data-brief data-wa={whatsappNumber} data-intro={whatsappIntro[lang]} data-reveal data-reveal-delay="0.12">
 
           <!-- il progetto -->
           <div class="bf__row">
-            <label class="bf__field">
+            <label class="bf__field" data-label={b.what}>
               <span class="mono">{b.what}</span>
               <input type="text" name="cosa" />
             </label>
-            <label class="bf__field">
+            <label class="bf__field" data-label={b.where}>
               <span class="mono">{b.where}</span>
               <input type="text" name="dove" />
             </label>
           </div>
 
           <div class="bf__row">
-            <label class="bf__field">
+            <label class="bf__field" data-label={b.hasSpace}>
               <span class="mono">{b.hasSpace}</span>
               <select name="locale">
                 <option value=""></option>
                 {b.hasSpaceOptions.map((o) => <option value={o}>{o}</option>)}
               </select>
             </label>
-            <label class="bf__field">
+            <label class="bf__field" data-label={b.hasBrand}>
               <span class="mono">{b.hasBrand}</span>
               <select name="marca">
                 <option value=""></option>
@@ -82,14 +82,14 @@ const botLabel = {
             </label>
           </div>
 
-          <label class="bf__field">
+          <label class="bf__field" data-label={b.capital}>
             <span class="mono">{b.capital}</span>
             <input type="text" name="capitale" />
             <small class="bf__hint">{b.capitalHint}</small>
           </label>
 
           <!-- di cosa ha bisogno -->
-          <fieldset class="bf__fieldset">
+          <fieldset class="bf__fieldset" data-label={b.needs}>
             <legend class="mono">{b.needs}</legend>
             <div class="bf__checks">
               {
@@ -103,7 +103,7 @@ const botLabel = {
             </div>
           </fieldset>
 
-          <label class="bf__field">
+          <label class="bf__field" data-label={b.notes}>
             <span class="mono">{b.notes}</span>
             <textarea name="note" rows="4"></textarea>
           </label>
@@ -112,17 +112,17 @@ const botLabel = {
 
           <!-- contatto: l'unica parte obbligatoria -->
           <div class="bf__row">
-            <label class="bf__field">
+            <label class="bf__field" data-label={b.name}>
               <span class="mono">{b.name} *</span>
               <input type="text" name="nome" autocomplete="name" required />
             </label>
-            <label class="bf__field">
+            <label class="bf__field" data-label={b.email}>
               <span class="mono">{b.email} *</span>
               <input type="email" name="email" autocomplete="email" required />
             </label>
           </div>
 
-          <label class="bf__field">
+          <label class="bf__field" data-label={b.phone}>
             <span class="mono">{b.phone}</span>
             <input type="tel" name="telefon" autocomplete="tel" />
           </label>
@@ -132,12 +132,47 @@ const botLabel = {
             <span class="btn__arrow" aria-hidden="true">→</span>
           </button>
         </form>
+        )}
       </div>
     </section>
   </main>
 
   <Footer lang={lang} page="contact" />
 </Base>
+
+<script>
+  // Il brief non viene inviato a un server: viene formattato in un messaggio
+  // WhatsApp già scritto. Nessun dato lascia il dispositivo finché non è
+  // l'utente stesso a premere invio dentro WhatsApp.
+  const form = document.querySelector<HTMLFormElement>('[data-brief]');
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const number = form.dataset.wa;
+    if (!number) return;
+
+    const parts: string[] = [form.dataset.intro || ''];
+
+    form.querySelectorAll<HTMLElement>('[data-label]').forEach((group) => {
+      const label = group.dataset.label || '';
+      const checks = group.querySelectorAll<HTMLInputElement>('input[type="checkbox"]:checked');
+
+      if (checks.length) {
+        parts.push(`${label}: ${Array.from(checks).map((c) => c.value).join(', ')}`);
+        return;
+      }
+
+      const field = group.querySelector<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        'input:not([type="checkbox"]), select, textarea'
+      );
+      const value = field?.value.trim();
+      if (value) parts.push(`${label}: ${value}`);
+    });
+
+    window.open(`https://wa.me/${number}?text=${encodeURIComponent(parts.join('\n'))}`, '_blank', 'noopener');
+  });
+</script>
 
 <style>
   .bf {
@@ -165,6 +200,10 @@ const botLabel = {
     margin-top: 1.8rem;
     font-size: 0.64rem;
     color: var(--dim);
+  }
+
+  .bf__wa {
+    margin-top: 2rem;
   }
 
   .bf__form {
