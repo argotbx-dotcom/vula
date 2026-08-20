@@ -38,6 +38,27 @@ Netlify resta collegato al repository ma **il suo account ha i crediti
 esauriti** e rifiuta i deploy: il vecchio indirizzo serve ancora una copia
 datata. Va spento, altrimenti restano due copie indicizzabili dello stesso sito.
 
+## VULA Meets — da completare
+
+La sezione `#vula-meets` (fra "Si punojmë" e la CTA finale) è pubblicata e
+funzionante, ma **il recapito email non è ancora attivo**: i tre ID Formspree
+in `src/content/meets.ts` sono i segnaposto `SOSTITUIRE_CON_ID_REALE`.
+
+Finché restano tali il pannello non finge: alla fine del questionario dichiara
+che l'invio via email non è attivo e offre WhatsApp con tutte le risposte già
+composte, così il contatto non si perde. Appena arrivano gli ID veri basta
+sostituirli: non serve toccare altro.
+
+Sul piano gratuito Formspree il limite è di **50 invii al mese per account**,
+non per form: tre ID non fanno 150 invii.
+
+Quando gli ID diventano reali, ricontrollare due cose che oggi sono
+irraggiungibili perché nessuna richiesta parte:
+- un passo condizionale non pertinente resta compilato nel DOM e finirebbe in
+  `FormData` (esempio: si risponde "Po" alla proprietà, si scrive la città, si
+  torna indietro e si cambia in "Jo");
+- dopo un invio riuscito il form non viene azzerato.
+
 ## Vincoli di lavoro
 
 - Branch di produzione `main`. Niente branch nuovi, niente PR.
