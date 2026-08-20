@@ -157,6 +157,8 @@ export interface Phase {
   name: string;
   line: string;
   output: string;
+  /** Testo alternativo della foto di fase. */
+  alt: string;
 }
 
 export const methodTitle: Record<Lang, { kicker: string; title: string }> = {
@@ -172,36 +174,42 @@ export const phases: Record<Lang, Phase[]> = {
       name: 'ZBULO',
       line: 'Analizë e kapitalit, e pronës dhe e zonës: kalimi i njerëzve, konkurrenca, qiratë, demografia, sezonaliteti.',
       output: 'Studim fizibiliteti me skenarë të krahasuar dhe një rekomandim të argumentuar.',
+      alt: 'Një lokal bosh natën, me planimetrinë në dysheme dhe kalimtarët që duken përmes xhamit.',
     },
     {
       num: '02',
       name: 'PËRCAKTO',
       line: 'Zgjedhja e konceptit: pozicionimi, klienti tip, oferta, çmimet, dimensionimi i investimit.',
       output: 'Concept book dhe një plan biznesi i bankueshëm.',
+      alt: 'Mostra materialesh të radhitura mbi një tavolinë, përkrah numrave të projektit.',
     },
     {
       num: '03',
       name: 'PROJEKTO',
       line: 'Identiteti i markës dhe projekti i lokalit lindin bashkë, jo nga furnitorë të ndarë.',
       output: 'Brand book dhe projekt arkitektonik zbatimi.',
+      alt: 'Maketa prej kartoni e një lokali, e ndriçuar nga një dritë e vetme e ngrohtë.',
     },
     {
       num: '04',
       name: 'NDËRTO',
       line: 'Drejtim i kantierit si përfaqësues të pronarit: tenderë, kontrata, afate, kosto, cilësi.',
       output: 'Lokal i përfunduar, brenda buxhetit dhe afatit; biznes i regjistruar dhe në rregull.',
+      alt: 'Kantieri i lokalit natën, me skela dhe dritën e punës mes pluhurit.',
     },
     {
       num: '05',
       name: 'HAP',
       line: 'Faqe, Google, rrjete sociale, foto dhe video, eventi i hapjes, trajnimi i stafit.',
       output: 'Hapje me klientë që nga dita e parë, jo një lokal bosh që shpreson.',
+      alt: 'Lokali i sapohapur që ndriçon rrugën, plot me klientë pas xhamit.',
     },
     {
       num: '06',
       name: 'SHOQËRO',
       line: 'Marketing i vazhdueshëm dhe rishikim mujor i numrave në 12 muajt e parë.',
       output: 'Një drejtor i jashtëm me abonim mujor.',
+      alt: 'Tabela me numrat e muajit mbi një tavolinë, pas mbylljes.',
     },
   ],
   it: [
@@ -210,36 +218,42 @@ export const phases: Record<Lang, Phase[]> = {
       name: 'SCOPRI',
       line: "Analisi del capitale, dell'immobile e della zona: passaggio, concorrenza, affitti, demografia, stagionalità.",
       output: 'Studio di fattibilità con scenari a confronto e una raccomandazione motivata.',
+      alt: 'Un locale vuoto di notte, con la planimetria a terra e i passanti oltre la vetrina.',
     },
     {
       num: '02',
       name: 'DEFINISCI',
       line: 'Scelta del concept: posizionamento, cliente tipo, offerta, prezzi, dimensionamento investimento.',
       output: 'Concept book e un business plan bancabile.',
+      alt: 'Campioni di materiale allineati su un tavolo accanto ai numeri del progetto.',
     },
     {
       num: '03',
       name: 'DISEGNA',
       line: 'Identità di marca e progetto del locale nascono insieme, non da fornitori separati.',
       output: 'Brand book e progetto architettonico esecutivo.',
+      alt: 'Il plastico in cartone di un locale, illuminato da una sola luce calda.',
     },
     {
       num: '04',
       name: 'COSTRUISCI',
       line: 'Direzione del cantiere come rappresentanti del proprietario: gare, contratti, tempi, costi, qualità.',
       output: 'Locale finito, a budget e nei tempi; azienda registrata e in regola.',
+      alt: 'Il cantiere del locale di notte, con i ponteggi e la lampada da lavoro nella polvere.',
     },
     {
       num: '05',
       name: 'LANCIA',
       line: 'Sito, Google, social, foto e video, evento di apertura, formazione del personale.',
       output: 'Apertura con clienti dal giorno uno, non un locale vuoto che spera.',
+      alt: 'Il locale appena aperto che illumina la strada, pieno di clienti oltre la vetrata.',
     },
     {
       num: '06',
       name: 'ACCOMPAGNA',
       line: 'Marketing continuativo e revisione mensile dei numeri nei primi 12 mesi.',
       output: 'Un direttore esterno in abbonamento mensile.',
+      alt: 'I grafici del mese su un tavolo, a locale chiuso.',
     },
   ],
   en: [
@@ -248,36 +262,42 @@ export const phases: Record<Lang, Phase[]> = {
       name: 'DISCOVER',
       line: 'Analysis of the capital, the property and the area: footfall, competition, rents, demographics, seasonality.',
       output: 'A feasibility study with scenarios compared and a reasoned recommendation.',
+      alt: 'An empty unit at night, the floor plan on the ground and passers-by beyond the glass.',
     },
     {
       num: '02',
       name: 'DEFINE',
       line: 'Choosing the concept: positioning, target customer, offer, pricing, sizing the investment.',
       output: 'A concept book and a bankable business plan.',
+      alt: 'Material samples laid out on a table beside the printed numbers.',
     },
     {
       num: '03',
       name: 'DESIGN',
       line: 'Brand identity and the space are designed together, not by separate suppliers.',
       output: 'A brand book and construction-ready architectural drawings.',
+      alt: 'A cardboard scale model of a venue, lit by a single warm light.',
     },
     {
       num: '04',
       name: 'BUILD',
       line: "Running the site as the owner's representative: tenders, contracts, schedule, cost, quality.",
       output: 'A finished space, on budget and on time; a registered, compliant company.',
+      alt: 'The fit-out at night, scaffolding and a work lamp in the dust.',
     },
     {
       num: '05',
       name: 'OPEN',
       line: 'Website, Google, social, photo and video, opening event, staff training.',
       output: 'An opening with customers from day one, not an empty room that hopes.',
+      alt: 'The newly opened venue lighting the street, full of guests behind the glass.',
     },
     {
       num: '06',
       name: 'STAY',
       line: 'Ongoing marketing and a monthly review of the numbers through the first 12 months.',
       output: 'An outside director on a monthly retainer.',
+      alt: 'The charts for the month on a table, after closing.',
     },
   ],
 };

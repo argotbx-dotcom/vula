@@ -2,7 +2,19 @@
 // ATTO II — il metodo (cap. 2 e 3).
 // Sei pannelli: su desktop scorrono in orizzontale con pin, su mobile
 // restano pannelli verticali — nessuno scroll-jacking sul telefono.
+import { Image } from 'astro:assets';
 import { methodTitle, phases, sectionIds, type Lang } from '../../content/site';
+
+// Una foto per fase, nell'ordine 01 → 06: mostra l'azione di cui parla il
+// pannello invece di lasciare un vuoto nero al centro della scheda.
+import f01 from '../../assets/faza/01.jpg';
+import f02 from '../../assets/faza/02.jpg';
+import f03 from '../../assets/faza/03.jpg';
+import f04 from '../../assets/faza/04.jpg';
+import f05 from '../../assets/faza/05.jpg';
+import f06 from '../../assets/faza/06.jpg';
+
+const media = [f01, f02, f03, f04, f05, f06];
 
 interface Props {
   lang: Lang;
@@ -22,11 +34,16 @@ const list = phases[lang];
       </div>
 
       {
-        list.map((ph) => (
+        list.map((ph, i) => (
           <article class="mt__panel">
             <span class="mt__num mono">{ph.num}</span>
             <h3 class="mt__name display display--md">{ph.name}</h3>
             <p class="mt__line">{ph.line}</p>
+
+            <figure class="mt__media">
+              <Image src={media[i]} alt={ph.alt} widths={[440, 880]} sizes="(min-width: 900px) 27vw, 92vw" />
+            </figure>
+
             <div class="mt__out">
               <span class="mt__out-label mono">Output</span>
               <p class="mt__out-text">{ph.output}</p>
@@ -97,6 +114,30 @@ const list = phases[lang];
     max-width: 40ch;
   }
 
+  /* La foto riempie lo spazio libero del pannello. I neri della foto sono
+     più profondi del fondo della scheda: si stacca da sola, senza bordi. */
+  .mt__media {
+    position: relative;
+    margin: 0.4rem 0 0;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--ink-3);
+    aspect-ratio: 4 / 3;
+  }
+
+  /* l'img la genera <Image>: fuori dallo scope di questo componente */
+  .mt__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.1s var(--ease);
+  }
+
+  .mt__panel:hover .mt__media :global(img) {
+    transform: scale(1.045);
+  }
+
   .mt__out {
     margin-top: auto;
     padding-top: 1.4rem;
@@ -143,7 +184,14 @@ const list = phases[lang];
 
     .mt__panel {
       flex: 0 0 clamp(340px, 27vw, 440px);
-      min-height: 62vh;
+      min-height: 66vh;
+    }
+
+    /* su desktop la foto prende tutta l'altezza che avanza */
+    .mt__media {
+      flex: 1 1 auto;
+      min-height: 0;
+      aspect-ratio: auto;
     }
   }
 </style>

@@ -284,61 +284,124 @@ section {
 }
 
 /* --------------------------------------------------------------- cursore   */
-/* Cap. 4.2: cursore custom con stati. Solo su puntatore fine. */
+/* Cap. 4.2: cursore custom con stati. Solo su puntatore fine.
+
+   Due strati con inerzie diverse, perché fanno due mestieri diversi:
+   · il PUNTO segue quasi istantaneo — è la mira, dice esattamente dove
+     cadrà il clic;
+   · l'ANELLO insegue con ritardo — è il bersaglio grande, quello che
+     l'occhio trova senza cercarlo.
+
+   Niente mix-blend-mode: su un fotogramma di mezzo tono il cursore si
+   annullerebbe proprio sopra le schede, cioè dove serve di più. Il
+   contrasto è garantito da un alone scuro sotto il tratto chiaro: si legge
+   sul nero della pagina come sopra una foto. */
 
 .cursor {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 300;
   display: none;
   pointer-events: none;
-  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+/* Compare solo quando il JS lo ha davvero agganciato al mouse: prima di
+   allora resta la freccia di sistema, mai il vuoto. */
+.js.has-cursor .cursor {
+  opacity: 1;
+}
+
+.cursor__ring,
+.cursor__dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
   will-change: transform;
 }
 
+.cursor__ring {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 1.5px solid rgba(244, 241, 234, 0.9);
+  /* alone scuro sopra e sotto il tratto: regge su qualunque sfondo */
+  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.5), inset 0 0 0 1px rgba(10, 10, 11, 0.5);
+  transition: width 0.3s var(--ease), height 0.3s var(--ease), margin 0.3s var(--ease),
+    background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
 .cursor__dot {
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
   background: var(--paper);
-  border-radius: 50%;
-  transition: width 0.25s var(--ease), height 0.25s var(--ease), margin 0.25s var(--ease);
+  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
+  transition: opacity 0.2s var(--ease);
 }
 
 .cursor__label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.7);
+  grid-area: 1 / 1;
   opacity: 0;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--paper);
+  color: var(--ink);
   white-space: nowrap;
-  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+  transition: opacity 0.25s var(--ease);
+}
+
+/* link e bottoni: l'anello si accende d'oro. È il segnale "qui si clicca",
+   ed è l'unico posto in cui il cursore prende un colore. */
+.cursor.is-link .cursor__ring {
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-color: var(--accent);
+  background: rgba(200, 150, 62, 0.18);
 }
 
 .cursor.is-link .cursor__dot {
-  width: 44px;
-  height: 44px;
-  margin: -22px 0 0 -22px;
+  opacity: 0;
 }
 
-.cursor.is-view .cursor__dot {
+/* schede con etichetta: disco pieno con la parola dentro */
+.cursor.is-view .cursor__ring {
   width: 92px;
   height: 92px;
   margin: -46px 0 0 -46px;
-  background: var(--paper);
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.cursor.is-view .cursor__dot {
+  opacity: 0;
 }
 
 .cursor.is-view .cursor__label {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
   color: var(--ink);
-  mix-blend-mode: normal;
+}
+
+/* conferma del clic: l'anello si stringe sotto il dito */
+.cursor.is-down:not(.is-view) .cursor__ring {
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+}
+
+/* sui campi di testo e fuori dalla finestra torna il cursore di sistema:
+   l'I-beam dice dove cadrà la lettera, un anello no.
+   La specificità deve battere `.js.has-cursor .cursor`, che accende
+   l'opacità: altrimenti il cursore custom non si spegne mai. */
+.js.has-cursor .cursor.is-text,
+.js.has-cursor .cursor.is-out {
+  opacity: 0;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -352,6 +415,16 @@ section {
   .js.has-cursor button,
   .js.has-cursor summary {
     cursor: none;
+  }
+  /* i campi compilabili tengono il puntatore di sistema */
+  .js.has-cursor input,
+  .js.has-cursor textarea,
+  .js.has-cursor select {
+    cursor: auto;
+  }
+  .js.has-cursor select,
+  .js.has-cursor input[type='checkbox'] {
+    cursor: pointer;
   }
 }
 

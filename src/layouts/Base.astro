@@ -114,8 +114,10 @@ const tintStyle = tint ? `--tint:${tint};--on-tint:${onTint ?? '#0a0a0b'};` : un
     </div>
 
     <div class="cursor" data-cursor aria-hidden="true">
-      <span class="cursor__dot"></span>
-      <span class="cursor__label" data-cursor-label></span>
+      <span class="cursor__ring" data-cursor-ring>
+        <span class="cursor__label" data-cursor-label></span>
+      </span>
+      <span class="cursor__dot" data-cursor-dot></span>
     </div>
 
     <slot />

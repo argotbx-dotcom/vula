@@ -278,22 +278,50 @@ function cursor() {
   if (reduced() || !finePointer()) return;
 
   const el = document.querySelector<HTMLElement>('[data-cursor]');
+  const ring = el?.querySelector<HTMLElement>('[data-cursor-ring]');
+  const dot = el?.querySelector<HTMLElement>('[data-cursor-dot]');
   const label = el?.querySelector<HTMLElement>('[data-cursor-label]');
-  if (!el) return;
+  if (!el || !ring || !dot) return;
 
-  document.documentElement.classList.add('has-cursor');
+  // Due inerzie diverse, perché fanno due mestieri diversi: il punto è la
+  // mira e non deve mai restare indietro, l'anello insegue ed è quello che
+  // l'occhio segue.
+  const ringX = gsap.quickTo(ring, 'x', { duration: 0.34, ease: EASE });
+  const ringY = gsap.quickTo(ring, 'y', { duration: 0.34, ease: EASE });
+  const dotX = gsap.quickTo(dot, 'x', { duration: 0.07, ease: 'none' });
+  const dotY = gsap.quickTo(dot, 'y', { duration: 0.07, ease: 'none' });
 
-  const setX = gsap.quickTo(el, 'x', { duration: 0.32, ease: EASE });
-  const setY = gsap.quickTo(el, 'y', { duration: 0.32, ease: EASE });
+  // La freccia di sistema si nasconde solo al primo movimento del mouse:
+  // fino a quel momento il cursore custom sarebbe fermo a 0,0 e non ci
+  // sarebbe nessun puntatore da nessuna parte.
+  let armed = false;
 
   window.addEventListener(
     'mousemove',
     (e) => {
-      setX(e.clientX);
-      setY(e.clientY);
+      if (!armed) {
+        armed = true;
+        gsap.set([ring, dot], { x: e.clientX, y: e.clientY });
+        document.documentElement.classList.add('has-cursor');
+        return;
+      }
+      ringX(e.clientX);
+      ringY(e.clientY);
+      dotX(e.clientX);
+      dotY(e.clientY);
     },
     { passive: true }
   );
+
+  // Fuori dalla finestra sparisce, altrimenti resta un anello appiccicato
+  // al bordo mentre il mouse è altrove.
+  document.documentElement.addEventListener('mouseleave', () => el.classList.add('is-out'));
+  document.documentElement.addEventListener('mouseenter', () => el.classList.remove('is-out'));
+
+  // Conferma del clic: senza freccia di sistema serve un riscontro visivo
+  // che il tasto è stato premuto davvero.
+  window.addEventListener('mousedown', () => el.classList.add('is-down'), { passive: true });
+  window.addEventListener('mouseup', () => el.classList.remove('is-down'), { passive: true });
 
   // Hover con intento: parte dopo 80 ms, non al passaggio accidentale.
   let timer: number | undefined;
@@ -314,6 +342,13 @@ function cursor() {
     const text = node.dataset.cursorLabel;
     node.addEventListener('mouseenter', () => enter(text ? 'is-view' : 'is-link', text));
     node.addEventListener('mouseleave', leave);
+  });
+
+  // Sui campi compilabili il cursore custom si toglie di mezzo: l'I-beam di
+  // sistema dice dove cadrà la lettera, un anello no.
+  document.querySelectorAll<HTMLElement>('input, textarea, select').forEach((node) => {
+    node.addEventListener('mouseenter', () => el.classList.add('is-text'));
+    node.addEventListener('mouseleave', () => el.classList.remove('is-text'));
   });
 
   // Bottoni magnetici: il bottone segue il mouse di pochi pixel.
