@@ -16,6 +16,11 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Su Firefox Android e nelle WebView l'apertura della tastiera genera un
+// window.resize: senza questo, tutti i pin verrebbero ricalcolati e alla
+// chiusura del pannello si vedrebbe un salto.
+ScrollTrigger.config({ ignoreMobileResize: true });
+
 /** Firma di easing unica del sito (equivalente di cubic-bezier(.16,1,.3,1)). */
 const EASE = 'power4.out';
 
@@ -403,6 +408,51 @@ function lazyVideo() {
   videos.forEach((v) => io.observe(v));
 }
 
+/* ------------------------------------------------------------ scroll lock */
+/* Un overlay a schermo pieno deve fermare lo scroll della pagina sotto.
+   Lo scroll qui è pilotato da Lenis, quindi `overflow: hidden` da solo non
+   basta: va fermato Lenis. Ma con prefers-reduced-motion Lenis non esiste,
+   e il blocco deve funzionare lo stesso — da qui le due strade.
+
+   Si passa da eventi invece che da un import diretto così i componenti non
+   dipendono da questo modulo: se il JS di motion non parte, l'overlay resta
+   comunque usabile, solo senza blocco dello sfondo.
+
+   Il contatore serve perché più cose possono chiedere il blocco insieme
+   (overlay + menu): l'ultimo che chiude è quello che sblocca. */
+
+function scrollLock(lenis: Lenis | null) {
+  const html = document.documentElement;
+  let held = 0;
+
+  const apply = () => {
+    if (held > 0) {
+      lenis?.stop();
+      html.classList.add('is-locked');
+    } else {
+      lenis?.start();
+      html.classList.remove('is-locked');
+    }
+  };
+
+  window.addEventListener('vula:lock', () => {
+    held += 1;
+    apply();
+  });
+
+  window.addEventListener('vula:unlock', (e) => {
+    held = Math.max(0, held - 1);
+    apply();
+    if (held > 0) return;
+    // Chi ha bloccato ha riportato la pagina alla sua Y con scrollTo, ma Lenis
+    // tiene una posizione propria: senza risincronizzarlo, alla ripresa
+    // scivolerebbe indietro da solo.
+    const y = (e as CustomEvent<{ y?: number }>).detail?.y;
+    lenis?.scrollTo(typeof y === 'number' ? y : window.scrollY, { immediate: true });
+    ScrollTrigger.refresh();
+  });
+}
+
 /* -------------------------------------------------------------------- boot */
 
 export function initMotion() {
@@ -416,6 +466,7 @@ export function initMotion() {
     });
     counters();
     lazyVideo();
+    scrollLock(null);
     return;
   }
 
@@ -434,6 +485,7 @@ export function initMotion() {
   parallax();
   cursor();
   lazyVideo();
+  scrollLock(lenis);
 
   // Dopo il caricamento di font e immagini le misure cambiano.
   window.addEventListener('load', () => ScrollTrigger.refresh());

@@ -16,8 +16,10 @@ import Doors from '../sections/Doors.astro';
 import Network from '../sections/Network.astro';
 import Numbers from '../sections/Numbers.astro';
 import Model from '../sections/Model.astro';
+import VulaMeets from '../sections/VulaMeets.astro';
 import CtaFinal from '../sections/CtaFinal.astro';
 import { hero, manifesto, siteName, type Lang } from '../../content/site';
+import { meets } from '../../content/meets';
 
 interface Props {
   lang: Lang;
@@ -25,7 +27,9 @@ interface Props {
 const { lang } = Astro.props;
 
 const title = `${siteName} — ${hero[lang].line1} ${hero[lang].line2}`;
-const description = manifesto[lang].join(' ');
+// La description dichiara anche VULA Meets: è una porta d'ingresso a sé,
+// cercata con parole diverse da quelle del resto della pagina.
+const description = `${manifesto[lang].join(' ')} ${meets[lang].metaLine}`;
 ---
 
 <Base lang={lang} page="home" title={title} description={description}>
@@ -41,6 +45,7 @@ const description = manifesto[lang].join(' ');
     <Network lang={lang} />
     <Numbers lang={lang} />
     <Model lang={lang} />
+    <VulaMeets lang={lang} />
     <CtaFinal lang={lang} />
   </main>
   <Footer lang={lang} page="home" />

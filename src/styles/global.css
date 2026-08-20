@@ -34,6 +34,14 @@
   --dur: 0.8s;
 
   --header-h: 76px;
+
+  /* Geometria del viewport reale, riscritta da src/lib/meets.ts quando si
+     apre un pannello a schermo pieno. I valori qui sono il fallback prima
+     della prima misura e con JavaScript disattivato: `svh` è il viewport
+     più piccolo, quello con la barra URL visibile. */
+  --vvh: 100svh;
+  --vvtop: 0px;
+  --kb: 0px;
 }
 
 *,
@@ -78,6 +86,12 @@ video,
 svg {
   display: block;
   max-width: 100%;
+}
+
+/* `hidden` è il modo in cui i passi del form spariscono da tab order e
+   albero di accessibilità: nessun `display` di componente deve batterlo. */
+[hidden] {
+  display: none !important;
 }
 
 a {
@@ -232,7 +246,7 @@ section {
 
 /* ------------------------------------------------------------------ focus  */
 
-:where(a, button, input, textarea, summary, [tabindex]):focus-visible {
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--paper);
   outline-offset: 3px;
   border-radius: 2px;
@@ -281,6 +295,50 @@ section {
 .js [data-reveal-line] > * {
   opacity: 0;
   transform: translateY(0.7em);
+}
+
+/* ----------------------------------------------------------- scroll lock  */
+/* Con Lenis attivo il blocco arriva da `.lenis-stopped` (più sopra). Questa
+   classe copre il caso senza Lenis — prefers-reduced-motion, o JS di motion
+   non partito — così un overlay a schermo pieno non lascia scorrere la
+   pagina sotto in nessuno scenario. */
+
+html.is-locked,
+html.is-locked body {
+  overflow: hidden;
+}
+
+/* Modale a schermo pieno. `overflow: hidden` da solo non ferma lo scroll su
+   iOS: il body va fissato con l'offset salvato (lo fa src/lib/meets.ts).
+   `scrollbar-gutter` evita che il layout salti quando la barra sparisce. */
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html.is-modal,
+html.is-modal body {
+  overscroll-behavior: none;
+}
+
+/* Un elemento nel top layer sta sopra qualunque z-index, cursore custom
+   compreso (z 300). Se lasciassimo `cursor: none` sul body, dentro il
+   pannello non ci sarebbe nessun puntatore visibile — lo stesso difetto che
+   avevamo sul sito. Quindi mentre il modale è aperto torna quello di
+   sistema. */
+
+@media (hover: hover) and (pointer: fine) {
+  .js.has-cursor.is-modal .cursor {
+    opacity: 0;
+  }
+  .js.has-cursor.is-modal body {
+    cursor: auto;
+  }
+  .js.has-cursor.is-modal a,
+  .js.has-cursor.is-modal button,
+  .js.has-cursor.is-modal summary {
+    cursor: pointer;
+  }
 }
 
 /* --------------------------------------------------------------- cursore   */

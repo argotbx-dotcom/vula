@@ -53,6 +53,7 @@ export const sectionIds = {
   vault: 'vault',
   numbers: 'numrat',
   model: 'si-punojme',
+  meets: 'vula-meets',
   cta: 'kontakt',
 } as const;
 
@@ -61,16 +62,19 @@ export const nav: Record<Lang, { label: string; href: string }[]> = {
     { label: 'Metoda', href: `#${sectionIds.method}` },
     { label: 'Puna', href: `#${sectionIds.vault}` },
     { label: 'Si punojmë', href: `#${sectionIds.model}` },
+    { label: 'Meets', href: `#${sectionIds.meets}` },
   ],
   it: [
     { label: 'Metodo', href: `#${sectionIds.method}` },
     { label: 'Lavori', href: `#${sectionIds.vault}` },
     { label: 'Come lavoriamo', href: `#${sectionIds.model}` },
+    { label: 'Meets', href: `#${sectionIds.meets}` },
   ],
   en: [
     { label: 'Method', href: `#${sectionIds.method}` },
     { label: 'Work', href: `#${sectionIds.vault}` },
     { label: 'How we work', href: `#${sectionIds.model}` },
+    { label: 'Meets', href: `#${sectionIds.meets}` },
   ],
 };
 
