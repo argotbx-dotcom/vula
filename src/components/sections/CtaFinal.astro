@@ -43,7 +43,8 @@ const wa = whatsappNumber
         </a>
         <a class="btn btn--ghost cta__btn" href={meetsHref} data-magnetic="8">
           {meetsCta.button}
-          <span class="btn__arrow" aria-hidden="true">↓</span>
+          {/* La sezione Meets sta sopra questa CTA: la freccia in giù mentiva. */}
+          <span class="btn__arrow btn__arrow--up" aria-hidden="true">↑</span>
         </a>
       </div>
 
@@ -134,5 +135,11 @@ const wa = whatsappNumber
   .cta__btn {
     padding: 1.35rem 2.4rem;
     font-size: 0.78rem;
+  }
+
+  /* La freccia orizzontale scorre a destra all'hover; questa punta in alto e
+     deve muoversi nella sua direzione. */
+  .cta__btn:hover .btn__arrow--up {
+    transform: translateY(-3px);
   }
 </style>

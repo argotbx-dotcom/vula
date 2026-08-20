@@ -151,18 +151,12 @@ function unlockPage(): void {
 
 type SendOutcome = { ok: true } | { ok: false; message: string; field?: string };
 
-async function postToFormspree(
-  endpoint: string,
-  form: HTMLFormElement,
-  t: Strings,
-  signal: AbortSignal
-): Promise<SendOutcome> {
+async function postToFormspree(endpoint: string, form: HTMLFormElement, t: Strings): Promise<SendOutcome> {
   let res: Response;
   try {
     res = await fetch(endpoint, {
       method: 'POST',
       body: new FormData(form),
-      signal,
       // L'unico header necessario. Senza, Formspree risponde 302 verso la
       // propria pagina "thanks" e al posto del JSON arriva dell'HTML.
       // Niente Content-Type: lo scrive il browser col boundary multipart.
@@ -239,7 +233,11 @@ export function initMeets(): void {
   let opener: HTMLElement | null = null;
   let sending = false;
   let liveTimer: number | undefined;
-  let inFlight: AbortController | null = null;
+  // Numero progressivo dell'invio. Serve a riconoscere l'esito che torna da un
+  // invio ormai superato: la richiesta non si annulla — potrebbe essere già
+  // arrivata a destinazione, e annullarla butterebbe via un contatto — ma il
+  // suo esito non deve atterrare su un pannello chiuso o su un'altra porta.
+  let sendSeq = 0;
 
   const controlOf = (step: HTMLElement): Field | null =>
     step.querySelector<Field>('input:not([type="checkbox"]), select, textarea') ??
@@ -406,8 +404,8 @@ export function initMeets(): void {
     }
 
     sending = true;
-    inFlight = new AbortController();
-    const controller = inFlight;
+    const mine = ++sendSeq;
+    const target = form;
     if (nextBtn) {
       nextBtn.setAttribute('aria-disabled', 'true');
       nextBtn.textContent = t.sending;
@@ -416,14 +414,17 @@ export function initMeets(): void {
     setStatus('', false);
     announce(t.sending);
 
-    const outcome = await postToFormspree(endpoint, form, t, controller.signal);
+    const outcome = await postToFormspree(endpoint, target, t);
 
-    // Il pannello può essere stato chiuso mentre la richiesta era in volo: in
-    // quel caso `close` ha già rimesso tutto a posto e qui non si tocca nulla,
-    // altrimenti alla riapertura si troverebbe «Po dërgohet…» per sempre.
-    if (controller.signal.aborted) return;
+    // Nel frattempo il pannello può essere stato chiuso, o riaperto su un'altra
+    // porta. In quel caso l'esito non è più di nessuno: mostrarlo vorrebbe dire
+    // far comparire «Faleminderit» su un questionario che l'utente non ha
+    // inviato. Si lascia cadere, dopo aver ripulito il form che l'ha prodotto.
+    if (mine !== sendSeq || form !== target || !dialog.open) {
+      target.removeAttribute('aria-busy');
+      return;
+    }
 
-    inFlight = null;
     sending = false;
     form.removeAttribute('aria-busy');
     if (nextBtn) nextBtn.setAttribute('aria-disabled', 'false');
@@ -461,7 +462,7 @@ export function initMeets(): void {
     // Stato pulito a ogni apertura: un invio interrotto non deve lasciare il
     // pannello bloccato sul suo pulsante.
     sending = false;
-    inFlight = null;
+    sendSeq += 1;
     if (nextBtn) nextBtn.setAttribute('aria-disabled', 'false');
     form.removeAttribute('aria-busy');
     forms.forEach((f) => {
@@ -490,11 +491,12 @@ export function initMeets(): void {
   // Tutta la pulizia sta sull'evento `close`, non sul pulsante X: Esc chiude
   // scavalcando il pulsante e passa comunque da qui.
   dialog.addEventListener('close', () => {
-    // Una richiesta ancora in volo va fermata: il suo esito arriverebbe su un
-    // pannello chiuso e mostrerebbe una conferma che nessuno sta guardando.
-    inFlight?.abort();
-    inFlight = null;
+    // La richiesta in volo si lascia finire — può essere già arrivata, e
+    // annullarla perderebbe un contatto — ma il suo esito viene invalidato.
+    sendSeq += 1;
     sending = false;
+    if (nextBtn) nextBtn.setAttribute('aria-disabled', 'false');
+    forms.forEach((f) => f.removeAttribute('aria-busy'));
 
     let done = false;
     const finish = () => {

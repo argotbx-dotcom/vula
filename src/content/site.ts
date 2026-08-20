@@ -616,6 +616,8 @@ export const whyVula: Record<Lang, { kicker: string; nots: string[]; claim: stri
       'We are not a marketing agency.',
       'We are not accountants.',
       'We are not a construction firm.',
+      'We are not a law firm.',
+      'We are not a web agency.',
     ],
     claim: 'We are the direction.',
     line: 'We work with selected specialists for every phase of the project. You do not have to find ten professionals: we coordinate them.',
