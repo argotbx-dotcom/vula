@@ -4,11 +4,23 @@ import sitemap from '@astrojs/sitemap';
 
 /**
  * Dominio pubblico del sito.
+ *
  * Serve ad Astro per generare URL ASSOLUTI in canonical, hreflang, og:image e
- * sitemap: relativi non sono validi e Google ignora gli hreflang relativi.
- * Quando il dominio definitivo viene comprato, si cambia SOLO questa riga.
+ * sitemap: quelli relativi non sono validi e Google ignora gli hreflang
+ * relativi. Ma il dominio non può restare scritto a mano, perché lo stesso
+ * repository viene pubblicato da più host: un canonical che punta all'host
+ * sbagliato è peggio di nessun canonical, perché dice a Google che la copia
+ * buona sta altrove e divide il punteggio fra due domini.
+ *
+ * Ordine di precedenza:
+ *   1. SITE_URL      — da impostare quando arriva il dominio definitivo
+ *   2. CF_PAGES_URL  — lo passa Cloudflare Pages a ogni build
+ *   3. il fallback   — l'indirizzo Netlify attuale
  */
-export const SITE = 'https://vula-nga-ideja-te-hapja.netlify.app';
+export const SITE =
+  process.env.SITE_URL ||
+  process.env.CF_PAGES_URL ||
+  'https://vula-nga-ideja-te-hapja.netlify.app';
 
 export default defineConfig({
   site: SITE,

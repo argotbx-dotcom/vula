@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://vula-nga-ideja-te-hapja.netlify.app/sitemap-index.xml
