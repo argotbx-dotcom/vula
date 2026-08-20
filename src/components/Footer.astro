@@ -3,6 +3,7 @@ import {
   nav,
   path,
   siteName,
+  siteMark,
   location,
   ui,
   LANGS,
@@ -23,7 +24,7 @@ const { lang, alternates, page = 'home' } = Astro.props;
 const t = ui[lang];
 const alts = alternates ?? (Object.fromEntries(LANGS.map((l) => [l, path(l, page)])) as Record<Lang, string>);
 const year = 2026;
-const marquee = Array.from({ length: 8 }, () => siteName);
+const marquee = Array.from({ length: 8 }, () => siteMark);
 ---
 
 <footer class="ftr">
@@ -34,7 +35,7 @@ const marquee = Array.from({ length: 8 }, () => siteName);
           <span class="ftr__set">
             {marquee.map(() => (
               <span class="ftr__word">
-                {siteName}
+                {siteMark}
                 <i class="ftr__sep" />
               </span>
             ))}
@@ -47,6 +48,7 @@ const marquee = Array.from({ length: 8 }, () => siteName);
   <div class="container ftr__grid">
     <div class="ftr__brand">
       <span class="ftr__mark"><VulaMarchio /></span>
+      <p class="ftr__name">{siteName}</p>
       <p class="ftr__place mono">{location[lang]}</p>
     </div>
 
@@ -152,6 +154,14 @@ const marquee = Array.from({ length: 8 }, () => siteName);
     width: 44px;
     aspect-ratio: 1;
     color: var(--paper);
+  }
+
+  .ftr__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
   .ftr__place {

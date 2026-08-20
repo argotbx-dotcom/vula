@@ -13,7 +13,10 @@ export type Lang = 'sq' | 'it' | 'en';
 export const LANGS: Lang[] = ['sq', 'it', 'en'];
 export const DEFAULT_LANG: Lang = 'sq';
 
-export const siteName = 'VULA';
+/** Nome dell'azienda, per titoli, meta e firma. */
+export const siteName = 'VULA Studio';
+/** Marchio breve: il lockup grafico e il marquee restano "VULA". */
+export const siteMark = 'VULA';
 
 export const langLabel: Record<Lang, string> = {
   sq: 'Shqip',
@@ -81,9 +84,9 @@ export const hero: Record<Lang, { line1: string; line2: string }> = {
 };
 
 export const heroKicker: Record<Lang, string> = {
-  sq: 'Agjenci konceptesh · Tiranë',
-  it: 'Koncept agency · Tirana',
-  en: 'Concept agency · Tirana',
+  sq: 'Nga ideja te hapja · Tiranë',
+  it: "Dall'idea all'apertura · Tirana",
+  en: 'From idea to opening · Tirana',
 };
 
 /* -------------------------------------------------------------- manifesto */
@@ -496,17 +499,17 @@ export const modelTitle: Record<Lang, { kicker: string; title: string; line: str
   sq: {
     kicker: 'Si punojmë',
     title: 'Një kontratë e vetme.',
-    line: 'Ne drejtojmë. Rrjeti ynë i akredituar ekzekuton. Ti nënshkruan një kontratë të vetme — me ne.',
+    line: 'Ne drejtojmë. Rrjeti ynë i përzgjedhur dhe i verifikuar ekzekuton. Ti nënshkruan një kontratë të vetme — me ne.',
   },
   it: {
     kicker: 'Come lavoriamo',
     title: 'Un solo contratto.',
-    line: 'Noi dirigiamo. La nostra rete accreditata esegue. Tu firmi un solo contratto — con noi.',
+    line: 'Noi dirigiamo. La nostra rete selezionata e verificata esegue. Tu firmi un solo contratto — con noi.',
   },
   en: {
     kicker: 'How we work',
     title: 'One contract.',
-    line: 'We direct. Our accredited network executes. You sign a single contract — with us.',
+    line: 'We direct. Our selected and vetted network executes. You sign a single contract — with us.',
   },
 };
 
