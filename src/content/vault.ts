@@ -94,7 +94,7 @@ export const concepts: Concept[] = [
     kind: 'client',
     tint: '#A9C8DA',
     onTint: '#0A0A0B',
-    sector: { sq: 'Ushqim i shëndetshëm', it: 'Healthy food', en: 'Healthy food' },
+    sector: { sq: 'Ushqim i shëndetshëm', it: 'Alimentazione sana', en: 'Healthy food' },
     tagline: {
       sq: 'Bars, energy balls dhe granola artizanale.',
       it: 'Barrette, energy ball e granola artigianale.',

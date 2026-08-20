@@ -151,12 +151,18 @@ function unlockPage(): void {
 
 type SendOutcome = { ok: true } | { ok: false; message: string; field?: string };
 
-async function postToFormspree(endpoint: string, form: HTMLFormElement, t: Strings): Promise<SendOutcome> {
+async function postToFormspree(
+  endpoint: string,
+  form: HTMLFormElement,
+  t: Strings,
+  signal: AbortSignal
+): Promise<SendOutcome> {
   let res: Response;
   try {
     res = await fetch(endpoint, {
       method: 'POST',
       body: new FormData(form),
+      signal,
       // L'unico header necessario. Senza, Formspree risponde 302 verso la
       // propria pagina "thanks" e al posto del JSON arriva dell'HTML.
       // Niente Content-Type: lo scrive il browser col boundary multipart.
@@ -233,6 +239,7 @@ export function initMeets(): void {
   let opener: HTMLElement | null = null;
   let sending = false;
   let liveTimer: number | undefined;
+  let inFlight: AbortController | null = null;
 
   const controlOf = (step: HTMLElement): Field | null =>
     step.querySelector<Field>('input:not([type="checkbox"]), select, textarea') ??
@@ -257,7 +264,9 @@ export function initMeets(): void {
     if (countEl) countEl.textContent = t.step.replace('{n}', String(n)).replace('{total}', String(total));
     // Solo transform: mai width, che costerebbe un reflow per frame.
     if (barEl) barEl.style.transform = `scaleX(${total ? n / total : 0})`;
-    if (backBtn) backBtn.disabled = pos <= 0;
+    // `disabled` toglierebbe il fuoco al pulsante e lo lascerebbe cadere su
+    // <body>: chi naviga da tastiera ripartirebbe dall'inizio della pagina.
+    if (backBtn) backBtn.setAttribute('aria-disabled', pos <= 0 ? 'true' : 'false');
     const last = pos === total - 1;
     if (nextBtn) nextBtn.textContent = last ? t.send : t.next;
     // Dentro una textarea Invio va a capo: l'invito a premere Invio mentirebbe.
@@ -397,19 +406,27 @@ export function initMeets(): void {
     }
 
     sending = true;
+    inFlight = new AbortController();
+    const controller = inFlight;
     if (nextBtn) {
-      nextBtn.disabled = true;
+      nextBtn.setAttribute('aria-disabled', 'true');
       nextBtn.textContent = t.sending;
     }
     form.setAttribute('aria-busy', 'true');
     setStatus('', false);
     announce(t.sending);
 
-    const outcome = await postToFormspree(endpoint, form, t);
+    const outcome = await postToFormspree(endpoint, form, t, controller.signal);
 
+    // Il pannello può essere stato chiuso mentre la richiesta era in volo: in
+    // quel caso `close` ha già rimesso tutto a posto e qui non si tocca nulla,
+    // altrimenti alla riapertura si troverebbe «Po dërgohet…» per sempre.
+    if (controller.signal.aborted) return;
+
+    inFlight = null;
     sending = false;
     form.removeAttribute('aria-busy');
-    if (nextBtn) nextBtn.disabled = false;
+    if (nextBtn) nextBtn.setAttribute('aria-disabled', 'false');
     paint();
 
     if (outcome.ok) {
@@ -441,6 +458,12 @@ export function initMeets(): void {
     if (!form) return;
 
     opener = from;
+    // Stato pulito a ogni apertura: un invio interrotto non deve lasciare il
+    // pannello bloccato sul suo pulsante.
+    sending = false;
+    inFlight = null;
+    if (nextBtn) nextBtn.setAttribute('aria-disabled', 'false');
+    form.removeAttribute('aria-busy');
     forms.forEach((f) => {
       f.hidden = f !== form;
     });
@@ -467,6 +490,12 @@ export function initMeets(): void {
   // Tutta la pulizia sta sull'evento `close`, non sul pulsante X: Esc chiude
   // scavalcando il pulsante e passa comunque da qui.
   dialog.addEventListener('close', () => {
+    // Una richiesta ancora in volo va fermata: il suo esito arriverebbe su un
+    // pannello chiuso e mostrerebbe una conferma che nessuno sta guardando.
+    inFlight?.abort();
+    inFlight = null;
+    sending = false;
+
     let done = false;
     const finish = () => {
       if (done) return;
@@ -515,7 +544,10 @@ export function initMeets(): void {
     node.addEventListener('click', () => dialog.close());
   });
 
-  backBtn?.addEventListener('click', () => step(-1));
+  backBtn?.addEventListener('click', () => {
+    if (backBtn.getAttribute('aria-disabled') === 'true') return;
+    step(-1);
+  });
 
   // L'href non può essere fissato quando compare l'errore: i campi restano
   // modificabili, e chi corregge il telefono e poi clicca qui manderebbe la

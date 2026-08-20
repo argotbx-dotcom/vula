@@ -151,7 +151,9 @@ const strings = {
 
               {d.fields.map((f, i) => {
                 const id = fieldId(d.key, f);
-                const describedBy = f.hint ? `${id}-hint ${id}-err` : `${id}-err`;
+                const describedBy = [f.notice && `${id}-notice`, f.hint && `${id}-hint`, `${id}-err`]
+                  .filter(Boolean)
+                  .join(' ');
                 const enterHint = i === d.fields.length - 1 ? 'done' : 'next';
 
                 return (
@@ -185,7 +187,7 @@ const strings = {
                           {!f.required && <span class="vm__opt mono">{u.optional}</span>}
                         </label>
 
-                        {f.notice && <p class="vm__notice">{f.notice[lang]}</p>}
+                        {f.notice && <p class="vm__notice" id={`${id}-notice`}>{f.notice[lang]}</p>}
 
                         {f.kind === 'select' && (
                           <select id={id} name={f.name} aria-describedby={describedBy}>
@@ -432,6 +434,14 @@ const strings = {
     }
   }
 
+  /* Su touch non c'è hover: senza questa riga, con movimento ridotto, la porta
+     resterebbe senza alcun bordo e quindi senza segnale di cliccabilità. */
+  @media (prefers-reduced-motion: reduce) and (hover: none) {
+    .vm__frame rect {
+      opacity: 0.35;
+    }
+  }
+
   /* ------------------------------------------------------ testi in calce */
 
   .vm__privacy {
@@ -450,8 +460,9 @@ const strings = {
     border-top: 1px solid var(--line-soft);
     font-size: 0.78rem;
     line-height: 1.6;
+    /* Niente opacity: portava il contrasto a 3,68:1. Il solo --dim dà 5,77:1
+       e la gerarchia la fa già il corpo del testo. */
     color: var(--dim);
-    opacity: 0.75;
     max-width: 72ch;
   }
 
@@ -578,7 +589,10 @@ const strings = {
     scroll-padding-block: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* `safe`: quando il contenuto sfora — tastiera aperta, domanda lunga —
+       l'allineamento ricade su start invece di centrare tagliando in alto,
+       dove niente riporterebbe più la domanda in vista. */
+    justify-content: safe center;
     padding: clamp(1.5rem, 4vw, 3rem) var(--gutter);
   }
 
@@ -636,7 +650,7 @@ const strings = {
     font-family: var(--font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.06em;
-    color: #e07a5f;
+    color: var(--alert);
   }
 
   /* Stessi valori dei campi della pagina contatto: il form deve sembrare la
@@ -669,8 +683,11 @@ const strings = {
     border-color: var(--tint);
   }
 
-  .vm__step [aria-invalid='true'] {
-    border-color: #e07a5f;
+  /* Deve battere la regola di :focus qui sopra: quando un campo è marcato non
+     valido il fuoco è sempre su di lui, quindi con pari specificità vinceva
+     il bordo di fuoco e il rosso non compariva mai. */
+  .vm__step :is(input, select, textarea)[aria-invalid='true'] {
+    border-color: var(--alert);
   }
 
   .vm__group {
@@ -771,7 +788,7 @@ const strings = {
     font-family: var(--font-mono);
     font-size: 0.66rem;
     letter-spacing: 0.06em;
-    color: #e07a5f;
+    color: var(--alert);
   }
 
   .vm__fallback {
@@ -795,9 +812,12 @@ const strings = {
     font-size: 0.68rem;
   }
 
-  .vm__back[disabled] {
-    opacity: 0.35;
-    pointer-events: none;
+  /* aria-disabled invece di disabled: il pulsante resta raggiungibile e non
+     butta via il fuoco. I click li scarta il JS. */
+  .vm__back[aria-disabled='true'],
+  .vm__next[aria-disabled='true'] {
+    opacity: 0.4;
+    cursor: default;
   }
 
   .vm__enter {

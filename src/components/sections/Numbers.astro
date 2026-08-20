@@ -2,7 +2,7 @@
 // I numeri dell'Albania (cap. 3). Contatori che si caricano allo scroll.
 // Ogni cifra porta la sua fonte: un'agenzia che vende metodo non può
 // permettersi un numero gonfiato (cap. 0.1).
-import { numbersTitle, numbersThesis, stats, sectionIds, type Lang } from '../../content/site';
+import { numbersTitle, numbersThesis, stats, sectionIds, type Lang, numberLocale} from '../../content/site';
 
 interface Props {
   lang: Lang;
@@ -28,10 +28,11 @@ const n = numbersTitle[lang];
               <span
                 data-count-to={s.value}
                 data-count-decimals={s.decimals ?? 0}
-                data-count-suffix={s.suffix ?? ''}
+                data-count-suffix={s.suffix?.[lang] ?? ''}
+                data-count-locale={numberLocale[lang]}
               >
-                {s.display}
-                {s.suffix ?? ''}
+                {s.display[lang]}
+                {s.suffix?.[lang] ?? ''}
               </span>
             </dt>
             <dd class="nb__label">{s.label[lang]}</dd>

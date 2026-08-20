@@ -425,10 +425,14 @@ export const licenceLine: Record<Lang, string> = {
 /* ---------------------------------------------------------------- i numeri */
 // Cap. 3 del piano + appendice fonti del concept strategico.
 
+/** Codice di locale per formattare i numeri nella lingua della pagina. */
+export const numberLocale: Record<Lang, string> = { sq: 'sq-AL', it: 'it-IT', en: 'en-GB' };
+
 export interface StatItem {
   value: number;
-  display: string;
-  suffix?: string;
+  /** Valore già formattato: è quello che si vede senza JavaScript. */
+  display: Record<Lang, string>;
+  suffix?: Record<Lang, string>;
   decimals?: number;
   label: Record<Lang, string>;
   source: string;
@@ -444,7 +448,7 @@ export const numbersTitle: Record<Lang, { kicker: string; title: string }> = {
 export const stats: StatItem[] = [
   {
     value: 15348,
-    display: '15.348',
+    display: { sq: '15.348', it: '15.348', en: '15,348' },
     label: {
       sq: 'bar-kafe aktive — një çdo 154 banorë',
       it: 'bar-caffè attivi — uno ogni 154 abitanti',
@@ -454,9 +458,9 @@ export const stats: StatItem[] = [
   },
   {
     value: 12.4,
-    display: '12,4',
+    display: { sq: '12,4', it: '12,4', en: '12.4' },
     decimals: 1,
-    suffix: ' mln',
+    suffix: { sq: ' mln', it: ' mln', en: ' m' },
     label: {
       sq: 'turistë të huaj në 2025',
       it: 'turisti stranieri nel 2025',
@@ -466,9 +470,9 @@ export const stats: StatItem[] = [
   },
   {
     value: 1.05,
-    display: '1,05',
+    display: { sq: '1,05', it: '1,05', en: '1.05' },
     decimals: 2,
-    suffix: ' mld €',
+    suffix: { sq: ' mld €', it: ' mld €', en: ' bn €' },
     label: {
       sq: 'remitanca në 2024',
       it: 'rimesse nel 2024',
@@ -478,7 +482,7 @@ export const stats: StatItem[] = [
   },
   {
     value: 0,
-    display: '0',
+    display: { sq: '0', it: '0', en: '0' },
     accent: true,
     label: {
       sq: 'agjenci në Tiranë që e bëjnë të gjithë rrugën, nga ideja te hapja',

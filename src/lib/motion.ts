@@ -251,8 +251,11 @@ function counters() {
     const decimals = Number(el.dataset.countDecimals || 0);
     const suffix = el.dataset.countSuffix || '';
 
+    // Il locale arriva dalla pagina: con 'it-IT' fisso i numeri restavano in
+    // formato italiano anche su /en/ («15.348» invece di «15,348»).
+    const locale = el.dataset.countLocale || 'it-IT';
     const format = (v: number) =>
-      v.toLocaleString('it-IT', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
+      v.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
 
     if (reduced()) {
       el.textContent = format(to);
@@ -459,8 +462,15 @@ function scrollLock(lenis: Lenis | null) {
     // tiene una posizione propria: senza risincronizzarlo, alla ripresa
     // scivolerebbe indietro da solo.
     const y = (e as CustomEvent<{ y?: number }>).detail?.y;
-    lenis?.scrollTo(typeof y === 'number' ? y : window.scrollY, { immediate: true });
-    ScrollTrigger.refresh();
+    // Mentre il pannello era aperto il body era `position: fixed`, quindi per
+    // Lenis l'altezza del documento era quella di una schermata e il massimo
+    // scorrimento zero. Se gli si chiede la Y prima di fargli rimisurare, la
+    // taglia a 0 e la pagina torna in cima appena si chiude il pannello.
+    lenis?.resize();
+    requestAnimationFrame(() => {
+      lenis?.scrollTo(typeof y === 'number' ? y : window.scrollY, { immediate: true });
+      ScrollTrigger.refresh();
+    });
   });
 }
 

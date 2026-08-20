@@ -146,11 +146,18 @@ const alt = `${concept.name} — ${concept.tagline[lang]}`;
 
   .cc__head {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.35rem 1rem;
     padding-bottom: 0.7rem;
     border-bottom: 1px solid var(--line);
+  }
+
+  /* Senza questo i due figli non si comprimono sotto il contenuto e su
+     schermo stretto il settore esce dalla scheda, portandosi via il margine. */
+  .cc__head > * {
+    min-width: 0;
   }
 
   .cc__name {

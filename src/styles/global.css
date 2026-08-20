@@ -18,6 +18,10 @@
   /* Accento neutro dell'agenzia. I concept portano il proprio. */
   --accent: #c8963e;
 
+  /* Errori di compilazione. Verificato: 6,71:1 su --ink e 6,29:1 su --ink-2,
+     quindi sopra la soglia AA anche a corpo piccolo. */
+  --alert: #e07a5f;
+
   /* Il tint viene sovrascritto dalle pagine concept. */
   --tint: var(--accent);
   --on-tint: #0a0a0b;
