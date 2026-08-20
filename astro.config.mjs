@@ -1,10 +1,17 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
+/**
+ * Dominio pubblico del sito.
+ * Serve ad Astro per generare URL ASSOLUTI in canonical, hreflang, og:image e
+ * sitemap: relativi non sono validi e Google ignora gli hreflang relativi.
+ * Quando il dominio definitivo viene comprato, si cambia SOLO questa riga.
+ */
+export const SITE = 'https://vula-nga-ideja-te-hapja.netlify.app';
+
 export default defineConfig({
-  // [DA FORNIRE] dominio definitivo: valorizzare "site" quando è noto
-  // (serve per sitemap/canonical/OG assoluti). Per ora si usa l'URL Netlify.
+  site: SITE,
   i18n: {
     defaultLocale: 'sq',
     locales: ['sq', 'it', 'en'],
@@ -13,6 +20,14 @@ export default defineConfig({
       redirectToDefaultLocale: true,
     },
   },
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'sq',
+        locales: { sq: 'sq-AL', it: 'it-IT', en: 'en' },
+      },
+    }),
+  ],
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',

@@ -492,6 +492,158 @@ export const network: Record<Lang, { kicker: string; title: string; line: string
   },
 };
 
+
+/* --------------------------------------------------------------- pse VULA */
+// Concept strategico §8: non siamo nessuno degli otto interlocutori che il
+// cliente oggi deve coordinare da solo. Siamo quello che li dirige.
+
+export const whyVula: Record<Lang, { kicker: string; nots: string[]; claim: string; line: string }> = {
+  sq: {
+    kicker: 'Pse VULA',
+    nots: [
+      'Nuk jemi studio arkitekture.',
+      'Nuk jemi agjenci marketingu.',
+      'Nuk jemi kontabilistë.',
+      'Nuk jemi kompani ndërtimi.',
+    ],
+    claim: 'Jemi regjia.',
+    line: 'Punojmë me specialistë të përzgjedhur për çdo fazë të projektit. Ti nuk ke nevojë të gjesh dhjetë profesionistë: ne i koordinojmë.',
+  },
+  it: {
+    kicker: 'Perché VULA',
+    nots: [
+      'Non siamo uno studio di architettura.',
+      "Non siamo un'agenzia di marketing.",
+      'Non siamo commercialisti.',
+      'Non siamo un\'impresa edile.',
+    ],
+    claim: 'Siamo la regia.',
+    line: 'Lavoriamo con specialisti selezionati per ogni fase del progetto. Tu non devi trovare dieci professionisti: li coordiniamo noi.',
+  },
+  en: {
+    kicker: 'Why VULA',
+    nots: [
+      'We are not an architecture studio.',
+      'We are not a marketing agency.',
+      'We are not accountants.',
+      'We are not a construction firm.',
+    ],
+    claim: 'We are the direction.',
+    line: 'We work with selected specialists for every phase of the project. You do not have to find ten professionals: we coordinate them.',
+  },
+};
+
+/* ------------------------------------------------------------- i servizi  */
+// Espansione della terza porta: ogni pezzo si compra anche da solo.
+// Cap. 6.1 del concept strategico — le fasi brevi sono prodotti di cassa.
+
+export const services: Record<Lang, { title: string; note: string; groups: { title: string; items: string[] }[] }> = {
+  sq: {
+    title: 'Ose vetëm një pjesë.',
+    note: 'Çdo shërbim mund të blihet veçmas.',
+    groups: [
+      { title: 'Strategji', items: ['Kërkim tregu', 'Studim fizibiliteti', 'Model biznesi', 'Plan biznesi', 'Analizë lokacioni', 'Politika e çmimeve', 'Food cost'] },
+      { title: 'Markë', items: ['Emërtim', 'Strategji marke', 'Identitet vizual', 'Brand book', 'Paketim'] },
+      { title: 'Dixhital', items: ['Faqe interneti', 'Tregti online', 'Rezervime', 'CRM', 'Përmbajtje'] },
+      { title: 'Biznes', items: ['Zhvillim koncepti', 'Menu engineering', 'Operacione', 'Struktura e stafit', 'Strategji lansimi'] },
+      { title: 'Ekzekutim', items: ['Arkitekturë', 'Ndërtim', 'Furnitorë', 'Rekrutim', 'Kontabilitet', 'Koordinim ligjor'] },
+    ],
+  },
+  it: {
+    title: 'Oppure solo un pezzo.',
+    note: 'Ogni servizio si compra separatamente.',
+    groups: [
+      { title: 'Strategia', items: ['Ricerca di mercato', 'Studio di fattibilità', 'Modello di business', 'Business plan', 'Analisi della location', 'Politica di prezzo', 'Food cost'] },
+      { title: 'Marca', items: ['Naming', 'Strategia di marca', 'Identità visiva', 'Brand book', 'Packaging'] },
+      { title: 'Digitale', items: ['Sito', 'E-commerce', 'Prenotazioni', 'CRM', 'Contenuti'] },
+      { title: 'Business', items: ['Sviluppo concept', 'Menu engineering', 'Operations', 'Struttura del personale', 'Strategia di lancio'] },
+      { title: 'Esecuzione', items: ['Architettura', 'Costruzione', 'Fornitori', 'Recruiting', 'Contabilità', 'Coordinamento legale'] },
+    ],
+  },
+  en: {
+    title: 'Or just one piece.',
+    note: 'Every service can be bought on its own.',
+    groups: [
+      { title: 'Strategy', items: ['Market research', 'Feasibility study', 'Business model', 'Business plan', 'Location analysis', 'Pricing', 'Food cost'] },
+      { title: 'Brand', items: ['Naming', 'Brand strategy', 'Visual identity', 'Brand book', 'Packaging'] },
+      { title: 'Digital', items: ['Website', 'E-commerce', 'Bookings', 'CRM', 'Content'] },
+      { title: 'Business', items: ['Concept development', 'Menu engineering', 'Operations', 'Staff structure', 'Launch strategy'] },
+      { title: 'Execution', items: ['Architecture', 'Construction', 'Suppliers', 'Recruiting', 'Accounting', 'Legal coordination'] },
+    ],
+  },
+};
+
+/* ------------------------------------------------------------ project brief */
+
+export const brief: Record<Lang, {
+  kicker: string; title: string; line: string;
+  what: string; where: string; hasSpace: string; hasSpaceOptions: string[];
+  capital: string; capitalHint: string; hasBrand: string; hasBrandOptions: string[];
+  needs: string; needsOptions: string[];
+  name: string; email: string; phone: string; notes: string; submit: string;
+}> = {
+  sq: {
+    kicker: 'Tregomë çfarë ke në mendje',
+    title: 'Nis nga këtu.',
+    line: 'Sa më shumë na tregon, aq më konkrete është përgjigjja jonë. Asnjë fushë nuk është e detyrueshme përveç kontaktit.',
+    what: 'Çfarë do të hapësh?',
+    where: 'Ku?',
+    hasSpace: 'Ke një lokal?',
+    hasSpaceOptions: ['Po, e kam', 'Jo, ende jo', 'Po e kërkoj'],
+    capital: 'Kapitali i planifikuar',
+    capitalHint: 'Opsionale. Na ndihmon të kuptojmë shkallën e projektit.',
+    hasBrand: 'Ke tashmë një markë?',
+    hasBrandOptions: ['Jo, nis nga zero', 'Po, por duhet rishikuar', 'Po, është gati'],
+    needs: 'Çfarë të duhet?',
+    needsOptions: ['Zhvillim ideje', 'Kërkim tregu', 'Plan biznesi', 'Markë', 'Food cost', 'Faqe interneti', 'Arkitekturë', 'Ndërtim', 'Staf', 'Projekt i plotë'],
+    name: 'Emri',
+    email: 'Email',
+    phone: 'Telefon ose WhatsApp',
+    notes: 'Diçka tjetër që duhet të dimë?',
+    submit: 'Dërgo briefin',
+  },
+  it: {
+    kicker: 'Raccontaci cosa hai in mente',
+    title: 'Si parte da qui.',
+    line: 'Più cose ci racconti, più concreta è la nostra risposta. Nessun campo è obbligatorio tranne il contatto.',
+    what: 'Cosa vuoi aprire?',
+    where: 'Dove?',
+    hasSpace: 'Hai già un locale?',
+    hasSpaceOptions: ['Sì, ce l\'ho', 'No, non ancora', 'Lo sto cercando'],
+    capital: 'Capitale previsto',
+    capitalHint: 'Facoltativo. Ci aiuta a capire la scala del progetto.',
+    hasBrand: 'Hai già una marca?',
+    hasBrandOptions: ['No, si parte da zero', 'Sì, ma va rivista', 'Sì, è pronta'],
+    needs: 'Di cosa hai bisogno?',
+    needsOptions: ['Sviluppo idea', 'Ricerca di mercato', 'Business plan', 'Marca', 'Food cost', 'Sito', 'Architettura', 'Costruzione', 'Personale', 'Progetto completo'],
+    name: 'Nome',
+    email: 'Email',
+    phone: 'Telefono o WhatsApp',
+    notes: "Altro che dovremmo sapere?",
+    submit: 'Invia il brief',
+  },
+  en: {
+    kicker: 'Tell us what you have in mind',
+    title: 'Start here.',
+    line: 'The more you tell us, the more concrete our answer. No field is required except the contact.',
+    what: 'What do you want to open?',
+    where: 'Where?',
+    hasSpace: 'Do you have a space?',
+    hasSpaceOptions: ['Yes, I have one', 'Not yet', 'I am looking'],
+    capital: 'Planned capital',
+    capitalHint: 'Optional. It helps us understand the scale of the project.',
+    hasBrand: 'Do you already have a brand?',
+    hasBrandOptions: ['No, starting from zero', 'Yes, but it needs rework', 'Yes, it is ready'],
+    needs: 'What do you need?',
+    needsOptions: ['Idea development', 'Market research', 'Business plan', 'Brand', 'Food cost', 'Website', 'Architecture', 'Construction', 'Staff', 'Full project'],
+    name: 'Name',
+    email: 'Email',
+    phone: 'Phone or WhatsApp',
+    notes: 'Anything else we should know?',
+    submit: 'Send the brief',
+  },
+};
+
 /* --------------------------------------------------------- come lavoriamo */
 // Cap. 5.3 e 6.1 del concept strategico.
 

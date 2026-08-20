@@ -1,0 +1,78 @@
+---
+// Pse VULA — concept strategico §8.
+// Il problema appena raccontato sono otto interlocutori. Qui si dice che non
+// siamo nessuno di quegli otto: siamo quello che li dirige. È la risposta
+// alla domanda che il lettore si fa a questo punto — "ma voi cosa siete?".
+import { whyVula, type Lang } from '../../content/site';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const w = whyVula[lang];
+---
+
+<section class="wv" id="pse">
+  <div class="container wv__grid">
+    <div class="wv__left">
+      <p class="kicker" data-reveal>{w.kicker}</p>
+
+      <ul class="wv__nots" data-reveal-line>
+        {w.nots.map((n) => <li class="wv__not">{n}</li>)}
+      </ul>
+
+      <p class="display display--md wv__claim" data-reveal data-reveal-delay="0.3">{w.claim}</p>
+    </div>
+
+    <p class="lede wv__line" data-reveal data-reveal-delay="0.15">{w.line}</p>
+  </div>
+</section>
+
+<style>
+  .wv {
+    padding-block: clamp(80px, 10vw, 150px);
+  }
+
+  .wv__grid {
+    display: grid;
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+
+  .wv__nots {
+    list-style: none;
+    margin: 0 0 1.4rem;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .wv__not {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.15rem, 2.4vw, 1.9rem);
+    line-height: 1.18;
+    letter-spacing: -0.012em;
+    color: var(--dim);
+    /* barrata: sono le caselle in cui NON stiamo */
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    text-decoration-color: rgba(138, 138, 144, 0.5);
+  }
+
+  .wv__claim {
+    color: var(--accent);
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .wv__line {
+    align-self: end;
+  }
+
+  @media (min-width: 900px) {
+    .wv__grid {
+      grid-template-columns: 1.25fr 1fr;
+      align-items: end;
+    }
+  }
+</style>

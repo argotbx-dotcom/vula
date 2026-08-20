@@ -29,8 +29,28 @@ const {
 } = Astro.props;
 
 const t = ui[lang];
-const here = canonical ?? path(lang, page);
-const alts = alternates ?? Object.fromEntries(LANGS.map((l) => [l, path(l, page)]));
+
+// URL ASSOLUTI: canonical, hreflang e og:image relativi non sono validi.
+// Google ignora gli hreflang relativi e WhatsApp/LinkedIn non risolvono
+// un'anteprima da un percorso relativo.
+const abs = (p: string) => new URL(p, Astro.site).href;
+
+const here = abs(canonical ?? path(lang, page));
+const altPaths = alternates ?? (Object.fromEntries(LANGS.map((l) => [l, path(l, page)])) as Record<Lang, string>);
+const alts = Object.fromEntries(LANGS.map((l) => [l, abs(altPaths[l])])) as Record<Lang, string>;
+const ogImage = abs('/og.png');
+
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: siteName,
+  url: abs(path('sq')),
+  image: ogImage,
+  areaServed: { '@type': 'Country', name: 'Albania' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Tiranë', addressCountry: 'AL' },
+  description,
+  knowsLanguage: ['sq', 'it', 'en'],
+};
 
 const tintStyle = tint ? `--tint:${tint};--on-tint:${onTint ?? '#0a0a0b'};` : undefined;
 ---
@@ -56,8 +76,14 @@ const tintStyle = tint ? `--tint:${tint};--on-tint:${onTint ?? '#0a0a0b'};` : un
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={lang} />
-    <meta property="og:image" content="/brand/png/vula-marchio-bianco-1024.png" />
+    <meta property="og:url" content={here} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(orgLd)} />
 
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

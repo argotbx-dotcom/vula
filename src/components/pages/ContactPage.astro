@@ -1,17 +1,19 @@
 ---
+// Project brief, non un form di contatto generico.
+// Un contatto qualificato vale molto più di un "scrivici": le domande qui
+// sono quelle che servono per rispondere con il primo passo concreto.
 import Base from '../../layouts/Base.astro';
 import Header from '../Header.astro';
 import Footer from '../Footer.astro';
-import { contactPage, ctaFinal, location, ui, siteName, type Lang } from '../../content/site';
+import { brief, location, siteName, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
-const c = contactPage[lang];
-const t = ui[lang];
+const b = brief[lang];
 
-const formName = { sq: 'kontakt-sq', it: 'contatto-it', en: 'contact-en' }[lang];
+const formName = { sq: 'brief-sq', it: 'brief-it', en: 'brief-en' }[lang];
 const botLabel = {
   sq: 'Mos e plotëso këtë fushë',
   it: 'Non compilare questo campo',
@@ -19,23 +21,23 @@ const botLabel = {
 }[lang];
 ---
 
-<Base lang={lang} page="contact" title={`${c.title} · ${siteName}`} description={c.line}>
+<Base lang={lang} page="contact" title={`${b.title} · ${siteName}`} description={b.line}>
   <Header lang={lang} page="contact" />
 
   <main id="main">
-    <section class="ct">
+    <section class="bf">
       <div class="blueprint" aria-hidden="true"></div>
 
-      <div class="container ct__grid">
-        <div class="ct__intro">
-          <p class="kicker" data-reveal>{c.kicker}</p>
-          <h1 class="display display--lg ct__title" data-reveal data-reveal-delay="0.05">{c.title}</h1>
-          <p class="lede ct__lede" data-reveal data-reveal-delay="0.1">{c.line}</p>
-          <p class="ct__place mono" data-reveal data-reveal-delay="0.15">{location[lang]}</p>
-        </div>
+      <div class="container bf__inner">
+        <header class="bf__head">
+          <p class="kicker" data-reveal>{b.kicker}</p>
+          <h1 class="display display--lg bf__title" data-reveal data-reveal-delay="0.05">{b.title}</h1>
+          <p class="lede bf__lede" data-reveal data-reveal-delay="0.1">{b.line}</p>
+          <p class="bf__place mono" data-reveal data-reveal-delay="0.15">{location[lang]}</p>
+        </header>
 
         <form
-          class="ct__form"
+          class="bf__form"
           name={formName}
           method="POST"
           data-netlify="true"
@@ -51,23 +53,82 @@ const botLabel = {
             </label>
           </p>
 
-          <label class="ct__field">
-            <span class="mono">{t.formName}</span>
-            <input type="text" name="name" autocomplete="name" required />
+          <!-- il progetto -->
+          <div class="bf__row">
+            <label class="bf__field">
+              <span class="mono">{b.what}</span>
+              <input type="text" name="cosa" />
+            </label>
+            <label class="bf__field">
+              <span class="mono">{b.where}</span>
+              <input type="text" name="dove" />
+            </label>
+          </div>
+
+          <div class="bf__row">
+            <label class="bf__field">
+              <span class="mono">{b.hasSpace}</span>
+              <select name="locale">
+                <option value=""></option>
+                {b.hasSpaceOptions.map((o) => <option value={o}>{o}</option>)}
+              </select>
+            </label>
+            <label class="bf__field">
+              <span class="mono">{b.hasBrand}</span>
+              <select name="marca">
+                <option value=""></option>
+                {b.hasBrandOptions.map((o) => <option value={o}>{o}</option>)}
+              </select>
+            </label>
+          </div>
+
+          <label class="bf__field">
+            <span class="mono">{b.capital}</span>
+            <input type="text" name="capitale" />
+            <small class="bf__hint">{b.capitalHint}</small>
           </label>
 
-          <label class="ct__field">
-            <span class="mono">{t.formEmail}</span>
-            <input type="email" name="email" autocomplete="email" required />
+          <!-- di cosa ha bisogno -->
+          <fieldset class="bf__fieldset">
+            <legend class="mono">{b.needs}</legend>
+            <div class="bf__checks">
+              {
+                b.needsOptions.map((o) => (
+                  <label class="bf__check">
+                    <input type="checkbox" name="serve" value={o} />
+                    <span>{o}</span>
+                  </label>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <label class="bf__field">
+            <span class="mono">{b.notes}</span>
+            <textarea name="note" rows="4"></textarea>
           </label>
 
-          <label class="ct__field">
-            <span class="mono">{t.formMessage}</span>
-            <textarea name="message" rows="5" required></textarea>
+          <hr class="rule bf__sep" />
+
+          <!-- contatto: l'unica parte obbligatoria -->
+          <div class="bf__row">
+            <label class="bf__field">
+              <span class="mono">{b.name} *</span>
+              <input type="text" name="nome" autocomplete="name" required />
+            </label>
+            <label class="bf__field">
+              <span class="mono">{b.email} *</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+          </div>
+
+          <label class="bf__field">
+            <span class="mono">{b.phone}</span>
+            <input type="tel" name="telefon" autocomplete="tel" />
           </label>
 
-          <button type="submit" class="btn btn--primary" data-magnetic="8">
-            {ctaFinal[lang].button}
+          <button type="submit" class="btn btn--primary bf__submit" data-magnetic="8">
+            {b.submit}
             <span class="btn__arrow" aria-hidden="true">→</span>
           </button>
         </form>
@@ -79,55 +140,59 @@ const botLabel = {
 </Base>
 
 <style>
-  .ct {
+  .bf {
     position: relative;
-    padding-block: calc(var(--header-h) + clamp(60px, 9vw, 120px)) clamp(80px, 10vw, 150px);
-    min-height: 92svh;
+    padding-block: calc(var(--header-h) + clamp(56px, 8vw, 110px)) clamp(80px, 10vw, 150px);
   }
 
-  .ct__grid {
+  .bf__inner {
     position: relative;
     z-index: 1;
     display: grid;
     gap: clamp(2.5rem, 5vw, 5rem);
   }
 
-  .ct__title {
+  .bf__title {
     text-transform: none;
     letter-spacing: -0.015em;
   }
 
-  .ct__lede {
-    margin-top: 1.4rem;
+  .bf__lede {
+    margin-top: 1.3rem;
   }
 
-  .ct__place {
-    margin-top: 2rem;
+  .bf__place {
+    margin-top: 1.8rem;
     font-size: 0.64rem;
     color: var(--dim);
   }
 
-  .ct__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
+  .bf__form {
+    display: grid;
+    gap: 1.5rem;
   }
 
-  .ct__field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
+  .bf__row {
+    display: grid;
+    gap: 1.5rem;
   }
 
-  .ct__field span {
+  .bf__field {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+
+  .bf__field > span {
     font-size: 0.58rem;
     color: var(--dim);
   }
 
-  .ct__field input,
-  .ct__field textarea {
+  .bf__field input,
+  .bf__field select,
+  .bf__field textarea {
     width: 100%;
-    padding: 1rem 1.1rem;
+    padding: 0.95rem 1.05rem;
     font-family: var(--font-body);
     font-size: 1rem;
     color: var(--paper);
@@ -138,20 +203,94 @@ const botLabel = {
     transition: border-color 0.2s var(--ease);
   }
 
-  .ct__field input:focus,
-  .ct__field textarea:focus {
+  .bf__field select {
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .bf__field input:focus,
+  .bf__field select:focus,
+  .bf__field textarea:focus {
     border-color: var(--tint);
   }
 
-  .ct__form button {
-    align-self: flex-start;
-    margin-top: 0.5rem;
+  .bf__hint {
+    font-size: 0.76rem;
+    color: var(--dim);
+    opacity: 0.8;
   }
 
-  @media (min-width: 860px) {
-    .ct__grid {
+  .bf__fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .bf__fieldset legend {
+    padding: 0 0 0.85rem;
+    font-size: 0.58rem;
+    color: var(--dim);
+  }
+
+  .bf__checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .bf__check {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 1rem;
+    font-size: 0.86rem;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+
+  .bf__check:hover {
+    border-color: rgba(244, 241, 234, 0.3);
+  }
+
+  .bf__check input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--tint);
+    cursor: pointer;
+  }
+
+  .bf__check:has(input:checked) {
+    border-color: var(--tint);
+    color: var(--paper);
+  }
+
+  .bf__sep {
+    margin-block: 0.6rem;
+  }
+
+  .bf__submit {
+    justify-self: start;
+    margin-top: 0.4rem;
+  }
+
+  @media (min-width: 620px) {
+    .bf__row {
       grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .bf__inner {
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
       align-items: start;
+      gap: clamp(3rem, 6vw, 7rem);
+    }
+    .bf__head {
+      position: sticky;
+      top: calc(var(--header-h) + 40px);
     }
   }
 </style>

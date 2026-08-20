@@ -2,13 +2,14 @@
 // Tre porte d'ingresso.
 // Non è una sequenza: sono tre alternative, quindi niente numerazione 01/02/03
 // — la numerazione direbbe una cosa falsa sul contenuto.
-import { doors, type Lang } from '../../content/site';
+import { doors, services, type Lang } from '../../content/site';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const d = doors[lang];
+const sv = services[lang];
 ---
 
 <section class="dr" id="dyert">
@@ -29,6 +30,29 @@ const d = doors[lang];
         ))
       }
     </ul>
+
+    <!-- espansione della terza porta: il menu di ciò che si compra da solo -->
+    <div class="dr__services">
+      <div class="dr__sv-head" data-reveal>
+        <h3 class="display display--md dr__sv-title">{sv.title}</h3>
+        <p class="dr__sv-note mono">{sv.note}</p>
+      </div>
+
+      <div class="dr__sv-grid">
+        {
+          sv.groups.map((g, i) => (
+            <div class="dr__sv-group" data-reveal data-reveal-delay={(i % 3) * 0.06}>
+              <h4 class="dr__sv-name mono">{g.title}</h4>
+              <ul class="dr__sv-list">
+                {g.items.map((it) => (
+                  <li>{it}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </section>
 
@@ -86,9 +110,74 @@ const d = doors[lang];
     font-size: 0.95rem;
   }
 
+  /* servizi */
+  .dr__services {
+    margin-top: clamp(3.5rem, 7vw, 6.5rem);
+  }
+
+  .dr__sv-head {
+    display: grid;
+    gap: 0.9rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: clamp(1.8rem, 3vw, 2.6rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .dr__sv-title {
+    text-transform: none;
+    letter-spacing: -0.015em;
+  }
+
+  .dr__sv-note {
+    font-size: 0.66rem;
+    color: var(--accent);
+  }
+
+  .dr__sv-grid {
+    display: grid;
+    gap: clamp(24px, 3vw, 40px);
+  }
+
+  .dr__sv-group {
+    display: grid;
+    gap: 0.85rem;
+    align-content: start;
+  }
+
+  .dr__sv-name {
+    font-size: 0.62rem;
+    color: var(--paper);
+  }
+
+  .dr__sv-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.42rem;
+    font-size: 0.92rem;
+    color: var(--dim);
+  }
+
   @media (min-width: 860px) {
     .dr__grid {
       grid-template-columns: repeat(3, 1fr);
+    }
+    .dr__sv-head {
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+    }
+    .dr__sv-note {
+      text-align: right;
+    }
+    .dr__sv-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .dr__sv-grid {
+      grid-template-columns: repeat(5, 1fr);
     }
   }
 </style>
