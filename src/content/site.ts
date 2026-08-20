@@ -385,6 +385,18 @@ export const visitLabel: Record<Lang, string> = {
  * aperta a tutti, la dossier completa passa da una richiesta valutata. Detto
  * senza promettere protezioni legali che non possiamo garantire.
  */
+/**
+ * Descrizione dell'ENTITÀ VULA Studio, per i dati strutturati.
+ * Non è la description della pagina: su una pagina concept quella racconta il
+ * concept, e usarla qui farebbe dichiarare a 33 pagine la stessa azienda con
+ * descrizioni diverse e sbagliate.
+ */
+export const orgDescription: Record<Lang, string> = {
+  sq: 'VULA Studio: regjia që lidh idetë, kapitalin dhe ekzekutimin — nga ideja te hapja, në Tiranë.',
+  it: "VULA Studio: la regia che collega idee, capitale ed esecuzione — dall'idea all'apertura, a Tirana.",
+  en: 'VULA Studio: the direction that connects ideas, capital and execution — from idea to opening, in Tirana.',
+};
+
 /** Etichetta per un progetto cliente ancora in corso: si dichiara. */
 export const wipLabel: Record<Lang, string> = {
   sq: 'Në zhvillim',

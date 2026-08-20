@@ -54,6 +54,7 @@ const strings = {
   errorLine: u.errorLine,
   rateLimited: u.rateLimited,
   notConfigured: u.notConfigured,
+  charsLeft: u.charsLeft,
 };
 ---
 
@@ -171,7 +172,7 @@ const strings = {
                         <div class="vm__checks">
                           {f.options?.map((o) => (
                             <label class="vm__check">
-                              <input type="checkbox" name={f.name} value={o.value} />
+                              <input type="checkbox" name={f.name} value={o.value} aria-describedby={describedBy} />
                               <span>{o.label[lang]}</span>
                             </label>
                           ))}
@@ -194,14 +195,17 @@ const strings = {
                         )}
 
                         {f.kind === 'textarea' && (
-                          <textarea
-                            id={id}
-                            name={f.name}
-                            rows="4"
-                            maxlength={f.maxlength}
-                            placeholder={f.placeholder?.[lang]}
-                            aria-describedby={describedBy}
-                          />
+                          <Fragment>
+                            <textarea
+                              id={id}
+                              name={f.name}
+                              rows="4"
+                              maxlength={f.maxlength}
+                              placeholder={f.placeholder?.[lang]}
+                              aria-describedby={describedBy}
+                            />
+                            {f.maxlength && <p class="vm__chars mono" data-vm-chars hidden />}
+                          </Fragment>
                         )}
 
                         {f.kind !== 'select' && f.kind !== 'textarea' && (
@@ -619,6 +623,13 @@ const strings = {
   .vm__note {
     font-size: 0.82rem;
     color: var(--dim);
+  }
+
+  .vm__chars {
+    font-size: 0.6rem;
+    color: var(--dim);
+    text-transform: none;
+    letter-spacing: 0.06em;
   }
 
   .vm__err {

@@ -350,7 +350,7 @@ export const meets: Record<
     privacy: 'Le idee che ci mandi le vede solo il team di VULA. Niente viene pubblicato.',
     disclaimer:
       'VULA Meets non fornisce consulenza finanziaria e non è parte negli accordi tra le persone. VULA non gestisce fondi.',
-    metaLine: 'VULA Meets: le idee incontrano il capitale.',
+    metaLine: 'VULA Meets: idee e capitale.',
   },
   en: {
     kicker: 'The meeting place',

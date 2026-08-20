@@ -1,5 +1,5 @@
 ---
-import { LANGS, path, siteName, ui, type Lang, type RouteKey } from '../content/site';
+import { LANGS, orgDescription, path, siteName, ui, type Lang, type RouteKey } from '../content/site';
 import VulaMarchio from '../components/brand/VulaMarchio.astro';
 import '../styles/global.css';
 
@@ -40,6 +40,10 @@ const altPaths = alternates ?? (Object.fromEntries(LANGS.map((l) => [l, path(l, 
 const alts = Object.fromEntries(LANGS.map((l) => [l, abs(altPaths[l])])) as Record<Lang, string>;
 const ogImage = abs('/og.png');
 
+// Open Graph vuole lingua_TERRITORIO: con il solo codice di lingua Facebook e
+// LinkedIn ignorano il campo e ripiegano su en_US.
+const ogLocale: Record<Lang, string> = { sq: 'sq_AL', it: 'it_IT', en: 'en_US' };
+
 const orgLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -48,7 +52,9 @@ const orgLd = {
   image: ogImage,
   areaServed: { '@type': 'Country', name: 'Albania' },
   address: { '@type': 'PostalAddress', addressLocality: 'Tiranë', addressCountry: 'AL' },
-  description,
+  // La descrizione dell'azienda non cambia da pagina a pagina: quella della
+  // pagina racconta il contenuto, non l'entità.
+  description: orgDescription[lang],
   knowsLanguage: ['sq', 'it', 'en'],
 };
 
@@ -75,7 +81,7 @@ const tintStyle = tint ? `--tint:${tint};--on-tint:${onTint ?? '#0a0a0b'};` : un
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content={lang} />
+    <meta property="og:locale" content={ogLocale[lang]} />
     <meta property="og:url" content={here} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />

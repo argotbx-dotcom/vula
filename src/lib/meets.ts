@@ -29,6 +29,7 @@ interface Strings {
   errorLine: string;
   rateLimited: string;
   notConfigured: string;
+  charsLeft: string;
 }
 
 const root = document.documentElement;
@@ -516,6 +517,16 @@ export function initMeets(): void {
 
   backBtn?.addEventListener('click', () => step(-1));
 
+  // L'href non può essere fissato quando compare l'errore: i campi restano
+  // modificabili, e chi corregge il telefono e poi clicca qui manderebbe la
+  // versione vecchia. Si ricalcola al click — l'azione predefinita del link
+  // legge l'attributo dopo che i gestori hanno girato.
+  fallbackEl?.addEventListener('click', (e) => {
+    const href = whatsappHref();
+    if (href) fallbackEl.href = href;
+    else e.preventDefault();
+  });
+
   forms.forEach((f) => {
     f.addEventListener('submit', (e) => {
       // Mai lasciar passare il submit nativo: al primo campo partirebbe
@@ -537,8 +548,19 @@ export function initMeets(): void {
 
     // Un campo che torna valido si ripulisce da solo.
     f.addEventListener('input', (e) => {
-      const s = (e.target as HTMLElement).closest<HTMLElement>('[data-vm-step]');
+      const el = e.target as HTMLElement;
+      const s = el.closest<HTMLElement>('[data-vm-step]');
       if (s && !validate(s)) clearError(s);
+
+      // Il limite di caratteri va mostrato mentre si scrive: troncare in
+      // silenzio a fine campo è peggio che dirlo prima.
+      if (s && el instanceof HTMLTextAreaElement && el.maxLength > 0) {
+        const out = s.querySelector<HTMLElement>('[data-vm-chars]');
+        if (out) {
+          out.textContent = t.charsLeft.replace('{n}', String(el.maxLength - el.value.length));
+          out.hidden = false;
+        }
+      }
     });
 
     // Un select che pilota un passo condizionale cambia il totale.
