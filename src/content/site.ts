@@ -99,7 +99,7 @@ export const heroKicker: Record<Lang, string> = {
 
 export const manifesto: Record<Lang, string[]> = {
   sq: [
-    'Nga ideja në çelje —',
+    'Nga ideja te hapja —',
     'një derë e vetme.',
     'Ne studiojmë tregun,',
     'krijojmë konceptin,',
@@ -176,7 +176,7 @@ export const phases: Record<Lang, Phase[]> = {
     {
       num: '01',
       name: 'ZBULO',
-      line: 'Analizë e kapitalit, e pronës dhe e zonës: kalimi i njerëzve, konkurrenca, qiratë, demografia, sezonaliteti.',
+      line: 'Analizë e kapitalit, e pronës dhe e zonës: fluksi i kalimtarëve, konkurrenca, qiratë, demografia, sezonaliteti.',
       output: 'Studim fizibiliteti me skenarë të krahasuar dhe një rekomandim të argumentuar.',
       alt: 'Një lokal bosh natën, me planimetrinë në dysheme dhe kalimtarët që duken përmes xhamit.',
     },
@@ -184,7 +184,7 @@ export const phases: Record<Lang, Phase[]> = {
       num: '02',
       name: 'PËRCAKTO',
       line: 'Zgjedhja e konceptit: pozicionimi, klienti tip, oferta, çmimet, dimensionimi i investimit.',
-      output: 'Concept book dhe një plan biznesi i bankueshëm.',
+      output: 'Concept book dhe një plan biznesi i gatshëm për bankën.',
       alt: 'Mostra materialesh të radhitura mbi një tavolinë, përkrah numrave të projektit.',
     },
     {
@@ -204,7 +204,7 @@ export const phases: Record<Lang, Phase[]> = {
     {
       num: '05',
       name: 'HAP',
-      line: 'Faqe, Google, rrjete sociale, foto dhe video, eventi i hapjes, trajnimi i stafit.',
+      line: 'Faqe interneti, Google, rrjete sociale, foto dhe video, eventi i hapjes, trajnimi i stafit.',
       output: 'Hapje me klientë që nga dita e parë, jo një lokal bosh që shpreson.',
       alt: 'Lokali i sapohapur që ndriçon rrugën, plot me klientë pas xhamit.',
     },
@@ -313,7 +313,7 @@ export const vault: Record<Lang, { kicker: string; title: string; note: string }
   sq: {
     kicker: 'Puna jonë',
     title: 'Çfarë kemi ndërtuar deri sot.',
-    note: 'Dy gjëra të ndryshme, të ndara qartë: projektet që kemi zhvilluar për klientë, dhe konceptet tona që presin dikë që i hap.',
+    note: 'Dy gjëra të ndryshme, të ndara qartë: projektet që kemi zhvilluar për klientë dhe konceptet tona që presin dikë t’i hapë.',
   },
   it: {
     kicker: 'Il nostro lavoro',
@@ -338,7 +338,7 @@ export const vaultGroups: Record<Lang, Record<'client' | 'concept', { title: str
   sq: {
     client: {
       title: 'Projekte për klientë',
-      note: 'Aktivitete reale, të zhvilluara nga ne për klientët tanë. Poshtë secilës shkruajmë saktësisht se çfarë kemi bërë.',
+      note: 'Biznese reale, të zhvilluara nga ne për klientët tanë. Poshtë secilit shkruajmë saktësisht se çfarë kemi bërë.',
     },
     concept: {
       title: 'Konceptet tona',
@@ -368,6 +368,18 @@ export const vaultGroups: Record<Lang, Record<'client' | 'concept', { title: str
 };
 
 /** Riga che accompagna lo scope di lavoro su una scheda cliente. */
+/**
+ * Etichetta del risultato di ogni fase del metodo. Era scritta a mano nel
+ * markup di Method.astro, quindi fuori da ogni revisione linguistica.
+ * "Output" è la parola che si usa così anche in albanese e in italiano nel
+ * parlare di progetto: resta uguale nelle tre lingue, ma dichiarata.
+ */
+export const outputLabel: Record<Lang, string> = {
+  sq: 'Output',
+  it: 'Output',
+  en: 'Output',
+};
+
 export const scopeLabel: Record<Lang, string> = {
   sq: 'Çfarë kemi bërë',
   it: 'Cosa abbiamo fatto',
@@ -405,7 +417,7 @@ export const wipLabel: Record<Lang, string> = {
 };
 
 export const vaultNotice: Record<Lang, string> = {
-  sq: 'Detajet strategjike të koncepteve tona nuk publikohen. Dosjet e plota ndahen vetëm pas vlerësimit të kërkesës.',
+  sq: 'Detajet strategjike të koncepteve tona nuk publikohen. Dosjen e plotë e japim vetëm pasi vlerësojmë kërkesën.',
   it: 'I dettagli strategici dei nostri concept non vengono pubblicati. I dossier completi si condividono solo dopo la valutazione della richiesta.',
   en: 'The strategic details of our concepts are not published. Full dossiers are shared only after we assess the request.',
 };
@@ -511,7 +523,7 @@ export const doors: Record<
     title: 'Katër dyer hyrëse.',
     items: [
       { name: 'VULA Studio', title: 'Sill idenë tënde', line: 'E analizojmë, e projektojmë dhe e çojmë deri te hapja.' },
-      { name: 'VULA Originals', title: 'Merr një koncept tonin', line: 'Është gati: markë, menu, projekt hapësire. Hapet me licencë.' },
+      { name: 'VULA Originals', title: 'Merr një koncept tonin', line: 'Është gati: markë, menu, projekt lokali. Hapet me licencë.' },
       { name: 'VULA Services', title: 'Të mungon vetëm një pjesë', line: 'Kërkim, plan biznesi, markë, food cost, drejtim kantieri: shiten edhe veç.' },
       {
         name: 'VULA Meets',
@@ -591,7 +603,7 @@ export const whyVula: Record<Lang, { kicker: string; nots: string[]; claim: stri
       'Nuk jemi kontabilistë.',
       'Nuk jemi kompani ndërtimi.',
       'Nuk jemi studio ligjore.',
-      'Nuk jemi web agjenci.',
+      'Nuk jemi agjenci web.',
     ],
     claim: 'Jemi regjia.',
     line: 'Punojmë me specialistë të përzgjedhur për çdo fazë të projektit. Ti nuk ke nevojë të gjesh dhjetë profesionistë: ne i koordinojmë.',
@@ -674,7 +686,7 @@ export const brief: Record<Lang, {
   name: string; email: string; phone: string; notes: string; submit: string;
 }> = {
   sq: {
-    kicker: 'Tregomë çfarë ke në mendje',
+    kicker: 'Na trego çfarë ke në mendje',
     title: 'Nis nga këtu.',
     line: 'Sa më shumë na tregon, aq më konkrete është përgjigjja jonë. Asnjë fushë nuk është e detyrueshme përveç kontaktit.',
     what: 'Çfarë do të hapësh?',
@@ -768,7 +780,7 @@ export const modelBlocks: Record<Lang, { title: string; line: string }[]> = {
     },
     {
       title: 'Abonim pas hapjes',
-      line: 'Marketing, rishikim mujor i numrave dhe korrigjime në 12 muajt e parë, me kanon fiks.',
+      line: 'Marketing, rishikim mujor i numrave dhe korrigjime në 12 muajt e parë, me tarifë fikse mujore.',
     },
   ],
   it: [
@@ -866,15 +878,9 @@ export const ui: Record<Lang, Record<string, string>> = {
     menu: 'Menu',
     close: 'Mbyll',
     scroll: 'Rrëshqit',
-    allConcepts: 'Të gjitha konceptet',
     otherProjects: 'Projekte të tjera',
     backToConcepts: 'Kthehu te konceptet',
     seeConcept: 'Shiko',
-    formName: 'Emri',
-    formEmail: 'Email',
-    formMessage: 'Për çfarë lokali bëhet fjalë?',
-    formSubmit: 'Dërgo',
-    orWhatsApp: 'Ose shkruaj direkt në WhatsApp',
     homeAria: 'VULA — kthehu te ballina',
   },
   it: {
@@ -883,15 +889,9 @@ export const ui: Record<Lang, Record<string, string>> = {
     menu: 'Menu',
     close: 'Chiudi',
     scroll: 'Scorri',
-    allConcepts: 'Tutti i concept',
     otherProjects: 'Altri progetti',
     backToConcepts: 'Torna ai concept',
     seeConcept: 'Guarda',
-    formName: 'Nome',
-    formEmail: 'Email',
-    formMessage: 'Di che locale si tratta?',
-    formSubmit: 'Invia',
-    orWhatsApp: 'Oppure scrivi direttamente su WhatsApp',
     homeAria: 'VULA — torna alla home',
   },
   en: {
@@ -900,33 +900,10 @@ export const ui: Record<Lang, Record<string, string>> = {
     menu: 'Menu',
     close: 'Close',
     scroll: 'Scroll',
-    allConcepts: 'All concepts',
     otherProjects: 'Other projects',
     backToConcepts: 'Back to concepts',
     seeConcept: 'View',
-    formName: 'Name',
-    formEmail: 'Email',
-    formMessage: 'What kind of space is it?',
-    formSubmit: 'Send',
-    orWhatsApp: 'Or message us directly on WhatsApp',
     homeAria: 'VULA — back to home',
   },
 };
 
-export const contactPage: Record<Lang, { kicker: string; title: string; line: string }> = {
-  sq: {
-    kicker: 'Kontakt',
-    title: 'Fol me regjinë.',
-    line: 'Na trego çfarë ke: një lokal, një kapital, ose vetëm një ide. Përgjigjemi me hapin e parë konkret.',
-  },
-  it: {
-    kicker: 'Contatto',
-    title: 'Parla con la regia.',
-    line: 'Raccontaci cosa hai: un locale, un capitale, o solo un’idea. Rispondiamo con il primo passo concreto.',
-  },
-  en: {
-    kicker: 'Contact',
-    title: 'Talk to the director.',
-    line: 'Tell us what you have: a space, capital, or just an idea. We answer with the first concrete step.',
-  },
-};

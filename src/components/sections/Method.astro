@@ -3,7 +3,7 @@
 // Sei pannelli: su desktop scorrono in orizzontale con pin, su mobile
 // restano pannelli verticali — nessuno scroll-jacking sul telefono.
 import { Image } from 'astro:assets';
-import { methodTitle, phases, sectionIds, type Lang } from '../../content/site';
+import { methodTitle, outputLabel, phases, sectionIds, type Lang } from '../../content/site';
 
 // Una foto per fase, nell'ordine 01 → 06: mostra l'azione di cui parla il
 // pannello invece di lasciare un vuoto nero al centro della scheda.
@@ -45,7 +45,7 @@ const list = phases[lang];
             </figure>
 
             <div class="mt__out">
-              <span class="mt__out-label mono">Output</span>
+              <span class="mt__out-label mono">{outputLabel[lang]}</span>
               <p class="mt__out-text">{ph.output}</p>
             </div>
           </article>
