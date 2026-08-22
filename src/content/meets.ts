@@ -72,7 +72,7 @@ export interface MeetsField {
 
 /* Settori: una sola lista, usata da due porte. */
 const SECTORS: FieldOption[] = [
-  { value: 'Gastronomi', label: { sq: 'Gastronomi', it: 'Gastronomia', en: 'Food & drink' } },
+  { value: 'Gastronomi', label: { sq: 'Gastronomi', it: 'Ristorazione', en: 'Food & drink' } },
   { value: 'Turizëm', label: { sq: 'Turizëm', it: 'Turismo', en: 'Tourism' } },
   { value: 'Retail', label: { sq: 'Retail', it: 'Retail', en: 'Retail' } },
   { value: 'Shërbime', label: { sq: 'Shërbime', it: 'Servizi', en: 'Services' } },

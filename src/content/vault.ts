@@ -58,7 +58,7 @@ export const concepts: Concept[] = [
     scope: {
       sq: 'Strategji, pozicionim, identitet dhe ekosistem dixhital B2B/B2C: shop, klub, dhurata, storytelling i prodhuesve, kartë dixhitale dhe porosi online.',
       it: 'Strategia, posizionamento, identità ed ecosistema digitale B2B/B2C: shop, club, regali, storytelling dei produttori, carta digitale e ordini online.',
-      en: 'Strategy, positioning, identity and a B2B/B2C digital ecosystem: shop, club, gifting, producer storytelling, digital list and online ordering.',
+      en: 'Strategy, positioning, identity and a B2B/B2C digital ecosystem: shop, club, gifting, producer storytelling, digital wine list and online ordering.',
     },
     url: 'https://elitewinesal.netlify.app/sq/',
     images: ['01-hero.webp', '02-club.webp', '03-shop.webp', '04-set.webp'],
@@ -209,8 +209,8 @@ export const concepts: Concept[] = [
     sector: { sq: 'Platformë dixhitale', it: 'Piattaforma digitale', en: 'Digital platform' },
     tagline: {
       sq: 'Materiale ndërtimi online dhe njoftime mjeshtrash: lyerje, pllakosje, riparime.',
-      it: 'Materiali edili online e annunci di professionisti: tinteggiature, piastrelle, ristrutturazioni.',
-      en: 'Building materials online and a marketplace of tradespeople: painting, tiling, refurbishment.',
+      it: 'Materiali edili online e annunci di professionisti: tinteggiature, piastrelle, riparazioni.',
+      en: 'Building materials online and listings from tradespeople: painting, tiling, repairs.',
     },
     images: ['01-hero.png'],
   },

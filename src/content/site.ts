@@ -115,7 +115,7 @@ export const manifesto: Record<Lang, string[]> = {
     'apriamo la tua attività.',
   ],
   en: [
-    'From idea to opening night —',
+    'From idea to opening —',
     'one door.',
     'We study the market,',
     'create the concept,',
@@ -264,7 +264,7 @@ export const phases: Record<Lang, Phase[]> = {
     {
       num: '01',
       name: 'DISCOVER',
-      line: 'Analysis of the capital, the property and the area: footfall, competition, rents, demographics, seasonality.',
+      line: 'Analysis of your capital, the property and the area: footfall, competition, rents, demographics, seasonality.',
       output: 'A feasibility study with scenarios compared and a reasoned recommendation.',
       alt: 'An empty unit at night, the floor plan on the ground and passers-by beyond the glass.',
     },
@@ -285,7 +285,7 @@ export const phases: Record<Lang, Phase[]> = {
     {
       num: '04',
       name: 'BUILD',
-      line: "Running the site as the owner's representative: tenders, contracts, schedule, cost, quality.",
+      line: "Running the works as the owner's representative: tenders, contracts, schedule, cost, quality.",
       output: 'A finished space, on budget and on time; a registered, compliant company.',
       alt: 'The fit-out at night, scaffolding and a work lamp in the dust.',
     },
@@ -406,7 +406,7 @@ export const visitLabel: Record<Lang, string> = {
 export const orgDescription: Record<Lang, string> = {
   sq: 'VULA Studio: regjia që lidh idetë, kapitalin dhe ekzekutimin — nga ideja te hapja, në Tiranë.',
   it: "VULA Studio: la regia che collega idee, capitale ed esecuzione — dall'idea all'apertura, a Tirana.",
-  en: 'VULA Studio: the direction that connects ideas, capital and execution — from idea to opening, in Tirana.',
+  en: 'VULA Studio: the director that connects ideas, capital and execution — from idea to opening, in Tirana.',
 };
 
 /** Etichetta per un progetto cliente ancora in corso: si dichiara. */
@@ -507,7 +507,7 @@ export const stats: StatItem[] = [
 
 export const numbersThesis: Record<Lang, string> = {
   sq: 'Kapitali është këtu. Turizmi po rritet. Konsumi në Tiranë po rritet. Ajo që mungon janë strukturat që e kthejnë kapitalin në biznese të ndërtuara mirë.',
-  it: 'Il capitale c\'è. Il turismo cresce. I consumi a Tirana crescono. Quello che manca sono le strutture che trasformano quel capitale in attività costruite bene.',
+  it: 'Il capitale c\'è. Il turismo cresce. I consumi a Tirana crescono. Quello che manca è chi trasforma quel capitale in attività fatte bene.',
   en: 'The capital is here. Tourism is growing. Spending in Tirana is growing. What is missing are the structures that turn that capital into well-built businesses.',
 };
 
@@ -631,7 +631,7 @@ export const whyVula: Record<Lang, { kicker: string; nots: string[]; claim: stri
       'We are not a law firm.',
       'We are not a web agency.',
     ],
-    claim: 'We are the direction.',
+    claim: 'We are the director.',
     line: 'We work with selected specialists for every phase of the project. You do not have to find ten professionals: we coordinate them.',
   },
 };
